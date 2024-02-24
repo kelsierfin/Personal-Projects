@@ -18,7 +18,8 @@ public class Menu {
     // Use a static initializer. This initializes the ArrayList when we load the Menu class.
     private static final ArrayList<String> options = new ArrayList<>();
     static {
-        options.add("Enter your name: "); // At index 0
+        options.add("Enter your name: "); // At index 1
+        options.add("Exit"); // Make this the last option
     }
 
 
@@ -40,5 +41,16 @@ public class Menu {
 
     public static void menuLoop() {
         System.out.print(optMessage);
+        String choice = scanner.nextLine();
+        int option = Integer.parseInt(choice);
+
+        while (option != options.size() - 1) {
+            System.out.print(optMessage);
+            choice = scanner.nextLine();
+            option = Integer.parseInt(choice);
+        }
+
+        System.out.println("Thank you for using the habit and goal tracker! See you tomorrow (hopefully)!");
+
     }
 }
