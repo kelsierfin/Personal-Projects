@@ -8,6 +8,7 @@ import java.util.Scanner;
  * Emails: tania.rizwan@ucalgary.ca, sanbeer.shafin@ucalgary.ca, phonemyat.paing@ucalgary.ca
  */
 
+// The menu setup code was followed from Dr. Hudson's project example.
 public class Menu {
 
     // Create scanner object for user input.
@@ -72,10 +73,53 @@ public class Menu {
         }
         System.out.printf("Thank you for using the habit and goal tracker!%nSee you tomorrow (hopefully)!");
 
-    }
-    private static void menuCreateAccount() {
 
+        scanner.close();
     }
+
+    /** Description: This function creates a user account if one does not exist in our database.
+     *
+     */
+
+    private static void menuCreateAccount() {
+        boolean accountExists;
+        String username;
+        String password;
+        do {
+            username = getUserName();
+            password = getPassword();
+            accountExists = Data.userAccount(username, password);
+        } while(!accountExists);
+    }
+
+    /** Description: This function prompts user for their account username
+     * @return name
+     */
+    private static String getUserName() {
+        System.out.println("Enter your username");
+        String name;
+        do{
+            name = scanner.nextLine().trim(); // trim() removes whitespaces
+        } while(name.isEmpty()); // user input for name should not be empty
+        return name;
+    }
+
+    /**
+     * Description: This function prompts the user for their account password.
+     * The password must be at least 3 digits long, so it is treated as a String.
+     * @return password
+     */
+    private static String getPassword() {
+        System.out.println("Enter your password (at least 3 digits)");
+        String password; // Treat as string because we have a limitation on number of digits.
+        do{
+            password = scanner.nextLine();
+        } while(password.length() < 3 || password.isEmpty()); // user input for password should be at least 3 digits
+        return password;
+    }
+
+
+
     private static void menuLogIn() {
 
     }
@@ -87,6 +131,7 @@ public class Menu {
     private static void menuHabitSetup() {
 
     }
+
 
 
 }
