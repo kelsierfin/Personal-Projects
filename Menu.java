@@ -17,9 +17,12 @@ public class Menu {
     // Create menu for user interaction.
     // Use a static initializer. This initializes the ArrayList when we load the Menu class.
     private static final ArrayList<String> options = new ArrayList<>();
-    static {
-        options.add("Enter your name: "); // At index 1
-        options.add("Exit"); // Make this the last option
+    static { // NOTE: This is to be edited.
+        options.add("Exit"); // At index 0
+        options.add("Create an Account");
+        options.add("Log In");
+        options.add("Create goals");
+        options.add("Add habits to goal");
     }
 
 
@@ -38,19 +41,51 @@ public class Menu {
         optMessage = sb.toString(); // Update the optMessage object with the final menu
     }
 
-
+    // Run the menuLoop everytime Main is called
     public static void menuLoop() {
-        System.out.print(optMessage);
+        System.out.println(optMessage);
         String choice = scanner.nextLine();
         int option = Integer.parseInt(choice);
 
-        while (option != options.size() - 1) {
-            System.out.print(optMessage);
+        while (option != 0) {
+            // Tell the user what option they selected. Then Continue
+            if (option > 0 && option < options.size()) {
+                System.out.printf("You have selected option %d: %s %n", option, options.get(option));
+                System.out.println("Press Enter to continue:");
+                scanner.nextLine();
+            }
+
+            switch (option) { // NOTE: Cases have to be updated
+                case 1 -> menuCreateAccount();
+                case 2 -> menuLogIn();
+                case 3 -> menuCreateGoals();
+                case 4 -> menuHabitSetup();
+                default -> System.out.printf("Option %d is not recognizable %n", option);
+            }
+
+            System.out.println("Press Enter to see the menu again");
+            scanner.nextLine();
+            System.out.println(optMessage);
             choice = scanner.nextLine();
             option = Integer.parseInt(choice);
         }
-
-        System.out.println("Thank you for using the habit and goal tracker! See you tomorrow (hopefully)!");
+        System.out.printf("Thank you for using the habit and goal tracker!%nSee you tomorrow (hopefully)!");
 
     }
+    private static void menuCreateAccount() {
+
+    }
+    private static void menuLogIn() {
+
+    }
+
+
+    private static void menuCreateGoals() {
+    }
+
+    private static void menuHabitSetup() {
+
+    }
+
+
 }
