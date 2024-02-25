@@ -5,6 +5,7 @@ import java.util.Scanner;
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
  * Names: Tania Rizwan, Sanbeer Shafin, Phone Myat
  * Tutorial:(fill)
+ * Emails: tania.rizwan@ucalgary.ca, sanbeer.shafin@ucalgary.ca, phonemyat.paing@ucalgary.ca
  */
 
 public class Menu {
