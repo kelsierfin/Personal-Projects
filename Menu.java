@@ -80,8 +80,10 @@ public class Menu {
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
+
+            System.out.println();
             System.out.println("Press Enter to see the menu again");
-            scanner.nextLine();
+            scanner.nextLine(); // WONT WORK
             System.out.println(optMessage);
             choice = scanner.nextLine();
             option = Integer.parseInt(choice);
@@ -92,43 +94,107 @@ public class Menu {
         scanner.close();
     }
 
+
+    /** This function allows users to create a Goal and assign a goalIdealCount to it,
+     * which is the number of days they would like to work on the gal.
+     * @author Tania
+     */
+    private static void menuCreateGoal() {
+        String goalName;
+        Integer goalIdealCount;
+        Integer option;
+
+
+        // Summary:
+        // Ask user to input goal
+        // Ask user to add a count to their goal
+        // Populate HashMap with Key = goal and Value = goalIdealCount if it doesn't exist already
+        // Ask user to enter another goal if they wish. Otherwise, exit.
+
+        do {
+            goalName = getGoalName(); // Ask user to input goal
+            goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
+
+            Data.createAGoal(goalName, goalIdealCount); // Send data to Data.java to populate hashmap
+
+            System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt(); // Give user the choice to add more goals and counts
+
+        } while(option != 0);
+    }
+
+    /** This function prompts the user for the name of their goal.
+     * The goal cannot be an empty string.
+     * @author Tania
+     * @return goalName
+     */
+
+    private static String getGoalName() {
+        String goalName;
+        System.out.println("What is your goal?");
+
+        do {
+            goalName = scanner.nextLine();
+        } while(goalName.isEmpty());
+
+        return goalName;
+    }
+
+    /** This function prompts the user for the idealCount of their goal (number of days they want to work on their goal).
+     * The idealCount cannot be 0, or greater than 7.
+     * @author Tania
+     * @return goalIdealCount
+     */
+
+    private static Integer getIdealCount() {
+        Integer goalIdealCount;
+        System.out.println("Add the number of days (1-7) you want to work on this goal:");
+
+        do {
+            goalIdealCount = scanner.nextInt();
+        } while(goalIdealCount == 0 || goalIdealCount > 7);
+
+        return goalIdealCount;
+    }
+
+
+    private static void menuDeleteGoal() {
+
+
+
+    }
+
+
+
+    private static void menuAddHabits() {
+
+    }
+
     private static void menuWeeklyGoalCompletionRate() {
     }
 
     private static void menuTop3Habits() {
-        
+
     }
 
     private static void menuListProductivitySummary() {
-        
+
     }
 
     private static void menuAddPointsToHabit() {
-        
+
     }
 
     private static void menuEisenhowerMatrix() {
-        
+
     }
 
     private static void menuCategorizeGoals() {
-        
+
     }
 
     private static void menuDeleteHabits() {
-        
-    }
 
-    private static void menuAddHabits() {
-        
-    }
-
-    private static void menuDeleteGoal() {
-        
-    }
-
-    private static void menuCreateGoal() {
-        
     }
 
 //    /** This function creates a user account if one does not exist in our database.
