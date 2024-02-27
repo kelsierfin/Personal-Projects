@@ -21,10 +21,19 @@ public class Menu {
     private static final ArrayList<String> options = new ArrayList<>();
     static { // NOTE: This is to be edited.
         options.add("Exit"); // At index 0
-        options.add("Create an Account");
-        options.add("Log In");
-        options.add("Create goals");
-        options.add("Add habits to goal");
+//        options.add("Create an Account");
+//        options.add("Log In");
+        options.add("Create A Goal");
+        options.add("Delete a Goal");
+        options.add("Add Habits to A Goal");
+        options.add("Delete Habits From A Goal");
+        options.add("View Goals and Habits");
+        options.add("Categorize Goals");
+        options.add("Create Eisenhower Matrix");
+        options.add("Add Points to Habit");
+        options.add("List Productivity Summary");
+        options.add("List Top 3 Habits of the Week");
+        options.add("Weekly Goal Completion Rate");
     }
 
 
@@ -58,10 +67,16 @@ public class Menu {
             }
 
             switch (option) { // NOTE: Cases have to be updated
-                case 1 -> menuCreateAccount();
-                case 2 -> menuLogIn();
-                case 3 -> menuCreateGoals();
-                case 4 -> menuHabitSetup();
+                case 1 -> menuCreateGoal();
+                case 2 -> menuDeleteGoal();
+                case 3 -> menuAddHabits();
+                case 4 -> menuDeleteHabits();
+                case 5 -> menuCategorizeGoals();
+                case 6 -> menuEisenhowerMatrix();
+                case 7 -> menuAddPointsToHabit();
+                case 8 -> menuListProductivitySummary();
+                case 9 -> menuTop3Habits();
+                case 10 -> menuWeeklyGoalCompletionRate();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -77,60 +92,92 @@ public class Menu {
         scanner.close();
     }
 
-    /** Description: This function creates a user account if one does not exist in our database.
-     *
-     */
-
-    private static void menuCreateAccount() {
-        boolean accountExists;
-        String username;
-        String password;
-        do {
-            username = getUserName();
-            password = getPassword();
-            accountExists = Data.userAccount(username, password);
-        } while(!accountExists);
+    private static void menuWeeklyGoalCompletionRate() {
     }
 
-    /** Description: This function prompts user for their account username
-     * @return name
-     */
-    private static String getUserName() {
-        System.out.println("Enter your username");
-        String name;
-        do{
-            name = scanner.nextLine().trim(); // trim() removes whitespaces
-        } while(name.isEmpty()); // user input for name should not be empty
-        return name;
+    private static void menuTop3Habits() {
+        
     }
 
-    /**
-     * Description: This function prompts the user for their account password.
-     * The password must be at least 3 digits long, so it is treated as a String.
-     * @return password
-     */
-    private static String getPassword() {
-        System.out.println("Enter your password (at least 3 digits)");
-        String password; // Treat as string because we have a limitation on number of digits.
-        do{
-            password = scanner.nextLine();
-        } while(password.length() < 3 || password.isEmpty()); // user input for password should be at least 3 digits
-        return password;
+    private static void menuListProductivitySummary() {
+        
     }
 
-
-
-    private static void menuLogIn() {
-
+    private static void menuAddPointsToHabit() {
+        
     }
 
-
-    private static void menuCreateGoals() {
+    private static void menuEisenhowerMatrix() {
+        
     }
 
-    private static void menuHabitSetup() {
-
+    private static void menuCategorizeGoals() {
+        
     }
+
+    private static void menuDeleteHabits() {
+        
+    }
+
+    private static void menuAddHabits() {
+        
+    }
+
+    private static void menuDeleteGoal() {
+        
+    }
+
+    private static void menuCreateGoal() {
+        
+    }
+
+//    /** This function creates a user account if one does not exist in our database.
+//     * @author: Tania
+//     */
+//
+//    private static void menuCreateAccount() {
+//        String username;
+//        String password;
+//
+//        username = getUserName();
+//        password = getPassword();
+//        Data.initializeUser(username, password);
+//
+//    }
+//
+//    /** This function prompts user for their account username. It is used in menuCreateAccount and menuLogIn
+//     * @author: Tania
+//     * @return: name (String)
+//     */
+//    private static String getUserName() {
+//        System.out.println("Enter your username");
+//        String name;
+//        do{
+//            name = scanner.nextLine().trim(); // trim() removes whitespaces
+//        } while(name.isEmpty()); // user input for name should not be empty
+//        return name;
+//    }
+//
+//    /**
+//     * This function prompts the user for their account password.
+//     * The password must be at least 3 digits long, so it is treated as a String.
+//     * This function is used in menuCreateAccount and menuLogIn
+//     * @author: Tania
+//     * @return: password
+//     */
+//    private static String getPassword() {
+//        System.out.println("Enter your password (at least 3 digits)");
+//        String password; // Treat as string because we have a limitation on number of digits.
+//        do{
+//            password = scanner.nextLine();
+//        } while(password.length() < 3); // user input for password should be at least 3 digits
+//        return password;
+//    }
+//
+//
+//    private static void menuLogIn() {
+//
+//    }
 
 
 
