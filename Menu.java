@@ -31,8 +31,8 @@ public class Menu {
         options.add("Create Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("List Productivity Summary");
-        options.add("List Top 3 Habits of the Week");
         options.add("Weekly Goal Completion Rate");
+        options.add("List Top 3 Habits of the Week");
     }
 
 
@@ -70,12 +70,13 @@ public class Menu {
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
-                case 5 -> menuCategorizeGoals();
-                case 6 -> menuEisenhowerMatrix();
-                case 7 -> menuAddPointsToHabit();
-                case 8 -> menuListProductivitySummary();
-                case 9 -> menuTop3Habits();
+                case 5 -> menuCheckingGoalsAndHabits();
+                case 6 -> menuCategorizeGoals();
+                case 7 -> menuEisenhowerMatrix();
+                case 8 -> menuAddPointsToHabit();
+                case 9-> menuListProductivitySummary();
                 case 10 -> menuWeeklyGoalCompletionRate();
+                case 11 -> menuTop3Habits();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -187,13 +188,6 @@ public class Menu {
 
     }
 
-    private static void menuWeeklyGoalCompletionRate() {
-    }
-
-    private static void menuTop3Habits() {
-
-    }
-
     private static void menuListProductivitySummary() {
 
     }
@@ -212,6 +206,42 @@ public class Menu {
 
     private static void menuDeleteHabits() {
 
+    }
+
+    private static void menuCheckingGoalsAndHabits(){
+
+    }
+
+    private static void menuDisplayWeeklyGoalCompletionRate() {
+        // Get goalPoints and habitCounts from Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+
+        System.out.println("Would you like to print the completion rates? (Yes = true | No = false)");
+        boolean shouldPrint = scanner.nextBoolean();
+        scanner.nextLine(); // Consume the \n left in the buffer
+
+        // Calling the function
+        HashMap<String, Integer> completionRates = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
+
+        // Optionally, process the returned completionRates if needed
+        if (!shouldPrint) {
+            for (String habit : completionRates.keySet()) {
+                System.out.printf("%s Habit is %d%% completed according to this weekly target.\n", habit, completionRates.get(habit));
+            }
+        }
+    }
+
+    private static void displayTop3Habits() {
+        // Retrieve goalPoints and habitCounts from the respective Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabits();
+
+        // Call the menuTop3Habits function with the retrieved data
+        String top3HabitsSummary = Data.menuTop3Habits(goalPoints, habitCounts);
+
+        // Print the result
+        System.out.println(top3HabitsSummary);
     }
 
 //    /** This function creates a user account if one does not exist in our database.
@@ -261,51 +291,5 @@ public class Menu {
 //    private static void menuLogIn() {
 //
 //    }
-    public static HashMap<String, Integer> calculateCompletionRates(HashMap<String, Integer> goalPoints, HashMap<String, Integer> earnedPoints, boolean shouldPrint) {
-        HashMap<String, Integer> rates = new HashMap<>();
-        StringBuilder output = new StringBuilder();
-
-        for (String habit : goalPoints.keySet()) {
-            int goal = goalPoints.getOrDefault(habit, 0);
-            int earned = earnedPoints.getOrDefault(habit, 0);
-            int rate = 0;
-            if (goal != 0) {
-                rate = (int) (((double) earned / goal) * 100);
-            }
-            rates.put(habit, rate);
-            if (shouldPrint) {
-                output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", habit, rate));
-            }
-        }
-
-        if (shouldPrint) {
-            System.out.println(output.toString());
-        }
-
-        return rates;
-    }
-
-    public static void top3Habits(HashMap<String, Integer> goalPoints, HashMap<String, Integer> earnedPoints) {
-        HashMap<String, Integer> rates = calculateCompletionRates(goalPoints, earnedPoints, false); // Updated call
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(rates.entrySet());
-        list.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
-
-        StringBuilder output = new StringBuilder();
-        output.append(list.size() >= 3 ? "Top 3 habits for this week are " : "Mostly completed habits are ");
-
-        int limit = Math.min(list.size(), 3);
-        for (int i = 0; i < limit; i++) {
-            Map.Entry<String, Integer> entry = list.get(i);
-            output.append(entry.getKey());
-            if (i < limit - 1) {
-                output.append(", ");
-            }
-        }
-
-        output.append(" in descending order.");
-        System.out.println(output.toString());
-    }
-
-
 
 }
