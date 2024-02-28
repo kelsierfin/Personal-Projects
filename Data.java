@@ -1,15 +1,8 @@
-import java.util.ArrayList;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.Map;
 
 public class Data {
-
-    private static final Scanner scanner = new Scanner(System.in);
-
 
     public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<String, Integer>(); // ArrayList to store all accounts.
 
@@ -26,8 +19,6 @@ public class Data {
         }
 
         return false;
-
-
     }
 
     /**
@@ -44,4 +35,23 @@ public class Data {
         return false;
     }
 
+    /**
+     * This function removes an input goal from the GoalAndIdealCount hashmap.
+     * @param goalToDelete
+     * @return true if a goal has been deleted
+     */
+
+    public static boolean goalDelete(String goalToDelete) {
+
+        if (GoalAndIdealCount.containsKey(goalToDelete)) {
+            GoalAndIdealCount.remove(goalToDelete);
+            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+//        System.out.println("Your updated goals are: " + GoalAndIdealCount.entrySet()); // Dont need this. We already print goals.
+            return true;
+        } else {
+            System.out.println("Please enter a valid goal.");
+            return false;
+        }
+
+    }
 }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -82,7 +83,7 @@ public class Menu {
 
 
             System.out.println();
-            System.out.println("Press Enter to see the menu again");
+            System.out.print("Press Enter to see the menu again");
             scanner.nextLine(); // WONT WORK
             System.out.println(optMessage);
             choice = scanner.nextLine();
@@ -157,10 +158,28 @@ public class Menu {
         return goalIdealCount;
     }
 
+    /** This function prompts the user for a goal to delete, and allows them to delete as many as they wish.
+     * @author Tania
+     */
+
 
     private static void menuDeleteGoal() {
+        Integer option;
 
+        do {
+            // List all goals
+            for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+                System.out.println("Goal: " + entry.getKey());
+            }
 
+            System.out.print("Enter the name of the goal to remove:");
+            String goalToDelete = scanner.nextLine();
+            Data.goalDelete(goalToDelete);
+
+            System.out.println("Would you like to retry or delete another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume the \n left in the buffer
+        } while(option != 0);
 
     }
 
