@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
@@ -263,6 +261,50 @@ public class Menu {
 //    private static void menuLogIn() {
 //
 //    }
+    public static HashMap<String, Integer> calculateCompletionRates(HashMap<String, Integer> goalPoints, HashMap<String, Integer> earnedPoints, boolean shouldPrint) {
+        HashMap<String, Integer> rates = new HashMap<>();
+        StringBuilder output = new StringBuilder();
+
+        for (String habit : goalPoints.keySet()) {
+            int goal = goalPoints.getOrDefault(habit, 0);
+            int earned = earnedPoints.getOrDefault(habit, 0);
+            int rate = 0;
+            if (goal != 0) {
+                rate = (int) (((double) earned / goal) * 100);
+            }
+            rates.put(habit, rate);
+            if (shouldPrint) {
+                output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", habit, rate));
+            }
+        }
+
+        if (shouldPrint) {
+            System.out.println(output.toString());
+        }
+
+        return rates;
+    }
+
+    public static void top3Habits(HashMap<String, Integer> goalPoints, HashMap<String, Integer> earnedPoints) {
+        HashMap<String, Integer> rates = calculateCompletionRates(goalPoints, earnedPoints, false); // Updated call
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(rates.entrySet());
+        list.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+        StringBuilder output = new StringBuilder();
+        output.append(list.size() >= 3 ? "Top 3 habits for this week are " : "Mostly completed habits are ");
+
+        int limit = Math.min(list.size(), 3);
+        for (int i = 0; i < limit; i++) {
+            Map.Entry<String, Integer> entry = list.get(i);
+            output.append(entry.getKey());
+            if (i < limit - 1) {
+                output.append(", ");
+            }
+        }
+
+        output.append(" in descending order.");
+        System.out.println(output.toString());
+    }
 
 
 
