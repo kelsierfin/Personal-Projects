@@ -212,30 +212,30 @@ public class Menu {
 
     }
 
-    private static void menuDisplayWeeklyGoalCompletionRate() {
+    private static void menuWeeklyGoalCompletionRate() {
         // Get goalPoints and habitCounts from Data class methods
         HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
-        System.out.println("Would you like to print the completion rates? (Yes = true | No = false)");
-        boolean shouldPrint = scanner.nextBoolean();
+        System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
+        String response = scanner.next().trim().toLowerCase();
+        boolean shouldPrint = response.equals("yes")||response.equals("true");
+        boolean shouldNotPrint = response.equals("no")||response.equals("false");
         scanner.nextLine(); // Consume the \n left in the buffer
 
-        // Calling the function
-        HashMap<String, Integer> completionRates = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
-
-        // Optionally, process the returned completionRates if needed
-        if (!shouldPrint) {
-            for (String habit : completionRates.keySet()) {
-                System.out.printf("%s Habit is %d%% completed according to this weekly target.\n", habit, completionRates.get(habit));
-            }
+        if(shouldPrint){
+            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
+        } else if (shouldNotPrint) {
+            System.out.println("Heading Back to menu");
+        }else{
+            System.out.println("Invalid input");
         }
     }
 
-    private static void displayTop3Habits() {
+    private static void menuTop3Habits() {
         // Retrieve goalPoints and habitCounts from the respective Data class methods
         HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
-        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
         // Call the menuTop3Habits function with the retrieved data
         String top3HabitsSummary = Data.menuTop3Habits(goalPoints, habitCounts);

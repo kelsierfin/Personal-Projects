@@ -55,6 +55,24 @@ public class Data {
 
     }
 
+    public static HashMap<String,Integer> menuCheckingGoalsAndHabits(){
+        HashMap<String,Integer> sth = new HashMap<>();
+        sth.put("Reading", 100);
+        sth.put("Swimming", 50);
+        sth.put("Editing", 75);
+        sth.put("Coding", 200);
+    return sth;
+    }
+
+    public static HashMap<String,Integer> menuAddPointsToHabit(){
+        HashMap<String,Integer> nth = new HashMap<>();
+        nth.put("Reading", 10);
+        nth.put("Swimming", 5);
+        nth.put("Editing", 7);
+        nth.put("Coding", 30);
+        return nth;
+    }
+
 
     /**
      * This function will give the goal completion rate for each specific habit
