@@ -113,6 +113,7 @@ public class Menu {
         // Ask user to enter another goal if they wish. Otherwise, exit.
 
         do {
+            System.out.println("What is your goal?");
             goalName = getGoalName(); // Ask user to input goal
             goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
 
@@ -132,7 +133,7 @@ public class Menu {
 
     private static String getGoalName() {
         String goalName;
-        System.out.println("What is your goal?");
+//        System.out.println("What is your goal?");
 
         do {
             goalName = scanner.nextLine();
@@ -187,18 +188,42 @@ public class Menu {
 
     private static void menuAddHabits() {
 
-        Data.addHabits();
+        String goalName;
+        ArrayList<String> habitsList;
+        Integer option;
 
 
+        do {
+            System.out.println("Enter the goal to add habits for:");
+            goalName = getGoalName();
 
+            System.out.println("Enter habits:");
+            habitsList = getHabits();
+            Data.addHabits(goalName, habitsList);
 
+            System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume the \n left in the buffer
+        } while (option != 0);
 //
-//        // List each goal
-//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-//            System.out.println("Goal: " + entry.getKey());
-//        }
 
+    }
 
+    private static ArrayList<String> getHabits() {
+        ArrayList<String> habitsList = new ArrayList<>();
+        String habit;
+        Integer option;
+
+        do {
+            habit = scanner.nextLine();
+            habitsList.add(habit);
+
+            System.out.println("Would you like enter another habit? (Yes = any number | No = 0)");
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume the \n left in the buffer
+
+        } while(habit.isEmpty() || option!=0);
+        return habitsList;
     }
 
     private static void menuWeeklyGoalCompletionRate() {

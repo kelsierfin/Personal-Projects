@@ -59,39 +59,44 @@ public class Data {
         }
     }
 
-    public static boolean addHabits() {
+    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
 
 
-        // Loop through the GoalAndIdealCount hashmap
+//        // Loop through the GoalAndIdealCount hashmap
+//        for (String key : GoalAndIdealCount.keySet()) {
+//            Object[] GoalHabitStorage = new Object[2];
+//            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
+//            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Create an ArrayList for habits for each stored goal. Assign this to GoalHabitStorage object
+//            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
+//        }
+//
+//        // Print goals and number of habits
+//
+//        System.out.println("Here is a list of your goals, and the number of habits");
+//        for (Object[] goalInfo : GoalHabitSetup) {
+//            ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+//            System.out.println("Goal: " + goalInfo[INDEX_GOALNAME] + " Habits: " + habitsList.size());
+//        }
+
         for (String key : GoalAndIdealCount.keySet()) {
             Object[] GoalHabitStorage = new Object[2];
             GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
-            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Create an ArrayList for habits for each stored goal. Assign this to GoalHabitStorage object
+            GoalHabitStorage[INDEX_HABITSLIST] = null; // Set to null at first (until we get list from user)
             GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
         }
 
-        // Print goals and number of habits
-
-        System.out.println("Here is a list of your goals, and the number of habits");
         for (Object[] goalInfo : GoalHabitSetup) {
-            ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-            System.out.println("Goal: " + goalInfo[INDEX_GOALNAME] + " Habits: " + habitsList.size());
+            if (goalInfo[INDEX_GOALNAME].equals(goalName)){
+                goalInfo[INDEX_HABITSLIST] = habitsList;
+                System.out.println("The goal: " + goalName + " has been assigned habits: " + habitsList);
+            } else {
+                System.out.println("Invalid goal");
+            }
         }
-
-
-
-
-
-
-
 
 
 
         return true;
-
-
-        // Add goal and count from hashmap to GoalHabitCountSetup arraylist
-
 
 
     }
