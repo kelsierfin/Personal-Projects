@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
