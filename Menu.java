@@ -187,6 +187,18 @@ public class Menu {
 
     private static void menuAddHabits() {
 
+        Data.addHabits();
+
+
+
+
+//
+//        // List each goal
+//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+//            System.out.println("Goal: " + entry.getKey());
+//        }
+
+
     }
 
     private static void menuWeeklyGoalCompletionRate() {

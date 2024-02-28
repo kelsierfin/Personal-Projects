@@ -1,10 +1,15 @@
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Data {
 
-    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<String, Integer>(); // ArrayList to store all accounts.
+    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
+
+    public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
+    public static final int INDEX_GOALNAME = 0;
+//    public static final int INDEX_GOALIDEALCOUNt = 1;
+    public static final int INDEX_HABITSLIST = 1;
 
     public static boolean createAGoal(String goalName, Integer goalIdealCount) {
 
@@ -24,7 +29,7 @@ public class Data {
     /**
      * This function checks if the goal entered already exists.
      * @author Tania
-     * @param goalName
+     * @param goalName - name of goal to check if it exists
      * @return boolean
      */
 
@@ -37,7 +42,7 @@ public class Data {
 
     /**
      * This function removes an input goal from the GoalAndIdealCount hashmap.
-     * @param goalToDelete
+     * @param goalToDelete - name for goal to remove
      * @return true if a goal has been deleted
      */
 
@@ -52,6 +57,44 @@ public class Data {
             System.out.println("Please enter a valid goal.");
             return false;
         }
+    }
+
+    public static boolean addHabits() {
+
+
+        // Loop through the GoalAndIdealCount hashmap
+        for (String key : GoalAndIdealCount.keySet()) {
+            Object[] GoalHabitStorage = new Object[2];
+            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
+            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Create an ArrayList for habits for each stored goal. Assign this to GoalHabitStorage object
+            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
+        }
+
+        // Print goals and number of habits
+
+        System.out.println("Here is a list of your goals, and the number of habits");
+        for (Object[] goalInfo : GoalHabitSetup) {
+            ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+            System.out.println("Goal: " + goalInfo[INDEX_GOALNAME] + " Habits: " + habitsList.size());
+        }
+
+
+
+
+
+
+
+
+
+
+        return true;
+
+
+        // Add goal and count from hashmap to GoalHabitCountSetup arraylist
+
+
 
     }
+
+
 }
