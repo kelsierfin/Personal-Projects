@@ -70,8 +70,7 @@ public class Data {
 //            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
 //        }
 //
-//        // Print goals and number of habits
-//
+        // Print goals and number of habits
 //        System.out.println("Here is a list of your goals, and the number of habits");
 //        for (Object[] goalInfo : GoalHabitSetup) {
 //            ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
@@ -85,21 +84,21 @@ public class Data {
             GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
         }
 
-        for (Object[] goalInfo : GoalHabitSetup) {
-            if (goalInfo[INDEX_GOALNAME].equals(goalName)){
-                goalInfo[INDEX_HABITSLIST] = habitsList;
-                System.out.println("The goal: " + goalName + " has been assigned habits: " + habitsList);
-            } else {
-                System.out.println("Invalid goal");
+        if (goalExists(goalName)) {
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    goalInfo[INDEX_HABITSLIST] = habitsList;
+                    System.out.println("The goal: " + goalName + " has been assigned habits: " + habitsList);
+                }
             }
+        } else {
+            System.out.println("Invalid goal. Retry");
         }
 
-
-
         return true;
-
-
     }
 
 
+
 }
+
