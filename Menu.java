@@ -123,6 +123,12 @@ public class Menu {
             option = scanner.nextInt(); // Give user the choice to add more goals and counts
 
         } while(option != 0);
+
+        // print all goals
+        System.out.println("Your goals are:");
+        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+            System.out.println("Goal: " + entry.getKey());
+        }
     }
 
     /** This function prompts the user for the name of their goal.
@@ -191,6 +197,7 @@ public class Menu {
         String goalName;
         ArrayList<String> habitsList;
         Integer option;
+        Data.initializeGoalsAndHabits();
 
         // print all goals
         System.out.println("Your goals are:");
@@ -209,15 +216,14 @@ public class Menu {
             System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt();
             scanner.nextLine(); // Consume the \n left in the buffer
+
         } while (option != 0);
 
         // Finally, show all goals and their habits
         System.out.println("Here is a list of your goals, and the number of habits");
-        for (Object[] goalInfo : Data.GoalHabitSetup) {
-            ArrayList<String> storedHabits = (ArrayList<String>) goalInfo[Data.INDEX_HABITSLIST];
-            System.out.println("Goal: " + goalInfo[Data.INDEX_GOALNAME] + " Habits: " + storedHabits.size());
+        for (Object[] item : Data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
         }
-//
     }
 
     private static ArrayList<String> getHabits() {

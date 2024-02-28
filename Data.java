@@ -17,13 +17,11 @@ public class Data {
             GoalAndIdealCount.put(goalName, goalIdealCount);
             System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
             return true;
-        }
-        if (goalExists(goalName)) {
+        } else {
             System.out.println("Your goal (" + goalName + ") already exists.");
             return false;
         }
 
-        return false;
     }
 
     /**
@@ -46,57 +44,67 @@ public class Data {
      * @return true if a goal has been deleted
      */
 
-    public static boolean goalDelete(String goalToDelete) {
+    public static void goalDelete(String goalToDelete) {
 
         if (GoalAndIdealCount.containsKey(goalToDelete)) {
             GoalAndIdealCount.remove(goalToDelete);
             System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
 //        System.out.println("Your updated goals are: " + GoalAndIdealCount.entrySet()); // Dont need this. We already print goals.
-            return true;
+//            return true;
         } else {
             System.out.println("Please enter a valid goal.");
-            return false;
+//            return false;
         }
     }
 
-    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
-
-
-//        // Loop through the GoalAndIdealCount hashmap
-//        for (String key : GoalAndIdealCount.keySet()) {
-//            Object[] GoalHabitStorage = new Object[2];
-//            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
-//            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Create an ArrayList for habits for each stored goal. Assign this to GoalHabitStorage object
-//            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
-//        }
-//
-        // Print goals and number of habits
-//        System.out.println("Here is a list of your goals, and the number of habits");
-//        for (Object[] goalInfo : GoalHabitSetup) {
-//            ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-//            System.out.println("Goal: " + goalInfo[INDEX_GOALNAME] + " Habits: " + habitsList.size());
-//        }
-
-        for (String key : GoalAndIdealCount.keySet()) {
-            Object[] GoalHabitStorage = new Object[2];
-            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
-            GoalHabitStorage[INDEX_HABITSLIST] = null; // Set to null at first (until we get list from user)
-            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
-        }
+    public static void addHabits(String goalName, ArrayList<String> habitsList) {
 
         if (goalExists(goalName)) {
             for (Object[] goalInfo : GoalHabitSetup) {
                 if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                    goalInfo[INDEX_HABITSLIST] = habitsList;
-                    System.out.println("The goal: " + goalName + " has been assigned habits: " + habitsList);
+                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+                    existingHabits.addAll(habitsList);
+                    System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+//                    return true;
                 }
             }
         } else {
             System.out.println("Invalid goal. Retry");
         }
-
-        return true;
+//        return true;
     }
+
+    public static void initializeGoalsAndHabits() {
+        for (String key : GoalAndIdealCount.keySet()) {
+            Object[] GoalHabitStorage = new Object[2];
+            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
+            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Assign empty arraylist
+            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
+        }
+    }
+
+
+
+    /**
+     * This function takes a specific goal and returns the habits for it. It is to be used with other functions.
+     * @author Tania
+     * @param goalName
+     * @return ArrayList containing habits
+     */
+
+    public static ArrayList<String> getHabitsForGoal(String goalName) {
+        if (goalExists(goalName)) {
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    return (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+                }
+            }
+        } else {
+            System.out.println("Goal invalid. Returning empty ArrayList.");
+        }
+        return new ArrayList<>();
+    }
+
 
 
 
