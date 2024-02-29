@@ -1,7 +1,7 @@
 import java.util.*;
 public class Data {
 
-    public static HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
+    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
 
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
     public static final int INDEX_GOALNAME = 0;
