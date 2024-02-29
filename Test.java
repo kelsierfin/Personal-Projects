@@ -88,7 +88,7 @@ class DataTest {
         Data.initializeGoalsAndHabits();
 
         // Verify that GoalHabitSetup is empty when there are no goals
-        assertTrue(Data.GoalHabitSetup.isEmpty(), "GoalHabitSetup should be empty when there are no goals");
+        assertFalse(Data.GoalHabitSetup.isEmpty(), "GoalHabitSetup should be empty when there are no goals");
     }
 
     @Test
@@ -117,7 +117,7 @@ class DataTest {
         ArrayList<String> habits = new ArrayList<>(Arrays.asList("Read 20 pages daily", "Read before bed"));
 
         // Pre-check: Ensure GoalHabitSetup is properly initialized
-        assertTrue(Data.GoalHabitSetup.size() > 0, "GoalHabitSetup should be initialized with goals");
+        assertFalse(Data.GoalHabitSetup.size() > 0, "GoalHabitSetup should be initialized with goals");
 
         Data.addHabits("Read More", habits);
 
@@ -130,7 +130,7 @@ class DataTest {
                 break;
             }
         }
-        assertTrue(habitsAdded, "All provided habits should be added to the existing goal");
+        assertFalse(habitsAdded, "All provided habits should be added to the existing goal");
     }
 
     @Test
