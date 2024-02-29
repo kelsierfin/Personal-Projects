@@ -28,7 +28,7 @@ public class Data {
      * @author Tania
      */
 
-    private static boolean goalExists(String goalName) {
+    public static boolean goalExists(String goalName) {
         if (GoalAndIdealCount.containsKey(goalName)) {
             return true;
         }
@@ -185,7 +185,7 @@ public class Data {
         StringBuilder output = new StringBuilder();
 
         // Append a header depending on the number of goals
-        output.append(sortedRates.size() >= 3 ? "Top 3 Goals for this week: " : "Mostly completed Goals: ");
+        output.append(sortedRates.size() >= 3 ? "Top 3 Goals for this week are " : "Mostly completed Goals are ");
 
         // Determine the number of goals to list (up to 3)
         int limit = Math.min(sortedRates.size(), 3);
@@ -201,7 +201,7 @@ public class Data {
         }
 
         // Append a closing remark
-        output.append(" (in descending order).");
+        output.append(" in descending order.");
         return output;
     }
 
