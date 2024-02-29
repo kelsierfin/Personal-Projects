@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
@@ -33,8 +31,8 @@ public class Menu {
         options.add("Create Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("List Productivity Summary");
-        options.add("List Top 3 Habits of the Week");
         options.add("Weekly Goal Completion Rate");
+        options.add("List Top 3 Habits of the Week");
     }
 
 
@@ -72,12 +70,13 @@ public class Menu {
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
-                case 5 -> menuCategorizeGoals();
-                case 6 -> menuEisenhowerMatrix();
-                case 7 -> menuAddPointsToHabit();
-                case 8 -> menuListProductivitySummary();
-                case 9 -> menuTop3Habits();
+                case 5 -> menuCheckingGoalsAndHabits();
+                case 6 -> menuCategorizeGoals();
+                case 7 -> menuEisenhowerMatrix();
+                case 8 -> menuAddPointsToHabit();
+                case 9-> menuListProductivitySummary();
                 case 10 -> menuWeeklyGoalCompletionRate();
+                case 11 -> menuTop3Habits();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -243,13 +242,6 @@ public class Menu {
         return habitsList;
     }
 
-    private static void menuWeeklyGoalCompletionRate() {
-    }
-
-    private static void menuTop3Habits() {
-
-    }
-
     private static void menuListProductivitySummary() {
 
     }
@@ -268,6 +260,42 @@ public class Menu {
 
     private static void menuDeleteHabits() {
 
+    }
+
+    private static void menuCheckingGoalsAndHabits(){
+
+    }
+
+    private static void menuWeeklyGoalCompletionRate() {
+        // Get goalPoints and habitCounts from Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+
+        System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
+        String response = scanner.next().trim().toLowerCase();
+        boolean shouldPrint = response.equals("yes")||response.equals("true");
+        boolean shouldNotPrint = response.equals("no")||response.equals("false");
+        scanner.nextLine(); // Consume the \n left in the buffer
+
+        if(shouldPrint){
+            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
+        } else if (shouldNotPrint) {
+            System.out.println("Heading Back to menu");
+        }else{
+            System.out.println("Invalid input");
+        }
+    }
+
+    private static void menuTop3Habits() {
+        // Retrieve goalPoints and habitCounts from the respective Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+
+        // Call the menuTop3Habits function with the retrieved data
+        String top3HabitsSummary = Data.menuTop3Habits(goalPoints, habitCounts);
+
+        // Print the result
+        System.out.println(top3HabitsSummary);
     }
 
 //    /** This function creates a user account if one does not exist in our database.
@@ -317,7 +345,5 @@ public class Menu {
 //    private static void menuLogIn() {
 //
 //    }
-
-
 
 }
