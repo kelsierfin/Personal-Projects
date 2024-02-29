@@ -33,6 +33,7 @@ public class Menu {
         options.add("List Productivity Summary");
         options.add("Weekly Goal Completion Rate");
         options.add("List Top 3 Habits of the Week");
+        options.add("Reset the account");
     }
 
 
@@ -76,7 +77,8 @@ public class Menu {
                 case 8 -> menuAddPointsToHabit();
                 case 9-> menuListProductivitySummary();
                 case 10 -> menuWeeklyGoalCompletionRate();
-                case 11 -> menuTop3Habits();
+                case 11 -> menuTop3Goals();
+                case 12 -> menuResetData();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -189,8 +191,6 @@ public class Menu {
 
     }
 
-
-
     private static void menuAddHabits() {
 
         String goalName;
@@ -268,7 +268,7 @@ public class Menu {
 
     private static void menuWeeklyGoalCompletionRate() {
         // Get goalPoints and habitCounts from Data class methods
-        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
         System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
@@ -278,7 +278,7 @@ public class Menu {
         scanner.nextLine(); // Consume the \n left in the buffer
 
         if(shouldPrint){
-            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
+            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(idealGoal, habitCounts, shouldPrint);
         } else if (shouldNotPrint) {
             System.out.println("Heading Back to menu");
         }else{
@@ -286,16 +286,42 @@ public class Menu {
         }
     }
 
-    private static void menuTop3Habits() {
+    private static void menuTop3Goals() {
         // Retrieve goalPoints and habitCounts from the respective Data class methods
-        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
         // Call the menuTop3Habits function with the retrieved data
-        String top3HabitsSummary = Data.menuTop3Habits(goalPoints, habitCounts);
+        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
 
         // Print the result
         System.out.println(top3HabitsSummary);
+    }
+
+    private static void menuResetData() {
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = false; // Flag to track if the user input is valid
+
+        do {
+            System.out.println("After you reset the data, you will not be able to retrieve any history.");
+            System.out.println("Do you still want to reset? (Type yes or no):");
+            String confirmation = scanner.next().trim().toLowerCase();
+
+            boolean delete = confirmation.equals("yes") || confirmation.equals("true");
+            boolean notDelete = confirmation.equals("no") || confirmation.equals("false");
+
+            if (delete) {
+                String result = Data.menuResetData(); // Ensure this method name matches your Data class method name
+                System.out.println(result);
+                validInput = true; // Mark input as valid to exit the loop
+            } else if (notDelete) {
+                System.out.println("Heading Back to Menu");
+                validInput = true; // Mark input as valid to exit the loop
+            } else {
+                System.out.println("Invalid input. Please type 'yes' or 'no'.");
+                // Loop will continue due to invalid input
+            }
+        } while (!validInput); // Loop until a valid input is received
     }
 
 //    /** This function creates a user account if one does not exist in our database.

@@ -1,12 +1,7 @@
 import java.util.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class Data {
 
-    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
+    public static HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
 
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
     public static final int INDEX_GOALNAME = 0;
@@ -23,7 +18,6 @@ public class Data {
             System.out.println("Your goal (" + goalName + ") already exists.");
             return false;
         }
-
     }
 
     /**
@@ -53,11 +47,9 @@ public class Data {
         if (GoalAndIdealCount.containsKey(goalToDelete)) {
             GoalAndIdealCount.remove(goalToDelete);
             System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//        System.out.println("Your updated goals are: " + GoalAndIdealCount.entrySet()); // Dont need this. We already print goals.
-//            return true;
+            System.out.println("Your updated goals are: " + GoalAndIdealCount.entrySet()); // Dont need this. We already print goals
         } else {
             System.out.println("Please enter a valid goal.");
-//            return false;
         }
     }
 
@@ -110,46 +102,37 @@ public class Data {
     }
 
 
-    public static HashMap<String, Integer> menuCheckingGoalsAndHabits () {
-        HashMap<String, Integer> sth = new HashMap<>();
-        sth.put("Reading", 100);
-        sth.put("Swimming", 50);
-        sth.put("Editing", 75);
-        sth.put("Coding", 200);
-        return sth;
-    }
-
     public static HashMap<String, Integer> menuAddPointsToHabit () {
         HashMap<String, Integer> nth = new HashMap<>();
-        nth.put("Reading", 10);
-        nth.put("Swimming", 5);
-        nth.put("Editing", 7);
-        nth.put("Coding", 30);
+        nth.put("Education", 10);
+        nth.put("Exercise", 5);
+        nth.put("Mental Health", 7);
+        nth.put("Personal Development", 30);
         return nth;
     }
 
 
     /**
      * This function will give the goal completion rate for each specific habit
-     * @param goalPoints (Target Points aka the times you set for each specific habit
+     * @param idealGoal (Target Points aka the times you set for each specific habit
      * @param habitCounts (Earned Points aka the times you already completed for each specific habit
      * @return rate, a hashmap which will be the base data for the another potential function call
      */
     public static HashMap<String, Integer> menuWeeklyGoalCompletionRate
-    (HashMap < String, Integer > goalPoints, HashMap < String, Integer > habitCounts,boolean shouldPrint){
+    (HashMap < String, Integer > idealGoal, HashMap < String, Integer > habitCounts,boolean shouldPrint){
         HashMap<String, Integer> rates = new HashMap<>();
         StringBuilder output = new StringBuilder();
 
-        for (String habit : goalPoints.keySet()) {
-            int goal = goalPoints.getOrDefault(habit, 0);
-            int earned = habitCounts.getOrDefault(habit, 0);
+        for (String goal : idealGoal.keySet()) {
+            int goalPoints = idealGoal.getOrDefault(goal, 0);
+            int earned = habitCounts.getOrDefault(goal, 0);
             int rate = 0;
-            if (goal != 0) {
-                rate = (int) (((double) earned / goal) * 100);
+            if (goalPoints != 0) {
+                rate = (int) (((double) earned / goalPoints) * 100);
             }
-            rates.put(habit, rate);
+            rates.put(goal, rate);
             if (shouldPrint) {
-                output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", habit, rate));
+                output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", goal, rate));
             }
         }
 
@@ -163,18 +146,18 @@ public class Data {
 
     /**
      * This function will give the top 3 of the habits
-     * @param goalPoints (Target Points aka the times you set for each specific habit
+     * @param idealGoal (Target Points aka the times you set for each specific habit
      * @param habitCounts (Earned Points aka the times you already completed for each specific habit
      * @return rate, a hashmap which will be the base data for the another potential function call
      */
-    public static String menuTop3Habits
-    (HashMap < String, Integer > goalPoints, HashMap < String, Integer > habitCounts){
-        HashMap<String, Integer> rates = menuWeeklyGoalCompletionRate(goalPoints, habitCounts, false); // Assuming this method returns rates correctly
+    public static String menuTop3Goals
+    (HashMap < String, Integer > idealGoal, HashMap < String, Integer > habitCounts){
+        HashMap<String, Integer> rates = menuWeeklyGoalCompletionRate(idealGoal, habitCounts, false); // Assuming this method returns rates correctly
         List<Map.Entry<String, Integer>> list = new ArrayList<>(rates.entrySet());
         list.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
 
         StringBuilder output = new StringBuilder();
-        output.append(list.size() >= 3 ? "Top 3 habits for this week are " : "Mostly completed habits are ");
+        output.append(list.size() >= 3 ? "Top 3 Goals for this week are " : "Mostly completed Goals are ");
 
         int limit = Math.min(list.size(), 3);
         for (int i = 0; i < limit; i++) {
@@ -189,7 +172,17 @@ public class Data {
         return output.toString();
     }
 
-
+    /**
+     * Resets all account data by clearing goal and habit information
+     *
+     * @return A confirmation messsage indicating the data reset
+     */
+    public static String menuResetData(){
+        GoalAndIdealCount.clear();
+        GoalHabitSetup.clear();
+//        habitcounts.clear();String resetString = "Your account data has been reset.";
+        return "Your account data has been reset.";
+    }
 }
 
 

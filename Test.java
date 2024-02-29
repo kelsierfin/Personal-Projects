@@ -51,7 +51,7 @@ class DataTest {
         Data.GoalHabitSetup.add(new Object[]{"Reading", new ArrayList<>()});
 
         String expectedMessage = "Your account data has been reset.";
-        String message = Data.menuDeleteData();
+        String message = Data.menuResetData();
 
         assertTrue(Data.GoalAndIdealCount.isEmpty());
         assertTrue(Data.GoalHabitSetup.isEmpty());
