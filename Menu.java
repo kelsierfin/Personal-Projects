@@ -11,8 +11,8 @@ import java.util.*;
 public class Menu {
 
     // Create scanner object for user input.
-        // Private so it is only accessible within the Menu class.
-        // Static because everything in this class can share the scanner object.
+    // Private so it is only accessible within the Menu class.
+    // Static because everything in this class can share the scanner object.
     private static final Scanner scanner = new Scanner(System.in);
 
     // Create menu for user interaction.
@@ -347,3 +347,4 @@ public class Menu {
 //    }
 
 }
+
