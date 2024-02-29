@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
@@ -32,8 +31,8 @@ public class Menu {
         options.add("Create Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("List Productivity Summary");
-        options.add("List Top 3 Habits of the Week");
         options.add("Weekly Goal Completion Rate");
+        options.add("List Top 3 Habits of the Week");
     }
 
 
@@ -71,17 +70,20 @@ public class Menu {
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
-                case 5 -> menuCategorizeGoals();
-                case 6 -> menuEisenhowerMatrix();
-                case 7 -> menuAddPointsToHabit();
-                case 8 -> menuListProductivitySummary();
-                case 9 -> menuTop3Habits();
+                case 5 -> menuCheckingGoalsAndHabits();
+                case 6 -> menuCategorizeGoals();
+                case 7 -> menuEisenhowerMatrix();
+                case 8 -> menuAddPointsToHabit();
+                case 9-> menuListProductivitySummary();
                 case 10 -> menuWeeklyGoalCompletionRate();
+                case 11 -> menuTop3Habits();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
-            System.out.println("Press Enter to see the menu again");
-            scanner.nextLine();
+
+            System.out.println();
+            System.out.print("Press Enter to see the menu again");
+            scanner.nextLine(); // WONT WORK
             System.out.println(optMessage);
             choice = scanner.nextLine();
             option = Integer.parseInt(choice);
@@ -92,43 +94,154 @@ public class Menu {
         scanner.close();
     }
 
-    private static void menuWeeklyGoalCompletionRate() {
+
+    /** This function allows users to create a Goal and assign a goalIdealCount to it,
+     * which is the number of days they would like to work on the gal.
+     * @author Tania
+     */
+    private static void menuCreateGoal() {
+        String goalName;
+        Integer goalIdealCount;
+        Integer option;
+
+
+        // Summary:
+        // Ask user to input goal
+        // Ask user to add a count to their goal
+        // Populate HashMap with Key = goal and Value = goalIdealCount if it doesn't exist already
+        // Ask user to enter another goal if they wish. Otherwise, exit.
+
+        do {
+            goalName = getGoalName(); // Ask user to input goal
+            goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
+
+            Data.createAGoal(goalName, goalIdealCount); // Send data to Data.java to populate hashmap
+
+            System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt(); // Give user the choice to add more goals and counts
+
+        } while(option != 0);
     }
 
-    private static void menuTop3Habits() {
-        
+    /** This function prompts the user for the name of their goal.
+     * The goal cannot be an empty string.
+     * @author Tania
+     * @return goalName
+     */
+
+    private static String getGoalName() {
+        String goalName;
+        System.out.println("What is your goal?");
+
+        do {
+            goalName = scanner.nextLine();
+        } while(goalName.isEmpty());
+
+        return goalName;
+    }
+
+    /** This function prompts the user for the idealCount of their goal (number of days they want to work on their goal).
+     * The idealCount cannot be 0, or greater than 7.
+     * @author Tania
+     * @return goalIdealCount
+     */
+
+    private static Integer getIdealCount() {
+        Integer goalIdealCount;
+        System.out.println("Add the number of days (1-7) you want to work on this goal:");
+
+        do {
+            goalIdealCount = scanner.nextInt();
+        } while(goalIdealCount == 0 || goalIdealCount > 7);
+
+        return goalIdealCount;
+    }
+
+    /** This function prompts the user for a goal to delete, and allows them to delete as many as they wish.
+     * @author Tania
+     */
+
+
+    private static void menuDeleteGoal() {
+        Integer option;
+
+        do {
+            // List all goals
+            for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+                System.out.println("Goal: " + entry.getKey());
+            }
+
+            System.out.print("Enter the name of the goal to remove:");
+            String goalToDelete = scanner.nextLine();
+            Data.goalDelete(goalToDelete);
+
+            System.out.println("Would you like to retry or delete another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume the \n left in the buffer
+        } while(option != 0);
+
+    }
+
+
+
+    private static void menuAddHabits() {
+
     }
 
     private static void menuListProductivitySummary() {
-        
+
     }
 
     private static void menuAddPointsToHabit() {
-        
+
     }
 
     private static void menuEisenhowerMatrix() {
-        
+
     }
 
     private static void menuCategorizeGoals() {
-        
+
     }
 
     private static void menuDeleteHabits() {
-        
+
     }
 
-    private static void menuAddHabits() {
-        
+    private static void menuCheckingGoalsAndHabits(){
+
     }
 
-    private static void menuDeleteGoal() {
-        
+    private static void menuWeeklyGoalCompletionRate() {
+        // Get goalPoints and habitCounts from Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+
+        System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
+        String response = scanner.next().trim().toLowerCase();
+        boolean shouldPrint = response.equals("yes")||response.equals("true");
+        boolean shouldNotPrint = response.equals("no")||response.equals("false");
+        scanner.nextLine(); // Consume the \n left in the buffer
+
+        if(shouldPrint){
+            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(goalPoints, habitCounts, shouldPrint);
+        } else if (shouldNotPrint) {
+            System.out.println("Heading Back to menu");
+        }else{
+            System.out.println("Invalid input");
+        }
     }
 
-    private static void menuCreateGoal() {
-        
+    private static void menuTop3Habits() {
+        // Retrieve goalPoints and habitCounts from the respective Data class methods
+        HashMap<String, Integer> goalPoints = Data.menuCheckingGoalsAndHabits();
+        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+
+        // Call the menuTop3Habits function with the retrieved data
+        String top3HabitsSummary = Data.menuTop3Habits(goalPoints, habitCounts);
+
+        // Print the result
+        System.out.println(top3HabitsSummary);
     }
 
 //    /** This function creates a user account if one does not exist in our database.
@@ -178,7 +291,5 @@ public class Menu {
 //    private static void menuLogIn() {
 //
 //    }
-
-
 
 }
