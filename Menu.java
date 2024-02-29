@@ -270,20 +270,26 @@ public class Menu {
         // Get goalPoints and habitCounts from Data class methods
         HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = false;
 
-        System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
-        String response = scanner.next().trim().toLowerCase();
-        boolean shouldPrint = response.equals("yes")||response.equals("true");
-        boolean shouldNotPrint = response.equals("no")||response.equals("false");
-        scanner.nextLine(); // Consume the \n left in the buffer
+        do {
+            System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
+            String response = scanner.next().trim().toLowerCase();
+            boolean shouldPrint = response.equals("yes")||response.equals("true");
+            boolean shouldNotPrint = response.equals("no")||response.equals("false");
+            scanner.nextLine(); // Consume the \n left in the buffer
 
-        if(shouldPrint){
-            HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(idealGoal, habitCounts, shouldPrint);
-        } else if (shouldNotPrint) {
-            System.out.println("Heading Back to menu");
-        }else{
-            System.out.println("Invalid input");
-        }
+            if(shouldPrint){
+                HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(idealGoal, habitCounts, shouldPrint);
+                validInput = true;
+            } else if (shouldNotPrint) {
+                System.out.println("Heading Back to menu");
+                validInput = true;
+            }else{
+                System.out.println("Invalid input. Please type 'yes' or 'no'.");
+            }
+        }while (!validInput);
     }
 
     private static void menuTop3Goals() {
