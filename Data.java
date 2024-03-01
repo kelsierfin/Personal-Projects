@@ -236,10 +236,21 @@ public class Data {
     }
 
 
+    /**
+     * @description: Retrieves the ideal count for each habit.
+     * This method returns a {@link HashMap} that maps each habit to its ideal completion count.
+     * The ideal count represents the target number of times a habit should be completed.
+     *
+     * @param: None
+     * @return A {@link HashMap} where keys are habit names and values are their corresponding ideal counts.
+     * @author Phone
+     */
     public static HashMap<String,Integer> habitAndIdealCount(){
-        HashMap<String,Integer> idealCount = habitAndICounts;
+        // Clone the habitAndICounts to avoid manipulation of the original map
+        HashMap<String,Integer> idealCount = new HashMap<>(habitAndICounts);
         return idealCount;
     }
+
 
     /**
      * Retrieves the earned count for each habit.

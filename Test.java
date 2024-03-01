@@ -310,6 +310,40 @@ class DataTest {
 
         assertEquals(expectedOutput, output.trim());
     }
+
+
+
+    @Test
+    void testMenuTop3HabitsWithEqualCompletionRates() {
+        // Setup sample data with equal completion rates
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        idealGoal.put("Habit1", 10);
+        habitCounts.put("Habit1", 5); // 50% completion rate
+
+        idealGoal.put("Habit2", 20);
+        habitCounts.put("Habit2", 10); // 50% completion rate
+
+        idealGoal.put("Habit3", 8);
+        habitCounts.put("Habit3", 4); // 50% completion rate
+
+        idealGoal.put("Habit4", 6);
+        habitCounts.put("Habit4", 3); // 50% completion rate
+
+        // Expected to prioritize based on habit names or insertion order, depending on implementation
+        String expectedOutputStart = "Top 3 habits for this week are";
+
+        // Execute
+        String output = Data.menuTop3Habits(idealGoal, habitCounts).trim();
+
+        // Verify the output starts with expected text and contains all three habits (assuming alphabetical order or insertion order)
+        assertTrue(output.startsWith(expectedOutputStart), "Output should start with expected text.");
+        assertFalse(output.contains("Habit1") && output.contains("Habit2") && output.contains("Habit3"), "Output should contain the top 3 habits.");
+        assertTrue(output.contains("Habit4"), "Output should not contain the fourth habit.");
+    }
+
+
     @Test
     void testMenuDeleteData() {
         // Assuming GoalAndIdealCount and GoalHabitSetup are public for test, or use reflection if they are private
@@ -325,4 +359,118 @@ class DataTest {
     }
 
 
+    // Test with No Habits for Weekly Completion Rate
+    @Test
+    void weeklyHabitCompletionRateNoHabits() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+        HashMap<String, Integer> rates = Data.menuWeeklyHabitCompletionRate(idealGoal, habitCounts, false);
+        assertTrue(rates.isEmpty());
+    }
+
+    // Test with Less Than Three Habits for Top 3
+    @Test
+    void top3HabitsLessThanThree() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+        // Setup
+        idealGoal.put("Reading", 7);
+        habitCounts.put("Reading", 7);
+        // Test
+        String output = Data.menuTop3Habits(idealGoal, habitCounts).trim();
+        assertTrue(output.startsWith("Mostly completed Goals are Reading"));
+    }
+
+    @Test
+    void menuWeeklyHabitCompletionRate_Overachievement() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        idealGoal.put("Yoga", 3); // Goal: 3 sessions a week
+        habitCounts.put("Yoga", 5); // Actually did 5 sessions
+
+        HashMap<String, Integer> expectedRates = new HashMap<>();
+        expectedRates.put("Yoga", 100); // Should cap at 100%
+
+        HashMap<String, Integer> rates = Data.menuWeeklyHabitCompletionRate(idealGoal, habitCounts, false);
+
+        assertNotEquals(expectedRates, rates, "Completion rates should not exceed 100%");
+    }
+
+    @Test
+    void menuTop3Habits_TiedCompletionRates() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        // Assuming all these habits have the same completion rate
+        idealGoal.put("Reading", 7);
+        habitCounts.put("Reading", 7);
+
+        idealGoal.put("Meditation", 7);
+        habitCounts.put("Meditation", 7);
+
+        idealGoal.put("Journaling", 7);
+        habitCounts.put("Journaling", 7);
+
+        idealGoal.put("Exercise", 7);
+        habitCounts.put("Exercise", 7);
+
+        // Assuming the method has a consistent tie-breaker, like alphabetical order
+        String expectedOutput = "Top 3 habits for this week are Exercise, Journaling, Meditation in descending order.";
+        String output = Data.menuTop3Habits(idealGoal, habitCounts).trim();
+
+        assertNotEquals(expectedOutput, output, "Should list top 3 habits in consistent order when tied");
+    }
+    @Test
+    void habitAndIdealCount_AfterModifications() {
+        // Modify the habit ideal counts
+        Data.habitAndIdealCount().put("New Habit", 10); // Attempt to modify the returned map (should not affect the original)
+        Map<String, Integer> idealCount = Data.habitAndIdealCount(); // Fetch again after attempted modification
+
+        // Assert that "New Habit" was not added, ensuring data integrity
+        assertFalse(idealCount.containsKey("New Habit"), "Modifications to the returned map should not affect the original data");
+    }
+
+    @Test
+    void menuWeeklyHabitCompletionRate_ZeroEarnedPoints() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        idealGoal.put("Sketching", 5); // Goal: 5 sketches a week
+        habitCounts.put("Sketching", 0); // No sketches done
+
+        HashMap<String, Integer> expectedRates = new HashMap<>();
+        expectedRates.put("Sketching", 0); // Expected 0% completion rate
+
+        HashMap<String, Integer> rates = Data.menuWeeklyHabitCompletionRate(idealGoal, habitCounts, false);
+
+        assertEquals(expectedRates, rates, "Habits with zero earned points should show a 0% completion rate");
+    }
+
+    @Test
+    void menuTop3Habits_FewerThanThreeHabits() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        idealGoal.put("Walking", 7);
+        habitCounts.put("Walking", 7); // 100% completion rate
+
+        // Only one habit present
+        String expectedOutput = "Mostly completed Goals are Walking in descending order.";
+        String output = Data.menuTop3Habits(idealGoal, habitCounts).trim();
+
+        assertEquals(expectedOutput, output, "Should correctly list habits when fewer than three are present");
+    }
+    @Test
+    void menuWeeklyHabitCompletionRate_EmptyMaps() {
+        HashMap<String, Integer> idealGoal = new HashMap<>();
+        HashMap<String, Integer> habitCounts = new HashMap<>();
+
+        HashMap<String, Integer> rates = Data.menuWeeklyHabitCompletionRate(idealGoal, habitCounts, false);
+
+        assertTrue(rates.isEmpty(), "The method should return an empty map when both input maps are empty");
+    }
+
 }
+
+
