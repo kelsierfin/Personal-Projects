@@ -235,108 +235,38 @@ public class Data {
         return false;
     }
 
-        public static HashMap<String, Integer> menuCheckingGoalsAndHabits () {
-            HashMap<String, Integer> sth = new HashMap<>();
-            sth.put("Reading", 100);
-            sth.put("Swimming", 50);
-            sth.put("Editing", 75);
-            sth.put("Coding", 200);
-            return sth;
-        }
-
-        public static HashMap<String, Integer> menuAddPointsToHabit () {
-            HashMap<String, Integer> nth = new HashMap<>();
-            nth.put("Reading", 10);
-            nth.put("Swimming", 5);
-            nth.put("Editing", 7);
-            nth.put("Coding", 30);
-            return nth;
-        }
-
-
-        /**
-         * This function will give the goal completion rate for each specific habit
-         * @param goalPoints (Target Points aka the times you set for each specific habit
-         * @param habitCounts (Earned Points aka the times you already completed for each specific habit
-         * @return rate, a hashmap which will be the base data for the another potential function call
-         */
-        public static HashMap<String, Integer> menuWeeklyGoalCompletionRate
-        (HashMap < String, Integer > goalPoints, HashMap < String, Integer > habitCounts,boolean shouldPrint){
-            HashMap<String, Integer> rates = new HashMap<>();
-            StringBuilder output = new StringBuilder();
-
-            for (String habit : goalPoints.keySet()) {
-                int goal = goalPoints.getOrDefault(habit, 0);
-                int earned = habitCounts.getOrDefault(habit, 0);
-                int rate = 0;
-                if (goal != 0) {
-                    rate = (int) (((double) earned / goal) * 100);
-                }
-                rates.put(habit, rate);
-                if (shouldPrint) {
-                    output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", habit, rate));
-                }
-            }
-
-            if (shouldPrint) {
-                System.out.println(output.toString());
-            }
-
-            return rates;
-        }
-
-
-        /**
-         * This function will give the top 3 of the habits
-         * @param goalPoints (Target Points aka the times you set for each specific habit
-         * @param habitCounts (Earned Points aka the times you already completed for each specific habit
-         * @return rate, a hashmap which will be the base data for the another potential function call
-         */
-        public static String menuTop3Habits
-        (HashMap < String, Integer > goalPoints, HashMap < String, Integer > habitCounts){
-            HashMap<String, Integer> rates = menuWeeklyGoalCompletionRate(goalPoints, habitCounts, false); // Assuming this method returns rates correctly
-            List<Map.Entry<String, Integer>> list = new ArrayList<>(rates.entrySet());
-            list.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
-
-            StringBuilder output = new StringBuilder();
-            output.append(list.size() >= 3 ? "Top 3 habits for this week are " : "Mostly completed habits are ");
-
-            int limit = Math.min(list.size(), 3);
-            for (int i = 0; i < limit; i++) {
-                Map.Entry<String, Integer> entry = list.get(i);
-                output.append(entry.getKey());
-                if (i < limit - 1) {
-                    output.append(", ");
-                }
-            }
-
-            output.append(" in descending order.");
-            return output.toString();
-        }
-
-    /**
-     * Resets all account data by clearing goal and habit information
-     *
-     * @author Phone
-     * @return A confirmation messsage indicating the data reset
-     */
-    public static String menuResetData(){
-        GoalAndIdealCount.clear();
-        GoalHabitSetup.clear();
-//        habitcounts.clear();
-        return "Your account data has been reset.";
-    }
 
     public static HashMap<String,Integer> habitAndIdealCount(){
         HashMap<String,Integer> idealCount = habitAndICounts;
         return idealCount;
     }
 
+    /**
+     * Retrieves the earned count for each habit.
+     * <p>
+     * This method returns a {@link HashMap} that maps each habit to the number of times it has been
+     * actually completed by the user. The earned count reflects the user's progress towards achieving
+     * their habit goals.
+     *
+     * @return A {@link HashMap} where keys are habit names and values are their actual completion counts.
+     */
     public static HashMap<String,Integer> habitsAndEarned(){
-        HashMap<String,Integer> earnedCount = habitAndECounts;
+        // Clone the habitAndECounts to prevent direct modifications to the original map
+        HashMap<String,Integer> earnedCount = new HashMap<>(habitAndECounts);
         return earnedCount;
     }
 
+    /**
+     * @description: Updates the completion counts for a specific habit
+     *
+     *This method prompts the user to enter the name of a habit they wish to update. If the habit exists,
+     * it increments the habit's completion count by one and asks if the user wants to update another habit.
+     * The process continues until the user chooses to stop.
+     *
+     * @param: None
+     * @return: None
+     * @author: Phone
+     */
 
     public static void updateHabitCompletionCounts() {
         boolean continueUpdating = true;
@@ -369,6 +299,113 @@ public class Data {
         // Optionally, you can print or return the updated hashmap here
         // System.out.println("Updated habit counts: " + habitAndECounts);
     }
+
+    /**
+     * @description: Calculates and optionally prints the goal completion rate for each habit.
+     *
+     * @param habitAndGoals A map of habit names to their target completion counts (Target Points).
+     * @param habitsAndEarned A map of habit names to their actual completion counts (Earned Points).
+     * @param shouldPrint A boolean indicating whether to print each habit's completion status.
+     * @return A map with each habit's name as the key and its completion rate as the value.
+     * @author: Phone
+     */
+    public static HashMap menuWeeklyHabitCompletionRate(HashMap<String,Integer>habitAndGoals,HashMap<String,Integer>habitsAndEarned,Boolean shouldPrint){
+
+        HashMap<String, Integer> rates = new HashMap<>();// Initialize a map to store the completion rates for each habit
+
+        StringBuilder output = new StringBuilder(); // Use StringBuilder for efficient string concatenation in potential logging
+
+        // Iterate over each habit goal in the idealGoal map
+        for (String goal : habitAndGoals.keySet()) {
+            int goalPoints = habitAndGoals.get(goal);  // Get the target points for the habit
+            int earned = habitsAndEarned.get(goal); // Get the earned points for the habit
+            int completionRate = 0; // Initialize the rate to 0
+
+            completionRate = (int) (((double) earned / goalPoints) * 100); // Calculate the percentage
+            rates.put(goal, completionRate);// Store the calculated rate in the rates map
+
+            // If shouldPrint is true, append the habit's completion status to the output StringBuilder
+            if (shouldPrint) {
+                output.append(String.format("%s Habit is %d%% completed according to this weekly target.\n", goal, completionRate));
+            }
+        }
+
+        // If shouldPrint is true, print the concatenated habit completion statuses
+        if (shouldPrint) {
+            System.out.println(output);
+        }
+
+        return rates; //return rates(Hashmap) which stores Goal as keys and Completion Rates as values
+    }
+
+    /**
+     * @description: Generates a string listing the top 3 habits based on their weekly completion rates.
+     * If there are fewer than three habits, it lists all of them.
+     *
+     * @param habitAndGoals A map of habit names to their ideal completion counts.
+     * @param habitsAndEarned A map of habit names to their actual completion counts.
+     * @return A string listing the top goals in descending order of their completion rates.
+     * @author Phone
+     */
+    public static String menuTop3Habits(HashMap<String,Integer> habitAndGoals, HashMap<String,Integer> habitsAndEarned){
+
+        // Assumes menuWeeklyGoalCompletionRate() accurately computes these rates
+        HashMap<String,Integer> rates = menuWeeklyHabitCompletionRate(habitAndGoals,habitsAndEarned,false);
+
+        // Sort the completion rates in descending order
+        List<Map.Entry<String, Integer>> sortedRates = new ArrayList<>(rates.entrySet());
+        sortedRates.sort((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+        // Generate and return the formatted string of the top 3 or fewer goals
+        StringBuilder output = getStringBuilder(sortedRates);
+        return output.toString();
+    }
+
+    /**
+     * @description: Helper function to generate a StringBuilder with formatted text listing the top 3 or fewer habits.
+     *
+     * @param sortedRates A list of Map.Entry objects representing goals and their completion rates, sorted in descending order.
+     * @return StringBuilder containing the formatted text.
+     * @author: Phone
+     */
+    private static StringBuilder getStringBuilder(List<Map.Entry<String, Integer>> sortedRates) {
+        // Create a new StringBuilder to construct the output string
+        StringBuilder output = new StringBuilder();
+
+        // Append a header depending on the number of goals
+        output.append(sortedRates.size() >= 3 ? "Top 3 habits for this week are " : "Mostly completed Goals are ");
+
+        // Determine the number of goals to list (up to 3)
+        int limit = Math.min(sortedRates.size(), 3);
+        for (int i = 0; i < limit; i++) {
+            // Retrieve each goal entry
+            Map.Entry<String, Integer> entry = sortedRates.get(i);
+            // Append the goal name to the output
+            output.append(entry.getKey());
+            // If this is not the last goal to list, append a comma
+            if (i < limit - 1) {
+                output.append(", ");
+            }
+        }
+
+        // Append a closing remark
+        output.append(" in descending order.");
+        return output;
+    }
+
+    /**
+     * @description: Resets all account data by clearing goal and habit information
+     *
+     * @return A confirmation messsage indicating the data reset
+     * @author: Phone
+     */
+    public static String menuResetData(){
+        GoalHabitSetup.clear();
+        GoalAndIdealCount.clear();
+        return "Your account data has been reset.";
+    }
+
+
 }
 
 

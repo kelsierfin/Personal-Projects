@@ -65,30 +65,6 @@ class DataTest {
     }
 
 
-//    @Test
-//    void goalExists_WhenGoalExists_ReturnsTrue() {
-//        // Setup: Add a goal that we will check exists
-//        Data.GoalAndIdealCount.put("Read More", 5);
-//
-//        // Execution: Check if the goal exists
-//        boolean exists = Data.goalExists("Read More");
-//
-//        // Assertion: Verify that goalExists returns true
-//        assertTrue(exists, "goalExists should return true when the goal exists in the map.");
-//    }
-//
-//    @Test
-//    void goalExists_WhenGoalDoesNotExist_ReturnsFalse() {
-//        // Setup: Ensure the goal does not exist in the map
-//        // No need to add anything since we cleared the map in setUp
-//
-//        // Execution: Check if a non-existent goal exists
-//        boolean exists = Data.goalExists("Exercise");
-//
-//        // Assertion: Verify that goalExists returns false
-//        assertFalse(exists, "goalExists should return false when the goal does not exist in the map.");
-//    }
-
     // Tests for goalDelete
     // Test 1: Verify goal is removed from both GoalAndIdealCount and GoalHabitsSetup
     @Test
@@ -254,28 +230,6 @@ class DataTest {
         assertEquals(expectedGoals, trueGoals, "Goals don't match");
     }
 
-    // Tests for getAllHabitsArrayList
-
-//    @Test
-//    void getallHabits() {
-//        // Setup:
-//
-//        ArrayList<String> readMoreHabits = new ArrayList<>(Arrays.asList("Read before bed", "Read 20 minutes daily"));
-//        Data.addHabits("Read More", readMoreHabits);
-//
-//        ArrayList<String> gainKnowledgeHabits = new ArrayList<>(Arrays.asList("Practice problems", "Memorize notes"));
-//        Data.addHabits("Gain knowledge", gainKnowledgeHabits);
-//
-//        ArrayList<String> learnJavaHabits = new ArrayList<>(Arrays.asList("Code daily", "Attend lectures"));
-//        Data.addHabits("Learn Java", learnJavaHabits);
-//
-//        ArrayList<String> expectedList = new ArrayList<>(Arrays.asList("Read before bed", "Read 20 minutes daily", "Practice problems", "Memorize notes","Code daily", "Attend lectures" ));
-//        ArrayList<String> trueList = Data.getAllHabitsArrayList();
-//
-//        assertEquals(expectedList, trueList, "Function output does not contain all habits");
-//
-//
-//    }
 
     // Tests for deleteHabitsFromGoal
     // Test 1: Delete an existing habit from a goal that exists
@@ -319,7 +273,7 @@ class DataTest {
 
 
     @Test
-    void testMenuWeeklyGoalCompletionRate() {
+    void testWeeklyHabitCompletion() {
         HashMap<String, Integer> idealGoal = new HashMap<>();
         HashMap<String, Integer> habitCounts = new HashMap<>();
 
@@ -329,12 +283,12 @@ class DataTest {
         HashMap<String, Integer> expectedRates = new HashMap<>();
         expectedRates.put("Reading", 71); // Expected completion rate
 
-        HashMap<String, Integer> rates = Data.menuWeeklyGoalCompletionRate(idealGoal, habitCounts, false);
+        HashMap<String, Integer> rates = Data.menuWeeklyHabitCompletionRate(idealGoal, habitCounts, false);
 
         assertEquals(expectedRates, rates);
     }
     @Test
-    void testMenuTop3Goals() {
+    void testMenuTop3Habits() {
         HashMap<String, Integer> idealGoal = new HashMap<>();
         HashMap<String, Integer> habitCounts = new HashMap<>();
 
@@ -351,8 +305,8 @@ class DataTest {
         idealGoal.put("Journaling", 7);
         habitCounts.put("Journaling", 6);
 
-        String expectedOutput = "Top 3 Goals for this week are Reading, Exercise, Journaling in descending order.";
-        String output = Data.menuTop3Goals(idealGoal, habitCounts);
+        String expectedOutput = "Top 3 habits for this week are Reading, Exercise, Journaling in descending order.";
+        String output = Data.menuTop3Habits(idealGoal, habitCounts);
 
         assertEquals(expectedOutput, output.trim());
     }

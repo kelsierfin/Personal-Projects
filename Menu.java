@@ -28,7 +28,7 @@ public class Menu {
         options.add("Categorize Goals");
         options.add("Create Eisenhower Matrix");
         options.add("Add Points to Habit");
-        options.add("Weekly Goal Completion Rate");
+        options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
         options.add("Reset Data");
     }
@@ -70,8 +70,8 @@ public class Menu {
                 case 6 -> menuCategorizeGoals();
                 case 7 -> menuEisenhowerMatrix();
                 case 8 -> menuAddPointsToHabit();
-                case 9 -> menuWeeklyGoalCompletionRate();
-                case 10 -> menuTop3Goals();
+                case 9 -> menuWeeklyHabitCompletionRate();
+                case 10 -> menuTop3Habits();
                 case 11 -> menuResetData();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
@@ -321,62 +321,101 @@ public class Menu {
     }
 
 
-    private static void menuAddPointsToHabit() {
-        // This method should call the updateHabitCompletionCounts() method from the Data class
-        // to properly handle updating the completion counts for habits.
-        Data.updateHabitCompletionCounts(); // Correctly invoke the update method here
-    }
-
     private static void menuEisenhowerMatrix() {
-
     }
 
     private static void menuCategorizeGoals() {
 
     }
 
+    /**@description:Updates the completion counts for habits.
+     *
+     *calls the {@code updateHabitCompletionCounts} method from the {@code Data} class,which handles the specifics of updating these counts.
+     * This abstraction allows for a separation of concerns,where this method deals with the user interface aspect, and the {@code Data} class handles data manipulation.
+     *
+     * @param:
+     * @return:
+     * @author: Phone
+     */
+    private static void menuAddPointsToHabit() {
+        // Invoke the updateHabitCompletionCounts method to update completion counts for habits.
+        // This call reflects an action where user-earned points towards habit completion are modified.
+        Data.updateHabitCompletionCounts(); // Correctly invoke the update method here
+    }
 
-
-    private static void menuWeeklyGoalCompletionRate() {
-        // Get goalPoints and habitCounts from Data class methods
-        HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
-        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+    /**@description: Prompts the user to decide if they want to see their weekly habit completion rate for each habit.
+     *
+     *This method first retrieves two pieces of information: the ideal goal points for each habit and the actual points earned.
+     *Based on the user's response, the method either calculates and displays the completion rates or exits back to the main menu.
+     *completion rates are calculated by comparing the actual points earned against the ideal goal points for each habit.
+     *
+     * @param: None
+     * @return: None
+     * @author: Phone
+     */
+    private static void menuWeeklyHabitCompletionRate() {
+        // Retrieve goal points and the actual earned points for each habit
+        HashMap<String, Integer> habitAndGoals = Data.habitAndIdealCount();
+        HashMap<String, Integer> habitsAndEarned = Data.habitsAndEarned();
         Scanner scanner = new Scanner(System.in);
         boolean validInput = false;
 
         do {
+            // Prompt the user for their preference on viewing the weekly completion percentage
             System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
             String response = scanner.next().trim().toLowerCase();
-            boolean shouldPrint = response.equals("yes")||response.equals("true");
-            boolean shouldNotPrint = response.equals("no")||response.equals("false");
-            scanner.nextLine(); // Consume the \n left in the buffer
 
-            if(shouldPrint){
-                HashMap<String, Integer> rate = Data.menuWeeklyGoalCompletionRate(idealGoal, habitCounts, shouldPrint);
-                validInput = true;
+            // Determine the user's response
+            boolean shouldPrint = response.equals("yes") || response.equals("true");
+            boolean shouldNotPrint = response.equals("no") || response.equals("false");
+            scanner.nextLine(); // Consume any leftover newline character in the buffer
+
+            if (shouldPrint) {
+                // If the user wants to see the completion rate, calculate and display it
+                HashMap<String, Integer> rate = Data.menuWeeklyHabitCompletionRate(habitAndGoals, habitsAndEarned, shouldPrint);
+                validInput = true; // Mark the input as valid to exit the loop
             } else if (shouldNotPrint) {
+                // If the user opts not to see the completion rate, exit back to the menu
                 System.out.println("Heading Back to menu");
-                validInput = true;
-            }else{
+                validInput = true; // Mark the input as valid to exit the loop
+            } else {
+                // Handle invalid input by asking again
                 System.out.println("Invalid input. Please type 'yes' or 'no'.");
             }
-        }while (!validInput);
+        } while (!validInput); // Repeat until a valid input is received
     }
 
+    /**@description: Displays the top 3 habits based on comparisons between goals and actual earned points.
+     *
+     *  retrieves two sets of data from the Data class: one representing the ideal goal points for each habit, and another showing the actual points earned from those habits.
+     *  calculates the top 3 habits by comparing these sets of data. The results are summarized and printed to the console.
+     *
+     * @param: None
+     * @return: None
+     * @author: Phone
+     */
+    private static void menuTop3Habits() {
+        // Retrieve habit goals and the actual earned points for each habit from the Data class
+        // habitAndGoals maps each habit to its ideal goal points
+        HashMap<String, Integer> habitAndGoals = Data.habitAndIdealCount();
 
+        // habitsAndEarned maps each habit to the points actually earned by the user
+        HashMap<String, Integer> habitsAndEarned = Data.habitsAndEarned();
 
-    private static void menuTop3Goals() {
-        // Retrieve goalPoints and habitCounts from the respective Data class methods
-        HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
-        HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
+        // Assuming the correct method to call is something like calculateTop3Habits instead of menuTop3Goals
+        // This function would compare the ideal goals and actual points to determine the top 3 habits
+        String top3HabitsSummary = Data.menuTop3Habits(habitAndGoals, habitsAndEarned);
 
-        // Call the menuTop3Habits function with the retrieved data
-        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
-
-        // Print the result
+        // Print the summary of the top 3 habits to the console
         System.out.println(top3HabitsSummary);
     }
 
+    /**@description: Resets the application data based on user confirmation
+     *
+     * @param: None
+     * @return None
+     * @author: Phone
+     */
     private static void menuResetData() {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = false; // Flag to track if the user input is valid
@@ -402,6 +441,7 @@ public class Menu {
             }
         } while (!validInput); // Loop until a valid input is received
     }
+
 
 
 }
