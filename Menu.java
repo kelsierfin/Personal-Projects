@@ -2,8 +2,8 @@ import java.util.*;
 
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
- * Names: Tania Rizwan, Sanbeer Shafin, Phone Myat
- * Tutorial:(fill)
+ * @author : Tania Rizwan, Sanbeer Shafin, Phone Myat
+ * Tutorial:T10, T09, T16
  * Emails: tania.rizwan@ucalgary.ca, sanbeer.shafin@ucalgary.ca, phonemyat.paing@ucalgary.ca
  */
 
@@ -20,8 +20,6 @@ public class Menu {
     private static final ArrayList<String> options = new ArrayList<>();
     static { // NOTE: This is to be edited.
         options.add("Exit"); // At index 0
-//        options.add("Create an Account");
-//        options.add("Log In");
         options.add("Create A Goal");
         options.add("Delete a Goal");
         options.add("Add Habits to A Goal");
@@ -36,11 +34,9 @@ public class Menu {
         options.add("Reset the account");
     }
 
-
     // Create message to display to user. Then use static initializer to combine message and Options into one menu.
     private static String optMessage = """
             Welcome to your personal habit and goal tracker!
-            Enter and track your habits for the week!
             \t Menu Options:
             """;
     static {
@@ -75,10 +71,9 @@ public class Menu {
                 case 6 -> menuCategorizeGoals();
                 case 7 -> menuEisenhowerMatrix();
                 case 8 -> menuAddPointsToHabit();
-                case 9-> menuListProductivitySummary();
-                case 10 -> menuWeeklyGoalCompletionRate();
-                case 11 -> menuTop3Goals();
-                case 12 -> menuResetData();
+                case 9 -> menuWeeklyGoalCompletionRate();
+                case 10 -> menuTop3Goals();
+                case 11 -> menuResetData();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -96,30 +91,35 @@ public class Menu {
     }
 
 
-    /** This function allows users to create a Goal and assign a goalIdealCount to it,
-     * which is the number of days they would like to work on the gal.
+    /** @description This function allows users to create a Goal and assign a goalIdealCount to it, which is the number of days they would like to work on the gal.
      * @author Tania
+     * @params None
+     * @returns None
      */
     private static void menuCreateGoal() {
-        String goalName;
-        Integer goalIdealCount;
-        Integer option;
 
         // Summary:
         // Ask user to input goal
+            // Goal must be a String, and not empty
         // Ask user to add a count to their goal
+            // Between 1 - 7.
         // Populate HashMap with Key = goal and Value = goalIdealCount if it doesn't exist already
         // Ask user to enter another goal if they wish. Otherwise, exit.
+
+        String goalName;
+        Integer goalIdealCount;
+        Integer option;
 
         do {
             System.out.println("What is your goal?");
             goalName = getGoalName(); // Ask user to input goal
             goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
 
-            Data.createAGoal(goalName, goalIdealCount); // Send data to Data.java to populate hashmap
-
+            Data.createAGoal(goalName, goalIdealCount);  // Send data to Data.java to populate hashmap
             System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt(); // Give user the choice to add more goals and counts
+
+
 
         } while(option != 0);
 
@@ -128,29 +128,32 @@ public class Menu {
         for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
             System.out.println("Goal: " + entry.getKey());
         }
+
+        scanner.nextLine(); // Consume the \n left in the buffer
+
     }
 
-    /** This function prompts the user for the name of their goal.
-     * The goal cannot be an empty string.
+    /** @description This function prompts the user for the name of their goal.
+     * @requirements The goal cannot be an empty string.
      * @author Tania
-     * @return goalName
+     * @params None
+     * @return goalName (String)
      */
 
     private static String getGoalName() {
         String goalName;
 //        System.out.println("What is your goal?");
-
         do {
             goalName = scanner.nextLine();
         } while(goalName.isEmpty());
 
-        return goalName;
+        return goalName; // Remove whitespaces and make lowercase. This prevents duplicating goals
     }
 
-    /** This function prompts the user for the idealCount of their goal (number of days they want to work on their goal).
-     * The idealCount cannot be 0, or greater than 7.
+    /** @description This function prompts the user for the idealCount of their goal (number of days/week they want to work on their goal).
+     * @requirements The idealCount cannot be <= 0, or greater than 7.
      * @author Tania
-     * @return goalIdealCount
+     * @return goalIdealCount (Integer)
      */
 
     private static Integer getIdealCount() {
@@ -159,16 +162,16 @@ public class Menu {
 
         do {
             goalIdealCount = scanner.nextInt();
-        } while(goalIdealCount == 0 || goalIdealCount > 7);
+        } while(goalIdealCount <= 0 || goalIdealCount > 7);
 
         return goalIdealCount;
     }
 
-    /** This function prompts the user for a goal to delete, and allows them to delete as many as they wish.
+    /** @description This function prompts the user for a goal to delete, and allows them to delete as many as they wish.
      * @author Tania
+     * @params None
+     * @return None
      */
-
-
     private static void menuDeleteGoal() {
         Integer option;
 
@@ -189,16 +192,19 @@ public class Menu {
 
     }
 
+    /** @description This function allows a user to add habits for their goal
+     * @author Tania
+     * @params None
+     * @return None
+     */
+
     private static void menuAddHabits() {
 
         String goalName;
         ArrayList<String> habitsList;
         Integer option;
 
-        for (Object[] item : Data.GoalHabitSetup) {
-//            item[Data.INDEX_HABITSLIST];
-        }
-        Data.initializeGoalsAndHabits(); // This line is problematic. Add limitations.
+        Data.initializeGoalsAndHabits();
 
         // print all goals
         System.out.println("Your goals are:");
@@ -225,7 +231,15 @@ public class Menu {
         for (Object[] item : Data.GoalHabitSetup) {
             System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
         }
+
     }
+
+    /**
+     * @description This function prompts user for habits to append to an ArrayList. This is used in AddHabits
+     * @author Tania
+     * @params None
+     * @return ArrayList<String> for habits
+     */
 
     private static ArrayList<String> getHabits() {
         ArrayList<String> habitsList = new ArrayList<>();
@@ -245,8 +259,10 @@ public class Menu {
     }
 
 
-    /** This function allows users to delete habits from a goal
-     *
+    /** @description This function allows users to delete habits from a goal.
+     * @author Tania
+     * @params None
+     * @return None
      */
     private static void menuDeleteHabits() {
         // Get list of all goals and habits
@@ -267,23 +283,44 @@ public class Menu {
             System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
         }
 
-        System.out.println("Enter the goal you want to remove a habit from:");
-        goalName = getGoalName();
-        if (Data.goalExists(goalName)){ // If goal exists:
+        do {
+            System.out.println("Enter the goal you want to remove a habit from:");
+            goalName = getGoalName();
+            if (Data.goalExists(goalName)){ // If goal exists:
+                System.out.println("Enter the habit you want to delete");
+                do {
+                    habitToDelete = scanner.nextLine();
+                }while(habitToDelete.isEmpty());
 
-            do {
-                habitToDelete = scanner.nextLine();
-            }while(habitToDelete.isEmpty());
+                Data.deleteHabitsFromGoal(goalName, habitToDelete);
+            }
 
-            Data.deleteHabitsFromGoal(goalName, habitToDelete);
+            System.out.println("Would you like retry or delete a habit from another goal? (Yes = any number | No = 0)");
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consume the \n left in the buffer
+
+        } while(option != 0);
+
+        // Finally, show all goals and their habits
+        System.out.println("Here is a list of your goals, and the habits");
+        for (Object[] item : Data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
         }
-        // Get the habits for that goal
 
     }
 
-    private static void menuListProductivitySummary() {
-
+    /** @description This function allows the user to see what goals and habits they have
+     * @author Tania
+     * @params None
+     * @return None
+     */
+    private static void menuCheckingGoalsAndHabits(){
+        System.out.println("Here is a list of your goals, and the habits");
+        for (Object[] item : Data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        }
     }
+
 
     private static void menuAddPointsToHabit() {
 
@@ -298,9 +335,6 @@ public class Menu {
     }
 
 
-
-    private static void menuCheckingGoalsAndHabits(){
-    }
 
     private static void menuWeeklyGoalCompletionRate() {
         // Get goalPoints and habitCounts from Data class methods
@@ -334,10 +368,10 @@ public class Menu {
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
         // Call the menuTop3Habits function with the retrieved data
-//        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
+        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
 
         // Print the result
-//        System.out.println(top3HabitsSummary);
+        System.out.println(top3HabitsSummary);
     }
 
     private static void menuResetData() {
@@ -366,53 +400,6 @@ public class Menu {
         } while (!validInput); // Loop until a valid input is received
     }
 
-//    /** This function creates a user account if one does not exist in our database.
-//     * @author: Tania
-//     */
-//
-//    private static void menuCreateAccount() {
-//        String username;
-//        String password;
-//
-//        username = getUserName();
-//        password = getPassword();
-//        Data.initializeUser(username, password);
-//
-//    }
-//
-//    /** This function prompts user for their account username. It is used in menuCreateAccount and menuLogIn
-//     * @author: Tania
-//     * @return: name (String)
-//     */
-//    private static String getUserName() {
-//        System.out.println("Enter your username");
-//        String name;
-//        do{
-//            name = scanner.nextLine().trim(); // trim() removes whitespaces
-//        } while(name.isEmpty()); // user input for name should not be empty
-//        return name;
-//    }
-//
-//    /**
-//     * This function prompts the user for their account password.
-//     * The password must be at least 3 digits long, so it is treated as a String.
-//     * This function is used in menuCreateAccount and menuLogIn
-//     * @author: Tania
-//     * @return: password
-//     */
-//    private static String getPassword() {
-//        System.out.println("Enter your password (at least 3 digits)");
-//        String password; // Treat as string because we have a limitation on number of digits.
-//        do{
-//            password = scanner.nextLine();
-//        } while(password.length() < 3); // user input for password should be at least 3 digits
-//        return password;
-//    }
-//
-//
-//    private static void menuLogIn() {
-//
-//    }
 
 }
 

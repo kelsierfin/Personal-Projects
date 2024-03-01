@@ -10,96 +10,123 @@ import java.util.Map;
 
 public class Data {
 
-    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
+    /**
+     * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
+     * @author Tania
+     */
+    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
 
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
     public static final int INDEX_GOALNAME = 0;
     public static final int INDEX_HABITSLIST = 1;
 
-    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+
+    /**
+     * @param goalName
+     * @param goalIdealCount
+     * @return
+     * @description This function adds a goal and idealcount from the user into the GoalAndIdealCount hashmap.
+     * The goal is the key, and ideal count is the value.
+     * @author Tania
+     */
+    public static void createAGoal(String goalName, Integer goalIdealCount) {
 
         if (!goalExists(goalName)) {
             GoalAndIdealCount.put(goalName, goalIdealCount);
             System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
-            return true;
         } else {
             System.out.println("Your goal (" + goalName + ") already exists.");
-            return false;
         }
-
     }
 
     /**
      * This function checks if the goal entered already exists.
-     * @param goalName - name of goal to check if it exists
+     *
+     * @param goalName (String)
      * @return boolean
      * @author Tania
      */
-
     public static boolean goalExists(String goalName) {
-        if (GoalAndIdealCount.containsKey(goalName)) {
-            return true;
+
+        String goalNameDuplicate = goalName.toLowerCase().replaceAll("\\s", "");
+        for (String existingGoal : GoalAndIdealCount.keySet()) {
+            if (goalNameDuplicate.equals(existingGoal.toLowerCase().replaceAll("\\s", ""))) {
+                return true;
+            }
         }
         return false;
     }
 
     /**
-     * This function removes an input goal from the GoalAndIdealCount hashmap.
-     *
      * @param goalToDelete - name for goal to remove
      * @return true if a goal has been deleted
+     * @description This function removes an input goal from the GoalAndIdealCount hashmap.
      */
 
     public static void goalDelete(String goalToDelete) {
 
-        if (GoalAndIdealCount.containsKey(goalToDelete)) {
-            GoalAndIdealCount.remove(goalToDelete);
+        if (goalExists(goalToDelete)) {
+            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
+
+            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
+
+            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
+                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
+                    itemsToRemove.add(item);
+//                    GoalHabitSetup.remove(item);
+                }
+            }
+
+            GoalHabitSetup.removeAll(itemsToRemove);
+
             System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//        System.out.println("Your updated goals are: " + GoalAndIdealCount.entrySet()); // Dont need this. We already print goals.
-//            return true;
         } else {
             System.out.println("Please enter a valid goal.");
-//            return false;
         }
     }
 
 
-        public static void initializeGoalsAndHabits () {
-         for (String key : GoalAndIdealCount.keySet()) {
-                Object[] GoalHabitStorage = new Object[2];
-                GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
-                GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Assign empty arraylist
-                GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
-            }
+    /**
+     *
+     */
+
+    public static void initializeGoalsAndHabits() {
+        for (String key : GoalAndIdealCount.keySet()) {
+//            if (key.isEmpty()) {
+            Object[] GoalHabitStorage = new Object[2];
+            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
+            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Assign empty arraylist
+            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
+//            }
         }
+    }
 
-        public static void addHabits (String goalName, ArrayList < String > habitsList){
 
-            if (goalExists(goalName)) {
-                for (Object[] goalInfo : GoalHabitSetup) {
-                    if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                        ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-                        existingHabits.addAll(habitsList);
-                        System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
-//                    return true;
-                    }
+    public static void addHabits(String goalName, ArrayList<String> habitsList) {
+
+        if (goalExists(goalName)) {
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+                    existingHabits.addAll(habitsList);
+                    System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
                 }
-            } else {
-                System.out.println("Invalid goal. Retry");
             }
-//        return true;
+        } else {
+            System.out.println("Invalid goal. Retry");
         }
-
+    }
 
 
     /**
      * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
-     * @author Tania
+     *
      * @param goalName - name of goal from GoalAndIdealCount
-     * @return ArrayList containing habits
+     * @return ArrayList containing goals
+     * @author Tania
      */
 
-    public static ArrayList<String> getGoalsArrayList (String goalName){
+    public static ArrayList<String> getGoalsArrayList(String goalName) {
         // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
 
@@ -108,6 +135,13 @@ public class Data {
         }
         return goalsArrayList;
     }
+
+    /**
+     * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
+     *
+     * @return ArrayList containing habits
+     * @author Tania
+     */
 
     public static ArrayList<String> getAllHabitsArrayList() {
         // For each Goal, take all habits and add to our ArrayList
@@ -120,9 +154,15 @@ public class Data {
     }
 
 
+    /**
+     * @param goalName
+     * @param habitToDelete
+     * @description This function removes habits from a given goal
+     */
 
+    public static void deleteHabitsFromGoal(String goalName, String habitToDelete) {
 
-    public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {
+        if (goalExists(goalName)) {
             for (Object[] goalInfo : GoalHabitSetup) {
                 if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
                     ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST]; // Add string casting
@@ -134,8 +174,8 @@ public class Data {
                     }
                 }
             }
-            return true;
-        }
+    }
+}
 
 
 
