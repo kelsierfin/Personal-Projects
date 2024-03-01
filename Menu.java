@@ -28,10 +28,9 @@ public class Menu {
         options.add("Categorize Goals");
         options.add("Create Eisenhower Matrix");
         options.add("Add Points to Habit");
-        options.add("List Productivity Summary");
         options.add("Weekly Goal Completion Rate");
         options.add("List Top 3 Habits of the Week");
-        options.add("Reset the account");
+        options.add("Reset Data");
     }
 
     // Create message to display to user. Then use static initializer to combine message and Options into one menu.
