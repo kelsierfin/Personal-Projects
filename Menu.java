@@ -196,7 +196,7 @@ public class Menu {
         Integer option;
 
         for (Object[] item : Data.GoalHabitSetup) {
-            item[Data.INDEX_HABITSLIST];
+//            item[Data.INDEX_HABITSLIST];
         }
         Data.initializeGoalsAndHabits(); // This line is problematic. Add limitations.
 

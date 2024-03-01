@@ -113,12 +113,6 @@ public class Data {
      * @param goalName
      * @return ArrayList containing habits
      */
-        /**
-         * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
-         * @author Tania
-         * @param goalName - name of goal from GoalAndIdealCount
-         * @return ArrayList containing habits
-         */
 
     public static ArrayList<String> getHabitsForGoal (String goalName){
         if (goalExists(goalName)) {
@@ -132,19 +126,6 @@ public class Data {
         }
         return new ArrayList<>();
     }
-        public static ArrayList<String> getGoalsArrayList (String goalName){
-            // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
-            ArrayList<String> goalsArrayList = new ArrayList<>();
-
-            for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
-                goalsArrayList.add(key);
-            }
-            return goalsArrayList;
-        }
-
-
-
-
 
 
     public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {
@@ -273,6 +254,6 @@ public class Data {
     }
 }
 
-}
+
 
 
