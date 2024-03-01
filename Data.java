@@ -89,6 +89,30 @@ public class Data {
         }
 
 
+
+    /**
+     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
+     * @author Tania
+     * @param goalName - name of goal from GoalAndIdealCount
+     * @return ArrayList containing habits
+     */
+
+    public static ArrayList<String> getGoalsArrayList (String goalName){
+        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
+        ArrayList<String> goalsArrayList = new ArrayList<>();
+
+        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
+            goalsArrayList.add(key);
+        }
+        return goalsArrayList;
+    }
+
+    /**
+     * This function takes a specific goal and returns the habits for it. It is to be used with other functions.
+     * @author Tania
+     * @param goalName
+     * @return ArrayList containing habits
+     */
         /**
          * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
          * @author Tania
@@ -96,6 +120,18 @@ public class Data {
          * @return ArrayList containing habits
          */
 
+    public static ArrayList<String> getHabitsForGoal (String goalName){
+        if (goalExists(goalName)) {
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    return (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+                }
+            }
+        } else {
+            System.out.println("Goal invalid. Returning empty ArrayList.");
+        }
+        return new ArrayList<>();
+    }
         public static ArrayList<String> getGoalsArrayList (String goalName){
             // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
             ArrayList<String> goalsArrayList = new ArrayList<>();
@@ -125,6 +161,23 @@ public class Data {
             }
             return true;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         public static HashMap<String, Integer> menuCheckingGoalsAndHabits () {
@@ -206,6 +259,19 @@ public class Data {
             return output.toString();
         }
 
+    /**
+     * Resets all account data by clearing goal and habit information
+     *
+     * @author Phone
+     * @return A confirmation messsage indicating the data reset
+     */
+    public static String menuResetData(){
+        GoalAndIdealCount.clear();
+        GoalHabitSetup.clear();
+//        habitcounts.clear();
+        return "Your account data has been reset.";
+    }
+}
 
 }
 
