@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ */
+
 public class Data {
 
     public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>(); // ArrayList to store all goals and idealcounts
 
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
     public static final int INDEX_GOALNAME = 0;
-    //    public static final int INDEX_GOALIDEALCOUNt = 1;
     public static final int INDEX_HABITSLIST = 1;
 
     public static boolean createAGoal(String goalName, Integer goalIdealCount) {
@@ -28,7 +31,6 @@ public class Data {
 
     /**
      * This function checks if the goal entered already exists.
-     *
      * @param goalName - name of goal to check if it exists
      * @return boolean
      * @author Tania
@@ -107,25 +109,17 @@ public class Data {
         return goalsArrayList;
     }
 
-    /**
-     * This function takes a specific goal and returns the habits for it. It is to be used with other functions.
-     * @author Tania
-     * @param goalName
-     * @return ArrayList containing habits
-     */
+    public static ArrayList<String> getAllHabitsArrayList() {
+        // For each Goal, take all habits and add to our ArrayList
+        ArrayList<String> habitsArrayList = new ArrayList<>();
 
-    public static ArrayList<String> getHabitsForGoal (String goalName){
-        if (goalExists(goalName)) {
-            for (Object[] goalInfo : GoalHabitSetup) {
-                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                    return (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-                }
-            }
-        } else {
-            System.out.println("Goal invalid. Returning empty ArrayList.");
+        for (Object[] item : GoalHabitSetup) {
+            habitsArrayList.addAll((ArrayList<String>) item[INDEX_HABITSLIST]);
         }
-        return new ArrayList<>();
+        return habitsArrayList;
     }
+
+
 
 
     public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {

@@ -334,10 +334,10 @@ public class Menu {
         HashMap<String, Integer> habitCounts = Data.menuAddPointsToHabit();
 
         // Call the menuTop3Habits function with the retrieved data
-        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
+//        String top3HabitsSummary = Data.menuTop3Goals(idealGoal, habitCounts);
 
         // Print the result
-        System.out.println(top3HabitsSummary);
+//        System.out.println(top3HabitsSummary);
     }
 
     private static void menuResetData() {
