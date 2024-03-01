@@ -78,20 +78,20 @@ public class Data {
 //                    GoalHabitSetup.remove(item);
                 }
             }
-
             GoalHabitSetup.removeAll(itemsToRemove);
-
             System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
             return true;
         } else {
-            System.out.println("Please enter a valid goal.");
+            System.out.println("Please enter a valid goal for deletion.");
             return false;
         }
     }
 
 
-    /**
-     *
+    /** @description This function initializes the GoalHabitSetup structure by assigning goals and an empty arraylist for habits
+     * @author Tania
+     * @params None
+     * @return None
      */
 
     public static void initializeGoalsAndHabits() {
@@ -105,6 +105,13 @@ public class Data {
         }
     }
 
+    /**
+     * @description This function allows a user to add habits to their goal
+     * @param goalName
+     * @param habitsList
+     * @return boolean
+     */
+
 
     public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
 
@@ -112,9 +119,18 @@ public class Data {
             for (Object[] goalInfo : GoalHabitSetup) {
                 if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
                     ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-                    existingHabits.addAll(habitsList);
-                    System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
-                    return true;
+
+                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
+                    for (String habit : habitsList) {
+                        if (!existingHabits.contains(habit)) {
+                            existingHabits.add(habit);
+                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+                        } else {
+                            System.out.println("Duplicate habit. Retry.");
+                            return false;
+                        }
+                        return true;
+                    }
                 }
             }
         } else {
@@ -126,17 +142,14 @@ public class Data {
 
 
     /**
-     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
-     *
-     * @param goalName - name of goal from GoalAndIdealCount
+     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions
      * @return ArrayList containing goals
      * @author Tania
      */
 
-    public static ArrayList<String> getGoalsArrayList(String goalName) {
+    public static ArrayList<String> getGoalsArrayList() {
         // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
-
         for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
             goalsArrayList.add(key);
         }
@@ -145,20 +158,19 @@ public class Data {
 
     /**
      * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
-     *
      * @return ArrayList containing habits
      * @author Tania
      */
-
-    public static ArrayList<String> getAllHabitsArrayList() {
-        // For each Goal, take all habits and add to our ArrayList
-        ArrayList<String> habitsArrayList = new ArrayList<>();
-
-        for (Object[] item : GoalHabitSetup) {
-            habitsArrayList.addAll((ArrayList<String>) item[INDEX_HABITSLIST]);
-        }
-        return habitsArrayList;
-    }
+//
+//    public static ArrayList<String> getAllHabitsArrayList() {
+//        // For each Goal, take all habits and add to our ArrayList
+//        ArrayList<String> habitsArrayList = new ArrayList<>();
+//
+//        for (Object[] item : GoalHabitSetup) {
+//            habitsArrayList.addAll((ArrayList<String>) item[INDEX_HABITSLIST]);
+//        }
+//        return habitsArrayList;
+//    }
 
 
     /**
@@ -167,7 +179,7 @@ public class Data {
      * @description This function removes habits from a given goal
      */
 
-    public static void deleteHabitsFromGoal(String goalName, String habitToDelete) {
+    public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {
 
         if (goalExists(goalName)) {
             for (Object[] goalInfo : GoalHabitSetup) {
@@ -176,31 +188,18 @@ public class Data {
                     if (habitsList.contains(habitToDelete)) {
                         habitsList.remove(habitToDelete);
                         System.out.println("Habit deleted!");
+                        return true;
                     } else {
                         System.out.println("Habit is not valid. Retry.");
+                        return false;
                     }
                 }
             }
+        } else {
+            return false;
+        }
+        return false;
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public static HashMap<String, Integer> menuCheckingGoalsAndHabits () {
             HashMap<String, Integer> sth = new HashMap<>();

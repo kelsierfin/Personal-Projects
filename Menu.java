@@ -361,6 +361,8 @@ public class Menu {
         }while (!validInput);
     }
 
+
+
     private static void menuTop3Goals() {
         // Retrieve goalPoints and habitCounts from the respective Data class methods
         HashMap<String, Integer> idealGoal = Data.GoalAndIdealCount;
