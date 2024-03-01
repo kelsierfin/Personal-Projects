@@ -322,7 +322,9 @@ public class Menu {
 
 
     private static void menuAddPointsToHabit() {
-
+        // This method should call the updateHabitCompletionCounts() method from the Data class
+        // to properly handle updating the completion counts for habits.
+        Data.updateHabitCompletionCounts(); // Correctly invoke the update method here
     }
 
     private static void menuEisenhowerMatrix() {

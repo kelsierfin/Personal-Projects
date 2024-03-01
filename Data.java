@@ -20,6 +20,10 @@ public class Data {
     public static final int INDEX_GOALNAME = 0;
     public static final int INDEX_HABITSLIST = 1;
 
+    private static HashMap<String, Integer> habitAndICounts = new HashMap<>();
+    private static HashMap<String, Integer> habitAndECounts = new HashMap<>();
+    private static Scanner scanner = new Scanner(System.in);
+
 
     /**
      * @param goalName
@@ -112,10 +116,9 @@ public class Data {
      * @return boolean
      */
 
-
     public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
-
         if (goalExists(goalName)) {
+            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
             for (Object[] goalInfo : GoalHabitSetup) {
                 if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
                     ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
@@ -125,6 +128,11 @@ public class Data {
                         if (!existingHabits.contains(habit)) {
                             existingHabits.add(habit);
                             System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+
+                            // Map each new habit to the goal's ideal count
+                            habitAndICounts.put(habit, goalIdealCount);
+                            // Initialize each new habit's earned count to 0
+                            habitAndECounts.put(habit, 0);
                         } else {
                             System.out.println("Duplicate habit. Retry.");
                             return false;
@@ -139,6 +147,32 @@ public class Data {
         }
         return false;
     }
+//    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
+//
+//        if (goalExists(goalName)) {
+//            for (Object[] goalInfo : GoalHabitSetup) {
+//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+//                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+//
+//                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
+//                    for (String habit : habitsList) {
+//                        if (!existingHabits.contains(habit)) {
+//                            existingHabits.add(habit);
+//                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+//                        } else {
+//                            System.out.println("Duplicate habit. Retry.");
+//                            return false;
+//                        }
+//                        return true;
+//                    }
+//                }
+//            }
+//        } else {
+//            System.out.println("Invalid goal. Retry");
+//            return false;
+//        }
+//        return false;
+//    }
 
 
     /**
@@ -291,6 +325,49 @@ public class Data {
         GoalHabitSetup.clear();
 //        habitcounts.clear();
         return "Your account data has been reset.";
+    }
+
+    public static HashMap<String,Integer> habitAndIdealCount(){
+        HashMap<String,Integer> idealCount = habitAndICounts;
+        return idealCount;
+    }
+
+    public static HashMap<String,Integer> habitsAndEarned(){
+        HashMap<String,Integer> earnedCount = habitAndECounts;
+        return earnedCount;
+    }
+
+
+    public static void updateHabitCompletionCounts() {
+        boolean continueUpdating = true;
+
+        while (continueUpdating) {
+            System.out.println("Please enter the habit you would like to update: ");
+            String habitToUpdate = scanner.nextLine();
+
+            // Check if the input is valid
+            if (habitAndECounts.containsKey(habitToUpdate)) {
+                // Update the count associated with that habit
+                int newCount = habitAndECounts.get(habitToUpdate) + 1;
+                habitAndECounts.put(habitToUpdate, newCount);
+
+                System.out.println("Habit '" + habitToUpdate + "' is completed 1 more time. Total completions: " + newCount);
+
+                // Ask if they want to update another habit
+                System.out.println("Do you want to update another habit? (yes/no)");
+                String answer = scanner.nextLine().trim().toLowerCase();
+
+                if (!answer.equals("yes")) {
+                    continueUpdating = false;
+                }
+            } else {
+                // Invalid input
+                System.out.println("Invalid input. Please enter a valid habit.");
+            }
+        }
+
+        // Optionally, you can print or return the updated hashmap here
+        // System.out.println("Updated habit counts: " + habitAndECounts);
     }
 }
 
