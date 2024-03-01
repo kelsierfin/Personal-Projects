@@ -10,62 +10,115 @@ class DataTest {
         // Assuming GoalAndIdealCount is accessible and modifiable for test setup
         Data.GoalAndIdealCount.clear(); // Clearing any existing data to ensure a controlled test environment
         Data.GoalHabitSetup.clear();
-        Data.GoalAndIdealCount.put("Read More", 30); // Add a sample goal for testing
+        Data.GoalAndIdealCount.put("Read More", 7); // Add a sample goal for testing
+        Data.GoalAndIdealCount.put("Gain knowledge", 7);
+        Data.GoalAndIdealCount.put("Learn Java", 3);
     }
 
+
+    // Tests for CreateAGoal
+    // Test 1: Provide both valid inputs and ensure a goal is created
     @Test
-    void goalExists_ExistingGoal_ReturnsTrue() {
-        // Test with a goal that exists
-        boolean result = Data.goalExists("Read More");
+    void createValidGoal() {
+        boolean result = Data.createAGoal("Become fit", 7); // Provide both valid inputs
         assertTrue(result);
     }
 
+    // Test 2: Provide an invalid goal (already exists) and ensure a goal is created
     @Test
-    void goalExists_NonExistingGoal_ReturnsFalse() {
-        // Test with a goal that does not exist
-        boolean result = Data.goalExists("Exercise");
+    void createInvalidGoal() {
+        boolean result = Data.createAGoal("Gain Knowledge", 7);
         assertFalse(result);
     }
 
+    // Test 3: Provide an invalid goal (already exists, in different format) and ensure a goal is created
     @Test
-    void goalExists_WhenGoalExists_ReturnsTrue() {
-        // Setup: Add a goal that we will check exists
-        Data.GoalAndIdealCount.put("Read More", 5);
-
-        // Execution: Check if the goal exists
-        boolean exists = Data.goalExists("Read More");
-
-        // Assertion: Verify that goalExists returns true
-        assertTrue(exists, "goalExists should return true when the goal exists in the map.");
+    void createInvalidGoal_DiffFormat() {
+        boolean result = Data.createAGoal("GAINKNOWLEDGE", 7);
+        assertFalse(result);
     }
 
+
+    // Tests for GoalExists
+    // Test 1: Existing Goal
     @Test
-    void goalExists_WhenGoalDoesNotExist_ReturnsFalse() {
-        // Setup: Ensure the goal does not exist in the map
-        // No need to add anything since we cleared the map in setUp
-
-        // Execution: Check if a non-existent goal exists
-        boolean exists = Data.goalExists("Exercise");
-
-        // Assertion: Verify that goalExists returns false
-        assertFalse(exists, "goalExists should return false when the goal does not exist in the map.");
+    void goalExists_ExistingGoal_ReturnsTrue() {
+        // Test with a goal that exists
+        boolean result = Data.goalExists("Gain knowledge");
+        assertTrue(result);
     }
 
+    // Test 2: Existing goal if input goal is a different format to stored goal
+    @Test
+    void goalExists_ExistingGoal_DiffFormat_ReturnsTrue() {
+        // Test with a goal that exists
+        boolean result = Data.goalExists("GAINKNOWLEDGE");
+        assertTrue(result);
+    }
+
+    // Test 3: Non-Existent Goal
+    @Test
+    void goalExists_NonExistingGoal_ReturnsFalse() {
+        // Test with a goal that does not exist
+        boolean result = Data.goalExists("Get fit");
+        assertFalse(result);
+    }
+
+
+
+//    @Test
+//    void goalExists_WhenGoalExists_ReturnsTrue() {
+//        // Setup: Add a goal that we will check exists
+//        Data.GoalAndIdealCount.put("Read More", 5);
+//
+//        // Execution: Check if the goal exists
+//        boolean exists = Data.goalExists("Read More");
+//
+//        // Assertion: Verify that goalExists returns true
+//        assertTrue(exists, "goalExists should return true when the goal exists in the map.");
+//    }
+//
+//    @Test
+//    void goalExists_WhenGoalDoesNotExist_ReturnsFalse() {
+//        // Setup: Ensure the goal does not exist in the map
+//        // No need to add anything since we cleared the map in setUp
+//
+//        // Execution: Check if a non-existent goal exists
+//        boolean exists = Data.goalExists("Exercise");
+//
+//        // Assertion: Verify that goalExists returns false
+//        assertFalse(exists, "goalExists should return false when the goal does not exist in the map.");
+//    }
+
+    // Tests for goalDelete
+    // Test 1: Verify goal is removed from both GoalAndIdealCount and GoalHabitsSetup
     @Test
     void goalDelete_RemovesGoalWhenItExists() {
-        // Setup: Add a sample goal
+        // Setup: Add a sample goal to GoalAndIdealCount, and add goal and habits to GoalHabitSetup
         String goalName = "Read More";
         Data.GoalAndIdealCount.put(goalName, 5);
 
+        ArrayList<String> habitsList = new ArrayList<>();
+        habitsList.add("Comic books");
+        Object[] data = new Object[2];
+        data[Data.INDEX_GOALNAME] = goalName;
+        data[Data.INDEX_HABITSLIST] = habitsList;
+        Data.GoalHabitSetup.add(data);
+
+
         // Pre-assertion: Ensure the goal is added
-        assertTrue(Data.GoalAndIdealCount.containsKey(goalName), "Goal should exist before deletion");
+        assertTrue(Data.GoalAndIdealCount.containsKey(goalName), "Goal should exist in GoalAndIdealCount before deletion");
+        assertTrue(Data.GoalHabitSetup.contains(data), "Goal should exist in GoalHabitSetup before deletion");
 
         // Execution: Attempt to delete the goal
         Data.goalDelete(goalName);
 
-        // Assertion: The goal should be removed
-        assertFalse(Data.GoalAndIdealCount.containsKey(goalName), "Goal should be removed after deletion");
+        // Assertion: The goal should be removed from GoalAndIdealCount and GoalHabitSetup
+        assertFalse(Data.GoalAndIdealCount.containsKey(goalName), "Goal should be removed from GoalAndIdealCount after deletion");
+        assertFalse(Data.GoalHabitSetup.contains(data), "Goal should be removed from GoalHabitSetup after deletion");
     }
+
+
 
     @Test
     void goalDelete_DoesNothingWhenGoalDoesNotExist() {

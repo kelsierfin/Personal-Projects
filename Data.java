@@ -29,13 +29,15 @@ public class Data {
      * The goal is the key, and ideal count is the value.
      * @author Tania
      */
-    public static void createAGoal(String goalName, Integer goalIdealCount) {
+    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
 
         if (!goalExists(goalName)) {
             GoalAndIdealCount.put(goalName, goalIdealCount);
             System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+            return true;
         } else {
             System.out.println("Your goal (" + goalName + ") already exists.");
+            return false;
         }
     }
 
@@ -63,7 +65,7 @@ public class Data {
      * @description This function removes an input goal from the GoalAndIdealCount hashmap.
      */
 
-    public static void goalDelete(String goalToDelete) {
+    public static boolean goalDelete(String goalToDelete) {
 
         if (goalExists(goalToDelete)) {
             GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
@@ -80,8 +82,10 @@ public class Data {
             GoalHabitSetup.removeAll(itemsToRemove);
 
             System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+            return true;
         } else {
             System.out.println("Please enter a valid goal.");
+            return false;
         }
     }
 
@@ -102,7 +106,7 @@ public class Data {
     }
 
 
-    public static void addHabits(String goalName, ArrayList<String> habitsList) {
+    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
 
         if (goalExists(goalName)) {
             for (Object[] goalInfo : GoalHabitSetup) {
@@ -110,11 +114,14 @@ public class Data {
                     ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
                     existingHabits.addAll(habitsList);
                     System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+                    return true;
                 }
             }
         } else {
             System.out.println("Invalid goal. Retry");
+            return false;
         }
+        return false;
     }
 
 
