@@ -321,8 +321,50 @@ public class Menu {
     }
 
 
-    private static void menuEisenhowerMatrix() {
-    }
+//    public static HashMap<String, ArrayList<String>> menuEisenhowerMatrix(ArrayList<String> goalsArrayList) {
+//        // Define the categories
+//        String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
+//                "Not Important & Not Urgent"};
+//
+//
+//        // Create a HashMap to store the categorized goals
+//        HashMap<String, ArrayList<String>> prioritizedGoals = new HashMap<>();
+//
+//
+//        // Initialize the HashMap with empty lists for each category
+//        for (String category : categories) {
+//            prioritizedGoals.put(category, new ArrayList<>());
+//        }
+//
+//
+//        // Loop through each goal
+//        for (String goal : goalsArrayList) {
+//            // Prompt the user to categorize the goal
+//            System.out.println("Goal: " + goal);
+//            System.out.println("Please choose a category for this goal:");
+//            for (int i = 0; i < categories.length; i++) {
+//                System.out.println((i + 1) + ". " + categories[i]);
+//            }
+//
+//
+//            // Get the user's choice
+//            int categoryIndex = scanner.nextInt() - 1;
+//
+//
+//            // Add the goal to the chosen category
+//            prioritizedGoals.get(categories[categoryIndex]).add(goal);
+//        }
+//
+//        // Return the categorized goals
+//        for (HashMap.Entry<String, ArrayList<String>> entry : prioritizedGoals.entrySet()) {
+//            System.out.println("Quadrant: " + prioritizedGoals.getKey() + ", Value: " + entry.getValue());
+//        }
+//        return prioritizedGoals;
+//    }
+
+
+
+
 
     private static void menuCategorizeGoals() {
 
@@ -444,5 +486,6 @@ public class Menu {
 
 
 
+}
 }
 
