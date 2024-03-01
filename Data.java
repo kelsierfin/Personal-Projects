@@ -34,7 +34,7 @@ public class Data {
      * @author Tania
      */
 
-    private static boolean goalExists(String goalName) {
+    public static boolean goalExists(String goalName) {
         if (GoalAndIdealCount.containsKey(goalName)) {
             return true;
         }
@@ -63,7 +63,7 @@ public class Data {
 
 
         public static void initializeGoalsAndHabits () {
-            for (String key : GoalAndIdealCount.keySet()) {
+         for (String key : GoalAndIdealCount.keySet()) {
                 Object[] GoalHabitStorage = new Object[2];
                 GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
                 GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Assign empty arraylist
@@ -90,23 +90,40 @@ public class Data {
 
 
         /**
-         * This function takes a specific goal and returns the habits for it. It is to be used with other functions.
+         * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions.
          * @author Tania
-         * @param goalName
+         * @param goalName - name of goal from GoalAndIdealCount
          * @return ArrayList containing habits
          */
 
-        public static ArrayList<String> getHabitsForGoal (String goalName){
-            if (goalExists(goalName)) {
-                for (Object[] goalInfo : GoalHabitSetup) {
-                    if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                        return (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+        public static ArrayList<String> getGoalsArrayList (String goalName){
+            // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
+            ArrayList<String> goalsArrayList = new ArrayList<>();
+
+            for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
+                goalsArrayList.add(key);
+            }
+            return goalsArrayList;
+        }
+
+
+
+
+
+
+    public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST]; // Add string casting
+                    if (habitsList.contains(habitToDelete)) {
+                        habitsList.remove(habitToDelete);
+                        System.out.println("Habit deleted!");
+                    } else {
+                        System.out.println("Habit is not valid. Retry.");
                     }
                 }
-            } else {
-                System.out.println("Goal invalid. Returning empty ArrayList.");
             }
-            return new ArrayList<>();
+            return true;
         }
 
 

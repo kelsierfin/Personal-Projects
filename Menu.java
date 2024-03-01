@@ -60,12 +60,12 @@ public class Menu {
         while (option != 0) {
             // Tell the user what option they selected. Then Continue
             if (option > 0 && option < options.size()) {
-                System.out.printf("You have selected option %d: %s %n", option, options.get(option));
+                System.out.printf("You have selected option %d. %s%n", option, options.get(option));
                 System.out.println("Press Enter to continue:");
                 scanner.nextLine();
             }
 
-            switch (option) { // NOTE: Cases have to be updated
+            switch (option) {
                 case 1 -> menuCreateGoal();
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
@@ -81,9 +81,8 @@ public class Menu {
             }
 
 
-            System.out.println();
-            System.out.print("Press Enter to see the menu again");
-            scanner.nextLine(); // WONT WORK
+            System.out.println("Press Enter to see the menu again");
+            scanner.nextLine();
             System.out.println(optMessage);
             choice = scanner.nextLine();
             option = Integer.parseInt(choice);
@@ -103,7 +102,6 @@ public class Menu {
         String goalName;
         Integer goalIdealCount;
         Integer option;
-
 
         // Summary:
         // Ask user to input goal
@@ -196,7 +194,11 @@ public class Menu {
         String goalName;
         ArrayList<String> habitsList;
         Integer option;
-        Data.initializeGoalsAndHabits();
+
+        for (Object[] item : Data.GoalHabitSetup) {
+            item[Data.INDEX_HABITSLIST];
+        }
+        Data.initializeGoalsAndHabits(); // This line is problematic. Add limitations.
 
         // print all goals
         System.out.println("Your goals are:");
@@ -219,7 +221,7 @@ public class Menu {
         } while (option != 0);
 
         // Finally, show all goals and their habits
-        System.out.println("Here is a list of your goals, and the number of habits");
+        System.out.println("Here is a list of your goals, and the habits");
         for (Object[] item : Data.GoalHabitSetup) {
             System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
         }
@@ -231,7 +233,7 @@ public class Menu {
         Integer option;
 
         do {
-            habit = scanner.nextLine();
+            habit = scanner.nextLine().trim().toLowerCase();
             habitsList.add(habit);
 
             System.out.println("Would you like enter another habit? (Yes = any number | No = 0)");
@@ -240,6 +242,43 @@ public class Menu {
 
         } while(habit.isEmpty() || option!=0);
         return habitsList;
+    }
+
+
+    /** This function allows users to delete habits from a goal
+     *
+     */
+    private static void menuDeleteHabits() {
+        // Get list of all goals and habits
+        // Prompt user for goal they want to remove habit from
+            // Goal must be valid, otherwise retry
+        // Prompt user for habit they want to remove
+            // Habit must be valid, otherwise retry
+        // Remove habit
+        // Ask user if they want to remove more habits
+        // Ask user if they want to remove habit from any other goals
+
+        String goalName;
+        String habitToDelete;
+        Integer option;
+
+        System.out.println("Here is a list of your goals, and the habits");
+        for (Object[] item : Data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        }
+
+        System.out.println("Enter the goal you want to remove a habit from:");
+        goalName = getGoalName();
+        if (Data.goalExists(goalName)){ // If goal exists:
+
+            do {
+                habitToDelete = scanner.nextLine();
+            }while(habitToDelete.isEmpty());
+
+            Data.deleteHabitsFromGoal(goalName, habitToDelete);
+        }
+        // Get the habits for that goal
+
     }
 
     private static void menuListProductivitySummary() {
@@ -258,12 +297,9 @@ public class Menu {
 
     }
 
-    private static void menuDeleteHabits() {
 
-    }
 
     private static void menuCheckingGoalsAndHabits(){
-
     }
 
     private static void menuWeeklyGoalCompletionRate() {
