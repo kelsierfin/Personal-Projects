@@ -452,6 +452,7 @@ public class Data {
      * @return A string listing the top goals in descending order of their completion rates.
      * @author Phone
      */
+
     public static String menuTop3Habits(HashMap<String,Integer> habitAndGoals, HashMap<String,Integer> habitsAndEarned){
 
         // Assumes menuWeeklyGoalCompletionRate() accurately computes these rates
@@ -509,6 +510,16 @@ public class Data {
         GoalAndIdealCount.clear();
         return "Your account data has been reset.";
     }
+
+    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList){
+        HashMap<String, ArrayList<String>> habitCounts = new HashMap<>();
+
+        return habitCounts;
+    }
+
+
+
+
 
 
 }

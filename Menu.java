@@ -320,6 +320,27 @@ public class Menu {
         }
     }
 
+    private static void menuEisenhowerMatrix(){
+        ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
+        ArrayList<Integer> choicesArrayList = new ArrayList<>();
+        String[] categories = {"1) Urgent & Important", "2) Urgent & Not Important", "3) Important & Not Urgent",
+                "4) Not Important & Not Urgent"};
+        boolean finishedFunction = false;
+
+        for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
+            System.out.println("The 4 Quadrants \"1) Urgent & Important\", \"2) Urgent & Not Important\", \"3) Important & Not Urgent\",\n" +
+                    "                \"4) Not Important & Not Urgent");
+            System.out.println("What category in the matrix would you like to choose for goal: " + goalsArrayList.get(i));
+            int chosenSection = scanner.nextInt();
+            choicesArrayList.add(chosenSection);
+        }
+        System.out.println(Data.storeEisenhowerMatrix(choicesArrayList));
+
+
+
+
+
+    }
 
 //    public static HashMap<String, ArrayList<String>> menuEisenhowerMatrix(ArrayList<String> goalsArrayList) {
 //        // Define the categories
@@ -487,5 +508,5 @@ public class Menu {
 
 
 }
-}
+
 
