@@ -511,10 +511,40 @@ public class Data {
         return "Your account data has been reset.";
     }
 
-    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList){
-        HashMap<String, ArrayList<String>> habitCounts = new HashMap<>();
+    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
+        HashMap<String, ArrayList<String>> matrix = new HashMap<>();
+        ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
 
-        return habitCounts;
+        String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
+                "Not Important & Not Urgent"};
+
+        ArrayList<String> list1 = new ArrayList<>();
+        ArrayList<String> list2 = new ArrayList<>();
+        ArrayList<String> list3 = new ArrayList<>();
+        ArrayList<String> list4 = new ArrayList<>();
+
+
+        for (int i = 0; goalsArrayList.size() > i; i++){
+            if (choicesArrayList.get(i) == 1){
+                list1.add(goalsArrayList.get(i));
+            }
+            if (choicesArrayList.get(i) == 2){
+                list2.add(goalsArrayList.get(i));
+            }
+            if (choicesArrayList.get(i) == 3){
+                list3.add(goalsArrayList.get(i));
+            }
+            if (choicesArrayList.get(i) == 4){
+                list4.add(goalsArrayList.get(i));
+            }
+        }
+
+        matrix.put("Urgent & Important", list1);
+        matrix.put("Urgent & Not Important", list2);
+        matrix.put("Important & Not Urgent", list3);
+        matrix.put("Not Important & Not Urgent", list4);
+
+        return matrix;
     }
 
 

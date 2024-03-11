@@ -328,12 +328,13 @@ public class Menu {
         boolean finishedFunction = false;
 
         for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
-            System.out.println("The 4 Quadrants \"1) Urgent & Important\", \"2) Urgent & Not Important\", \"3) Important & Not Urgent\",\n" +
+            System.out.println("The 4 Quadrants are \"1) Urgent & Important\", \"2) Urgent & Not Important\", \"3) Important & Not Urgent\",\n" +
                     "                \"4) Not Important & Not Urgent");
             System.out.println("What category in the matrix would you like to choose for goal: " + goalsArrayList.get(i));
             int chosenSection = scanner.nextInt();
             choicesArrayList.add(chosenSection);
         }
+
         System.out.println(Data.storeEisenhowerMatrix(choicesArrayList));
 
 
