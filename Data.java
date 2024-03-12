@@ -510,6 +510,14 @@ public class Data {
         GoalAndIdealCount.clear();
         return "Your account data has been reset.";
     }
+    /**@description: The organizes the data from menu & goalsArrayList into a HashMap
+     *
+     *
+     *
+     * @param: choicesArrayList - this is found from menu
+     * @return: A HashMap with organized data
+     * @author: Sanbeer
+     */
 
     public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
         HashMap<String, ArrayList<String>> matrix = new HashMap<>();
@@ -547,12 +555,50 @@ public class Data {
         return matrix;
     }
 
+    public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
+        HashMap<String, ArrayList<String>> fields = new HashMap<>();
+        ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
+        String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
 
+        ArrayList<String> list11 = new ArrayList<>();
+        ArrayList<String> list22 = new ArrayList<>();
+        ArrayList<String> list33 = new ArrayList<>();
+        ArrayList<String> list44 = new ArrayList<>();
+        ArrayList<String> list55 = new ArrayList<>();
+        ArrayList<String> list66 = new ArrayList<>();
 
+        for (int i = 0; goalsArrayList2.size() > i; i++){
+            if (choicesArrayList2.get(i) == 1){
+                list11.add(goalsArrayList2.get(i));
+            }
+            if (choicesArrayList2.get(i) == 2){
+                list22.add(goalsArrayList2.get(i));
+            }
+            if (choicesArrayList2.get(i) == 3){
+                list33.add(goalsArrayList2.get(i));
+            }
+            if (choicesArrayList2.get(i) == 4){
+                list44.add(goalsArrayList2.get(i));
+            }
+            if (choicesArrayList2.get(i) == 5){
+                list55.add(goalsArrayList2.get(i));
+            }
+            if (choicesArrayList2.get(i) == 6){
+                list66.add(goalsArrayList2.get(i));
+            }
 
+        }
+        fields.put("Finance" , list11);
+        fields.put("Work" , list22);
+        fields.put("School" , list33);
+        fields.put("Emotional" , list44);
+        fields.put("Spiritual" , list55);
+        fields.put("Social" , list66);
 
+        return fields;
+    }
 
-}
+    }
 
 
 

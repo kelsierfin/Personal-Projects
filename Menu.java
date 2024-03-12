@@ -320,75 +320,45 @@ public class Menu {
         }
     }
 
+    /**@description:Asks the user for what quadrant he wants to put each of his goals
+     *
+     * call the storage function in data and prints it out
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
     private static void menuEisenhowerMatrix(){
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
         ArrayList<Integer> choicesArrayList = new ArrayList<>();
         String[] categories = {"1) Urgent & Important", "2) Urgent & Not Important", "3) Important & Not Urgent",
                 "4) Not Important & Not Urgent"};
-        boolean finishedFunction = false;
 
         for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
             System.out.println("The 4 Quadrants are \"1) Urgent & Important\", \"2) Urgent & Not Important\", \"3) Important & Not Urgent\",\n" +
-                    "                \"4) Not Important & Not Urgent");
-            System.out.println("What category in the matrix would you like to choose for goal: " + goalsArrayList.get(i));
+                    " \"4) Not Important & Not Urgent");
+            System.out.println("What quadrant in the matrix would you like to choose for goal: " + goalsArrayList.get(i));
             int chosenSection = scanner.nextInt();
             choicesArrayList.add(chosenSection);
         }
 
         System.out.println(Data.storeEisenhowerMatrix(choicesArrayList));
 
-
-
-
-
     }
 
-//    public static HashMap<String, ArrayList<String>> menuEisenhowerMatrix(ArrayList<String> goalsArrayList) {
-//        // Define the categories
-//        String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
-//                "Not Important & Not Urgent"};
-//
-//
-//        // Create a HashMap to store the categorized goals
-//        HashMap<String, ArrayList<String>> prioritizedGoals = new HashMap<>();
-//
-//
-//        // Initialize the HashMap with empty lists for each category
-//        for (String category : categories) {
-//            prioritizedGoals.put(category, new ArrayList<>());
-//        }
-//
-//
-//        // Loop through each goal
-//        for (String goal : goalsArrayList) {
-//            // Prompt the user to categorize the goal
-//            System.out.println("Goal: " + goal);
-//            System.out.println("Please choose a category for this goal:");
-//            for (int i = 0; i < categories.length; i++) {
-//                System.out.println((i + 1) + ". " + categories[i]);
-//            }
-//
-//
-//            // Get the user's choice
-//            int categoryIndex = scanner.nextInt() - 1;
-//
-//
-//            // Add the goal to the chosen category
-//            prioritizedGoals.get(categories[categoryIndex]).add(goal);
-//        }
-//
-//        // Return the categorized goals
-//        for (HashMap.Entry<String, ArrayList<String>> entry : prioritizedGoals.entrySet()) {
-//            System.out.println("Quadrant: " + prioritizedGoals.getKey() + ", Value: " + entry.getValue());
-//        }
-//        return prioritizedGoals;
-//    }
-
-
-
-
-
     private static void menuCategorizeGoals() {
+        ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
+        ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
+        String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
+        for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
+            System.out.println("The 6 Categories are \"1) Finance\", \"2) Work\", \"3) School\", \"4) Emotional\", \n" +
+                    "\"5) Spiritual\", \"6) Social");
+            System.out.println("What category of goals would you like to choose for goal: " + goalsArrayList2.get(i));
+            int chosenSection2 = scanner.nextInt();
+            choicesArrayList2.add(chosenSection2);
+
+        }
+        System.out.println(Data.storeCategorizeGoals(choicesArrayList2));
+
 
     }
 
