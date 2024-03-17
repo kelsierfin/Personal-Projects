@@ -1,4 +1,4 @@
 package core.objects;
 
-public class Goal {
+public class Habits {
 }
