@@ -7,6 +7,7 @@ public class Goal {
     private Integer idealCount;
     private String category;
 
+
     // Constructor
     public Goal (String goal, Integer idealCount, String category){
         this.goal = goal;
@@ -39,4 +40,15 @@ public class Goal {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    // To String
+    @Override
+    public String toString() {
+        return "Goal{" +
+                "goal='" + goal + '\'' +
+                ", idealCount=" + idealCount +
+                ", category='" + category + '\'' +
+                '}';
+    }
+
 }
