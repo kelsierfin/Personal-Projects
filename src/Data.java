@@ -25,7 +25,7 @@ public class Data {
     private static HashMap<String, Integer> habitAndICounts = new HashMap<>();
     private static HashMap<String, Integer> habitAndECounts = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
-    protected static HashMap<String, Integer> GoalAndIdealCount;
+    protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
 
 
     /**
@@ -38,7 +38,7 @@ public class Data {
      */
     public static boolean createAGoal(String goalName, Integer goalIdealCount) {
 
-        Goal goal = new Goal(goalName, goalIdealCount, null);
+        Goal goal = new Goal(goalName, goalIdealCount, null, null);
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
@@ -50,20 +50,9 @@ public class Data {
         return false;
     }
 
-    // public static boolean createAGoal(String goalName, Integer goalIdealCount) {
-    //
-    //        if (!goalExists(goalName)) {
-    //            GoalAndIdealCount.put(goalName, goalIdealCount);
-    //            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
-    //            return true;
-    //        } else {
-    //            System.out.println("Your goal (" + goalName + ") already exists.");
-    //            return false;
-    //        }
-    //    }
     /**
      * This function checks if the goal entered already exists.
-     *
+     * NOTE: THIS METHOD MAY NOT BE NEEDED ANYMORE.
      * @param goalName (String)
      * @return boolean
      * @author Tania
