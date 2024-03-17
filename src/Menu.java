@@ -24,12 +24,17 @@ public class Menu {
         options.add("Delete a Goal");
         options.add("Add Habits to A Goal");
         options.add("Delete Habits From A Goal");
-        options.add("View Goals and Habits");
         options.add("Categorize Goals");
         options.add("Create Eisenhower Matrix");
+        options.add("Show Current Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
+        options.add("Get Recommendation");
+        options.add("View Goals and Habits");
+        options.add("View Tracker");
+        options.add("Load Data");
+        options.add("Save Data");
         options.add("Reset Data");
     }
 
@@ -66,13 +71,18 @@ public class Menu {
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
-                case 5 -> menuCheckingGoalsAndHabits();
-                case 6 -> menuCategorizeGoals();
-                case 7 -> menuEisenhowerMatrix();
+                case 5 -> menuCategorizeGoals();
+                case 6 -> menuEisenhowerMatrix();
+                case 7 -> menuShowEisenhowerMatrix();
                 case 8 -> menuAddPointsToHabit();
                 case 9 -> menuWeeklyHabitCompletionRate();
                 case 10 -> menuTop3Habits();
-                case 11 -> menuResetData();
+                case 11 -> menuGetRecommendation();
+                case 12 -> menuCheckingGoalsAndHabits();
+                case 13 -> menuViewTracker();
+                case 14 -> menuLoadData();
+                case 15 -> menuSaveData();
+                case 16 -> menuResetData();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -87,6 +97,24 @@ public class Menu {
 
 
         scanner.close();
+    }
+
+    private static void menuSaveData() {
+    }
+
+    private static void menuLoadData() {
+        
+    }
+
+    private static void menuViewTracker() {
+        
+    }
+
+    private static void menuGetRecommendation() {
+        
+    }
+
+    private static void menuShowEisenhowerMatrix() {
     }
 
 
