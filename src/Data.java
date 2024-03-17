@@ -1,3 +1,5 @@
+import core.objects.Goal;
+
 import java.util.*;
 
 import java.util.ArrayList;
@@ -14,8 +16,8 @@ public class Data {
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
-    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
-
+//    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
+    public static final HashSet<Goal> goals = new HashSet<>();
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
     public static final int INDEX_GOALNAME = 0;
     public static final int INDEX_HABITSLIST = 1;
@@ -23,6 +25,7 @@ public class Data {
     private static HashMap<String, Integer> habitAndICounts = new HashMap<>();
     private static HashMap<String, Integer> habitAndECounts = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
+    protected static HashMap<String, Integer> GoalAndIdealCount;
 
 
     /**
@@ -35,16 +38,29 @@ public class Data {
      */
     public static boolean createAGoal(String goalName, Integer goalIdealCount) {
 
-        if (!goalExists(goalName)) {
-            GoalAndIdealCount.put(goalName, goalIdealCount);
-            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
-            return true;
-        } else {
+        Goal goal = new Goal(goalName, goalIdealCount, null);
+
+        if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
-            return false;
-        }
+        } else{
+            goals.add(goal);
+            System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
+            return true;
+         }
+        return false;
     }
 
+    // public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+    //
+    //        if (!goalExists(goalName)) {
+    //            GoalAndIdealCount.put(goalName, goalIdealCount);
+    //            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+    //            return true;
+    //        } else {
+    //            System.out.println("Your goal (" + goalName + ") already exists.");
+    //            return false;
+    //        }
+    //    }
     /**
      * This function checks if the goal entered already exists.
      *
@@ -147,32 +163,6 @@ public class Data {
         }
         return false;
     }
-//    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
-//
-//        if (goalExists(goalName)) {
-//            for (Object[] goalInfo : GoalHabitSetup) {
-//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-//                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-//
-//                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
-//                    for (String habit : habitsList) {
-//                        if (!existingHabits.contains(habit)) {
-//                            existingHabits.add(habit);
-//                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
-//                        } else {
-//                            System.out.println("Duplicate habit. Retry.");
-//                            return false;
-//                        }
-//                        return true;
-//                    }
-//                }
-//            }
-//        } else {
-//            System.out.println("Invalid goal. Retry");
-//            return false;
-//        }
-//        return false;
-//    }
 
 
     /**

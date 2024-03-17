@@ -1,3 +1,5 @@
+import core.objects.Goal;
+
 import java.util.*;
 
 
@@ -146,16 +148,16 @@ public class Menu {
             System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt(); // Give user the choice to add more goals and counts
 
-
-
         } while(option != 0);
 
         // print all goals
         System.out.println("Your goals are:");
-        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-            System.out.println("Goal: " + entry.getKey());
+//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+//            System.out.println("Goal: " + entry.getKey());
+//        }
+        for (Goal goal : Data.goals) {
+            System.out.println(goal.toString());
         }
-
         scanner.nextLine(); // Consume the \n left in the buffer
 
     }
