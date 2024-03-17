@@ -18,7 +18,7 @@ public class Menu {
     // Create menu for user interaction.
     // Use a static initializer. This initializes the ArrayList when we load the Menu class.
     private static final ArrayList<String> options = new ArrayList<>();
-    static { // NOTE: This is to be edited.
+    static {
         options.add("Exit"); // At index 0
         options.add("Create A Goal");
         options.add("Delete a Goal");
@@ -90,7 +90,7 @@ public class Menu {
     }
 
 
-    /** @description This function allows users to create a Goal and assign a goalIdealCount to it, which is the number of days they would like to work on the gal.
+    /** @description This function allows users to create a Goal and assign a goalIdealCount to it, which is the number of days they would like to work on the goal.
      * @author Tania
      * @params None
      * @returns None
