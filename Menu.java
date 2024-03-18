@@ -342,6 +342,7 @@ public class Menu {
         }
 
         System.out.println(Data.storeEisenhowerMatrix(choicesArrayList));
+        scanner.nextLine();
 
     }
 
@@ -358,9 +359,11 @@ public class Menu {
 
         }
         System.out.println(Data.storeCategorizeGoals(choicesArrayList2));
-
+        scanner.nextLine();
 
     }
+
+
 
     /**@description:Updates the completion counts for habits.
      *
