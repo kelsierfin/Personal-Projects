@@ -26,6 +26,7 @@ public class Menu {
         options.add("Add Habits to A Goal");
         options.add("Delete Habits From A Goal");
         options.add("Categorize Goals");
+        options.add("Show Categorized Goals");
         options.add("Create Eisenhower Matrix");
         options.add("Show Current Eisenhower Matrix");
         options.add("Add Points to Habit");
@@ -84,6 +85,7 @@ public class Menu {
                 case 14 -> menuLoadData();
                 case 15 -> menuSaveData();
                 case 16 -> menuResetData();
+                case 17 -> menuShowCategorizedGoals();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -116,6 +118,21 @@ public class Menu {
     }
 
     private static void menuShowEisenhowerMatrix() {
+        if (Data.matrixExists()){
+            System.out.println(Data.matrix);
+            scanner.nextLine();
+        }else{
+            System.out.println("You haven't a created a matrix buddy, please press Enter");
+            scanner.nextLine();
+        }
+    }
+    private static void menuShowCategorizedGoals(){
+        if (Data.categoryExists()){
+            System.out.println(Data.fields);
+            scanner.nextLine();
+        }
+        System.out.println("You haven't categorized your goals yet, please press Enter ");
+        scanner.nextLine();
     }
 
 
