@@ -1,3 +1,5 @@
+import core.objects.Goal;
+
 import java.util.*;
 
 
@@ -24,12 +26,18 @@ public class Menu {
         options.add("Delete a Goal");
         options.add("Add Habits to A Goal");
         options.add("Delete Habits From A Goal");
-        options.add("View Goals and Habits");
         options.add("Categorize Goals");
+        options.add("Show Categorized Goals");
         options.add("Create Eisenhower Matrix");
+        options.add("Show Current Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
+        options.add("Get Recommendation");
+        options.add("View Goals and Habits");
+        options.add("View Tracker");
+        options.add("Load Data");
+        options.add("Save Data");
         options.add("Reset Data");
     }
 
@@ -66,13 +74,19 @@ public class Menu {
                 case 2 -> menuDeleteGoal();
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
-                case 5 -> menuCheckingGoalsAndHabits();
-                case 6 -> menuCategorizeGoals();
-                case 7 -> menuEisenhowerMatrix();
+                case 5 -> menuCategorizeGoals();
+                case 6 -> menuEisenhowerMatrix();
+                case 7 -> menuShowEisenhowerMatrix();
                 case 8 -> menuAddPointsToHabit();
                 case 9 -> menuWeeklyHabitCompletionRate();
                 case 10 -> menuTop3Habits();
-                case 11 -> menuResetData();
+                case 11 -> menuGetRecommendation();
+                case 12 -> menuCheckingGoalsAndHabits();
+                case 13 -> menuViewTracker();
+                case 14 -> menuLoadData();
+                case 15 -> menuSaveData();
+                case 16 -> menuResetData();
+                case 17 -> menuShowCategorizedGoals();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -87,6 +101,39 @@ public class Menu {
 
 
         scanner.close();
+    }
+
+    private static void menuSaveData() {
+    }
+
+    private static void menuLoadData() {
+        
+    }
+
+    private static void menuViewTracker() {
+        
+    }
+
+    private static void menuGetRecommendation() {
+        
+    }
+
+    private static void menuShowEisenhowerMatrix() {
+        if (Data.matrixExists()){
+            System.out.println(Data.matrix);
+            scanner.nextLine();
+        }else{
+            System.out.println("You haven't a created a matrix buddy, please press Enter");
+            scanner.nextLine();
+        }
+    }
+    private static void menuShowCategorizedGoals(){
+        if (Data.categoryExists()){
+            System.out.println(Data.fields);
+            scanner.nextLine();
+        }
+        System.out.println("You haven't categorized your goals yet, please press Enter ");
+        scanner.nextLine();
     }
 
 
@@ -118,16 +165,16 @@ public class Menu {
             System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt(); // Give user the choice to add more goals and counts
 
-
-
         } while(option != 0);
 
         // print all goals
         System.out.println("Your goals are:");
-        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-            System.out.println("Goal: " + entry.getKey());
+//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+//            System.out.println("Goal: " + entry.getKey());
+//        }
+        for (Goal goal : Data.goals) {
+            System.out.println(goal.toString());
         }
-
         scanner.nextLine(); // Consume the \n left in the buffer
 
     }

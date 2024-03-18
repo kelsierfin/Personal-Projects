@@ -20,6 +20,9 @@ public class Data {
      */
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     public static final HashSet<Goal> goals = new HashSet<>();
+    public static HashMap<String, ArrayList<String>> matrix = new HashMap<>();
+    public static HashMap<String, ArrayList<String>> fields = new HashMap<>();
+
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
 
     public static final ArrayList<Habit> habitsList = new ArrayList<>();
@@ -526,8 +529,7 @@ public class Data {
      * @author: Sanbeer
      */
 
-    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
-        HashMap<String, ArrayList<String>> matrix = new HashMap<>();
+    public static HashMap<String,ArrayList<String>>storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
 
         String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
@@ -560,6 +562,13 @@ public class Data {
         matrix.put("Not Important & Not Urgent", list4);
 
         return matrix;
+    }
+    public static boolean matrixExists() {
+        boolean matrixExist = false;
+        if (matrix.containsKey("Urgent & Important")){
+            matrixExist = true;
+        }
+        return matrixExist;
     }
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
@@ -607,7 +616,13 @@ public class Data {
 
         return fields;
     }
-
+    public static boolean categoryExists() {
+        boolean fieldExist = false;
+        if (fields.containsKey("Finance")) {
+            fieldExist = true;
+        }
+        return fieldExist;
+    }
     }
 
 
