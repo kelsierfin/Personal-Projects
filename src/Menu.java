@@ -14,7 +14,6 @@ public class Menu {
 
     // Create scanner object for user input.
     // Private so it is only accessible within the Menu class.
-    // Static because everything in this class can share the scanner object.
     private static final Scanner scanner = new Scanner(System.in);
 
     // Create menu for user interaction.
@@ -142,11 +141,16 @@ public class Menu {
         boolean shouldPrint;
         do {
             System.out.println("What is your goal?");
-            goalName = getGoalName(); // Ask user to input goal
-            goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
+            // Ask user to input goal
+            goalName = getGoalName();
 
-            Data.createAGoal(goalName, goalIdealCount);  // Send data to Data.java to populate hashmap
+            // Ask user to input num of days they want to work on their goal
+            goalIdealCount = getIdealCount();
 
+            // Send data to Data.java to populate hashmap
+            Data.createAGoal(goalName, goalIdealCount);
+
+            // Prompt user to continue or exit menu
             System.out.println("Would you like to enter another goal? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
             shouldPrint = response.equals("yes") || response.equals("Y") || response.equals("true");
@@ -155,9 +159,10 @@ public class Menu {
 
         } while (shouldPrint);
 
-
+        System.out.println("Your goals are:");
         for (Goal goal : Data.goals) {
-            System.out.println(goal.toString());
+            System.out.println("Goal: " + goal.getGoal() + "Ideal Count: " + goal.getIdealCount());
+//            System.out.println(goal.toString());
         }
         scanner.nextLine(); // Consume the \n left in the buffer
 
@@ -207,8 +212,8 @@ public class Menu {
 
         do {
             // List all goals
-            for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-                System.out.println("Goal: " + entry.getKey());
+            for (Goal goal : Data.goals) {
+                System.out.println("Goal: " + goal.getGoal());
             }
 
             System.out.print("Enter the name of the goal to remove:");
@@ -218,6 +223,7 @@ public class Menu {
             System.out.println("Would you like to retry or delete another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt();
             scanner.nextLine(); // Consume the \n left in the buffer
+            System.out.println(Data.goals);
         } while(option != 0);
 
     }

@@ -50,12 +50,12 @@ public class Data {
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
+            return false;
         } else{
             goals.add(goal);
             System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
             return true;
          }
-        return false;
     }
 
     /**
@@ -84,24 +84,41 @@ public class Data {
 
     public static boolean goalDelete(String goalToDelete) {
 
-        if (goalExists(goalToDelete)) {
-            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
-
-            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
-
-            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
-                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
-                    itemsToRemove.add(item);
-//                    GoalHabitSetup.remove(item);
-                }
+        for (Goal goal : goals) {
+            if (goal.getGoal().equals(goalToDelete)){
+                System.out.println("found goal: " + goal.getGoal());
+                goals.remove(goal);
+                break;
             }
-            GoalHabitSetup.removeAll(itemsToRemove);
-            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-            return true;
-        } else {
-            System.out.println("Please enter a valid goal for deletion.");
-            return false;
         }
+
+//        if (goals.contains(goalToDelete)) {
+//            goals.remove(goalToDelete);
+//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+//            return true;
+//        }
+
+
+
+//        if (goalExists(goalToDelete)) {
+//            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
+//
+//            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
+//
+//            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
+//                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
+//                    itemsToRemove.add(item);
+////                    GoalHabitSetup.remove(item);
+//                }
+//            }
+//            GoalHabitSetup.removeAll(itemsToRemove);
+//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+//            return true;
+//        } else {
+//            System.out.println("Please enter a valid goal for deletion.");
+//            return false;
+//        }
+        return true;
     }
 
 
@@ -163,17 +180,14 @@ public class Data {
 
 
     /**
-     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions
-     * @return ArrayList containing goals
+     * This function takes the name of all goal objects, and places them in an ArrayList.
+     * This arraylist is used for the Eisenhower matrix.
+     * @return ArrayList containing String goal names
      * @author Tania
      */
 
     public static ArrayList<String> getGoalsArrayList() {
-//        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
-//        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
-//            goalsArrayList.add(key);
-//        }
 
         for (Goal goal : goals) {
             goalsArrayList.add(goal.getGoal());
