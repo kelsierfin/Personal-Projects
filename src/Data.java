@@ -58,19 +58,6 @@ public class Data {
         return false;
     }
 
-//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
-//
-//        if (!goalExists(goalName)) {
-//            GoalAndIdealCount.put(goalName, goalIdealCount);
-//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
-//            return true;
-//        } else {
-//            System.out.println("Your goal (" + goalName + ") already exists.");
-//            return false;
-//        }
-//    }
-
-
     /**
      * This function checks if the goal entered already exists.
      * NOTE: THIS METHOD MAY NOT BE NEEDED ANYMORE.
@@ -182,13 +169,19 @@ public class Data {
      */
 
     public static ArrayList<String> getGoalsArrayList() {
-        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
+//        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
-        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
-            goalsArrayList.add(key);
+//        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
+//            goalsArrayList.add(key);
+//        }
+
+        for (Goal goal : goals) {
+            goalsArrayList.add(goal.getGoal());
         }
+        System.out.println(goalsArrayList);
         return goalsArrayList;
     }
+
 
     /**
      * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
