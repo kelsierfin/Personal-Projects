@@ -1,6 +1,5 @@
 import core.objects.Goal;
 import core.objects.Habit;
-import core.objects.Habits;
 
 import java.util.*;
 
@@ -19,43 +18,22 @@ public class Data {
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
-
-    protected static  ArrayList<Integer> choicesArrayList2;
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
-    protected static HashSet<Goal> goals;
-    protected static HashMap<String, ArrayList<String>> matrix;
+    public static final HashSet<Goal> goals = new HashSet<>();
+    public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
 
-    protected static HashMap<String, ArrayList<String>> fields;
+    public static final ArrayList<Habit> habitsList = new ArrayList<>();
 
-    protected static ArrayList<Object[]> GoalHabitSetup; // Contains goal, its habits and idealcount
-
-    protected static HashMap<Goal, HashSet<Habit>> tracker;
+    public static final HashMap<Goal, ArrayList> tracker = new HashMap<>();
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
-    protected static final int INDEX_GOALNAME = 0;
-    protected static final int INDEX_HABITSLIST = 1;
+    public static final int INDEX_GOALNAME = 0;
+    public static final int INDEX_HABITSLIST = 1;
 
-    protected static HashMap<String, Integer> habitAndICounts;
-    protected static  HashMap<String, Integer> habitAndECounts;
+    private static HashMap<String, Integer> habitAndICounts = new HashMap<>();
+    private static HashMap<String, Integer> habitAndECounts = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
-
-    public Data() {
-        this.choicesArrayList2 = new ArrayList<>();
-        this.goals = new HashSet<>();
-        this.matrix = new HashMap<>();
-        this.fields = new HashMap<>();
-        this.GoalHabitSetup = new ArrayList<>();
-        this.tracker = new HashMap<>();
-        this.habitAndICounts = new HashMap<>();
-        this.habitAndECounts = new HashMap<>();
-        this.GoalAndIdealCount = new HashMap<>();
-
-    }
-
-
-
-
 
 
     /**
@@ -72,13 +50,25 @@ public class Data {
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
-            return false;
         } else{
             goals.add(goal);
             System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
             return true;
          }
+        return false;
     }
+
+//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+//
+//        if (!goalExists(goalName)) {
+//            GoalAndIdealCount.put(goalName, goalIdealCount);
+//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+//            return true;
+//        } else {
+//            System.out.println("Your goal (" + goalName + ") already exists.");
+//            return false;
+//        }
+//    }
 
 
     /**
@@ -107,23 +97,24 @@ public class Data {
 
     public static boolean goalDelete(String goalToDelete) {
 
-        boolean goalFound = false;
+        if (goalExists(goalToDelete)) {
+            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
 
-        for (Goal goal : goals) {
-            if (goal.getGoal().equals(goalToDelete)){
-                System.out.println("Successfully deleted: " + goal.getGoal());
-                goals.remove(goal);
-                goalFound = true;
-                return true;
+            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
+
+            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
+                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
+                    itemsToRemove.add(item);
+//                    GoalHabitSetup.remove(item);
+                }
             }
-        }
-
-        if (!goalFound) {
+            GoalHabitSetup.removeAll(itemsToRemove);
+            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+            return true;
+        } else {
             System.out.println("Please enter a valid goal for deletion.");
             return false;
         }
-
-        return false;
     }
 
 
@@ -147,83 +138,57 @@ public class Data {
     /**
      * @description This function allows a user to add habits to their goal
      * @param goalName
-     * @param habitsSet
+     * @param habitsList
      * @return boolean
      */
 
-    public static boolean addHabits(String goalName, HashSet<String> habitsSet) {
+    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
+        if (goalExists(goalName)) {
+            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
+            for (Object[] goalInfo : GoalHabitSetup) {
+                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
 
-        // Go through each goal until we find goalName
-        // convert each string to a habit object
-        // place the object in a hashset (prevent duplicates)
-        // Add the habit object to tracker, next to the goal
+                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
+                    for (String habit : habitsList) {
+                        if (!existingHabits.contains(habit)) {
+                            existingHabits.add(habit);
+                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
 
-        HashSet<Habit> habitsHashSet = new HashSet<>();
-
-
-        for (Goal goal : goals) {
-            if (goal.equals(goalName)) {
-                for (String habit : habitsSet) {
-                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
-                    habitsHashSet.add(individualHabit);
+                            // Map each new habit to the goal's ideal count
+                            habitAndICounts.put(habit, goalIdealCount);
+                            // Initialize each new habit's earned count to 0
+                            habitAndECounts.put(habit, 0);
+                        } else {
+                            System.out.println("Duplicate habit. Retry.");
+                            return false;
+                        }
+                        return true;
+                    }
                 }
-                tracker.put(goal,habitsHashSet);
-                return true;
             }
+        } else {
+            System.out.println("Invalid goal. Retry");
+            return false;
         }
-        System.out.println("Invalid goal. Please re-try");
         return false;
-
-
-//        if (goalExists(goalName)) {
-//            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
-//            for (Object[] goalInfo : GoalHabitSetup) {
-//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-//                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-//
-//                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
-//                    for (String habit : habitsList) {
-//                        if (!existingHabits.contains(habit)) {
-//                            existingHabits.add(habit);
-//                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
-//
-//                            // Map each new habit to the goal's ideal count
-//                            habitAndICounts.put(habit, goalIdealCount);
-//                            // Initialize each new habit's earned count to 0
-//                            habitAndECounts.put(habit, 0);
-//                        } else {
-//                            System.out.println("Duplicate habit. Retry.");
-//                            return false;
-//                        }
-//                        return true;
-//                    }
-//                }
-//            }
-//        } else {
-//            System.out.println("Invalid goal. Retry");
-//            return false;
-//        }
-//        return false;
     }
 
 
     /**
-     * This function takes the name of all goal objects, and places them in an ArrayList.
-     * This arraylist is used for the Eisenhower matrix.
-     * @return ArrayList containing String goal names
+     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions
+     * @return ArrayList containing goals
      * @author Tania
      */
 
     public static ArrayList<String> getGoalsArrayList() {
+        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
-
-        for (Goal goal : goals) {
-            goalsArrayList.add(goal.getGoal());
+        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
+            goalsArrayList.add(key);
         }
-        System.out.println(goalsArrayList);
         return goalsArrayList;
     }
-
 
     /**
      * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
@@ -269,6 +234,102 @@ public class Data {
         }
         return false;
     }
+    /**
+     * This method is used to categorize the given goals into different quadrants of the Eisenhower matrix.
+     * @author Sanbeer Shafin
+     * @param goals This is the list of goals.
+     * @return HashMap This returns a map of quadrants in the Eisenhower matrix  and their corresponding goals.
+     */
+
+//    public static HashMap<String, ArrayList<String>> menuEisenhowerMatrix(ArrayList<String> goalsArrayList) {
+//        // Create a scanner object for user input
+//        Scanner scanner = new Scanner(System.in);
+//
+//        // Define the categories
+//        String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
+//                "Not Important & Not Urgent"};
+//
+//        // Create a HashMap to store the categorized goals
+//        HashMap<String, ArrayList<String>> prioritizedGoals = new HashMap<>();
+//
+//        // Initialize the HashMap with empty lists for each category
+//        for (String category : categories) {
+//            prioritizedGoals.put(category, new ArrayList<>());
+//        }
+//
+//        // Loop through each goal
+//        for (String goal : goals) {
+//            // Prompt the user to categorize the goal
+//            System.out.println("Goal: " + goal);
+//            System.out.println("Please choose a category for this goal:");
+//            for (int i = 0; i < categories.length; i++) {
+//                System.out.println((i + 1) + ". " + categories[i]);
+//            }
+//
+//            // Get the user's choice
+//            int categoryIndex = scanner.nextInt() - 1;
+//
+//            // Add the goal to the chosen category
+//            prioritizedGoals.get(categories[categoryIndex]).add(goal);
+//        }
+//        scanner.close();
+//        // Return the categorized goals
+//        for (HashMap.Entry<String, ArrayList<String>> entry : prioritizedGoals.entrySet()) {
+//            System.out.println("Quadrant: " + prioritizedGoals.getKey() + ", Value: " + entry.getValue());
+//        }
+//        return prioritizedGoals;
+//    }
+
+//    public static HashMap<String, ArrayList<String>> menuCategorizeGoals (ArrayList<String> goals) {
+//        // Define the categories inside the function
+//        String[] categories = {"Finance", "Work", "School", "Emotional", "Spiritual", "Social"};
+//
+//        // Initialize the HashMap to store the categorized goals
+//        HashMap<String, ArrayList<String>> categorizedGoals = new HashMap<>();
+//
+//        // Initialize the scanner to get user input
+//        Scanner scanner = new Scanner(System.in);
+//
+//        // Loop through all the goals
+//        for (String goal : goals) {
+//            System.out.println("Goal: " + goal);
+//            System.out.println("Please select a category for this goal:");
+//
+//            // Display the categories
+//            for (int i = 0; i < categories.length; i++) {
+//                System.out.println((i + 1) + ". " + categories[i]);
+//            }
+//
+//            // Get the user's choice
+//            int choice = scanner.nextInt();
+//
+//            // Check if the chosen category is valid
+//            while (choice < 1 || choice > categories.length) {
+//                System.out.println("Invalid category. Please choose a valid category:");
+//                choice = scanner.nextInt();
+//            }
+//
+//            // Get the chosen category
+//            String category = categories[choice - 1];
+//
+//            // If the category is not in the HashMap, add it
+//            if (!categorizedGoals.containsKey(category)) {
+//                categorizedGoals.put(category, new ArrayList<>());
+//            }
+//            scanner.close();
+//            // Add the goal to the chosen category
+//            categorizedGoals.get(category).add(goal);
+//        }
+//        for (HashMap.Entry<String, ArrayList<String>> entry : categorizedGoals.entrySet()) {
+//            System.out.println("Category: " + categorizedGoals.getKey() + ", Habit: " + entry.getValue());
+//        }
+//        // Return the categorized goals
+//        return categorizedGoals;
+//    }
+
+
+
+
     /**
      * @description: Retrieves the ideal count for each habit.
      * This method returns a {@link HashMap} that maps each habit to its ideal completion count.
@@ -458,7 +519,8 @@ public class Data {
      * @author: Sanbeer
      */
 
-    public static HashMap<String,ArrayList<String>>storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
+    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
+        HashMap<String, ArrayList<String>> matrix = new HashMap<>();
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
 
         String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
@@ -492,47 +554,14 @@ public class Data {
 
         return matrix;
     }
-    public static boolean matrixExists() {
-        boolean matrixExist = false;
-        if (matrix.containsKey("Urgent & Important")){
-            matrixExist = true;
-        }
-        return matrixExist;
-    }
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
+        HashMap<String, ArrayList<String>> fields = new HashMap<>();
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
 
         // Create another for loop to iterate thru each goal object in the hashset Goals
         //  Assign category to goal / get category for a goal
-        int count = 0;
-        for(Goal goal : goals){
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Finance");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 2){
-                goal.setCategory("Work");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("School");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Emotional");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Spiritual");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Social");
-                count++;
-            }
-        }
 
         ArrayList<String> list11 = new ArrayList<>();
         ArrayList<String> list22 = new ArrayList<>();
@@ -571,13 +600,7 @@ public class Data {
 
         return fields;
     }
-    public static boolean categoryExists() {
-        boolean fieldExist = false;
-        if (fields.containsKey("Finance")) {
-            fieldExist = true;
-        }
-        return fieldExist;
-    }
+
     }
 
 
