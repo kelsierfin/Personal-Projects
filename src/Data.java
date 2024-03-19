@@ -13,16 +13,13 @@ import java.util.Map;
 
 public class Data {
 
+
     /**
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
-    public static ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     public static final HashSet<Goal> goals = new HashSet<>();
-    public static HashMap<String, ArrayList<String>> matrix = new HashMap<>();
-    public static HashMap<String, ArrayList<String>> fields = new HashMap<>();
-
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
 
     public static final ArrayList<Habit> habitsList = new ArrayList<>();
@@ -53,13 +50,26 @@ public class Data {
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
-            return false;
         } else{
             goals.add(goal);
             System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
             return true;
          }
+        return false;
     }
+
+//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+//
+//        if (!goalExists(goalName)) {
+//            GoalAndIdealCount.put(goalName, goalIdealCount);
+//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+//            return true;
+//        } else {
+//            System.out.println("Your goal (" + goalName + ") already exists.");
+//            return false;
+//        }
+//    }
+
 
     /**
      * This function checks if the goal entered already exists.
@@ -87,41 +97,24 @@ public class Data {
 
     public static boolean goalDelete(String goalToDelete) {
 
-        for (Goal goal : goals) {
-            if (goal.getGoal().equals(goalToDelete)){
-                System.out.println("found goal: " + goal.getGoal());
-                goals.remove(goal);
-                break;
+        if (goalExists(goalToDelete)) {
+            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
+
+            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
+
+            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
+                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
+                    itemsToRemove.add(item);
+//                    GoalHabitSetup.remove(item);
+                }
             }
+            GoalHabitSetup.removeAll(itemsToRemove);
+            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
+            return true;
+        } else {
+            System.out.println("Please enter a valid goal for deletion.");
+            return false;
         }
-
-//        if (goals.contains(goalToDelete)) {
-//            goals.remove(goalToDelete);
-//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//            return true;
-//        }
-
-
-
-//        if (goalExists(goalToDelete)) {
-//            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
-//
-//            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
-//
-//            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
-//                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
-//                    itemsToRemove.add(item);
-////                    GoalHabitSetup.remove(item);
-//                }
-//            }
-//            GoalHabitSetup.removeAll(itemsToRemove);
-//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//            return true;
-//        } else {
-//            System.out.println("Please enter a valid goal for deletion.");
-//            return false;
-//        }
-        return true;
     }
 
 
@@ -183,22 +176,19 @@ public class Data {
 
 
     /**
-     * This function takes the name of all goal objects, and places them in an ArrayList.
-     * This arraylist is used for the Eisenhower matrix.
-     * @return ArrayList containing String goal names
+     * This function takes all the goals from goalAndIdealCount and creates an ArrayList. This is to be used in Sanbeer's functions
+     * @return ArrayList containing goals
      * @author Tania
      */
 
     public static ArrayList<String> getGoalsArrayList() {
+        // Take all keys from GoalandIdealCount HashMap and turn into Arraylist
         ArrayList<String> goalsArrayList = new ArrayList<>();
-
-        for (Goal goal : goals) {
-            goalsArrayList.add(goal.getGoal());
+        for (String key : GoalAndIdealCount.keySet()) { // Iterate through each key
+            goalsArrayList.add(key);
         }
-        System.out.println(goalsArrayList);
         return goalsArrayList;
     }
-
 
     /**
      * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
@@ -529,7 +519,8 @@ public class Data {
      * @author: Sanbeer
      */
 
-    public static HashMap<String,ArrayList<String>>storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
+    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
+        HashMap<String, ArrayList<String>> matrix = new HashMap<>();
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
 
         String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
@@ -563,47 +554,14 @@ public class Data {
 
         return matrix;
     }
-    public static boolean matrixExists() {
-        boolean matrixExist = false;
-        if (matrix.containsKey("Urgent & Important")){
-            matrixExist = true;
-        }
-        return matrixExist;
-    }
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
+        HashMap<String, ArrayList<String>> fields = new HashMap<>();
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
 
         // Create another for loop to iterate thru each goal object in the hashset Goals
         //  Assign category to goal / get category for a goal
-        int count = 0;
-        for(Goal goal : goals){
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Finance");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 2){
-                goal.setCategory("Work");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("School");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Emotional");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Spiritual");
-                count++;
-            }
-            if (choicesArrayList2.get(count) == 1){
-                goal.setCategory("Social");
-                count++;
-            }
-        }
 
         ArrayList<String> list11 = new ArrayList<>();
         ArrayList<String> list22 = new ArrayList<>();
@@ -642,13 +600,7 @@ public class Data {
 
         return fields;
     }
-    public static boolean categoryExists() {
-        boolean fieldExist = false;
-        if (fields.containsKey("Finance")) {
-            fieldExist = true;
-        }
-        return fieldExist;
-    }
+
     }
 
 
