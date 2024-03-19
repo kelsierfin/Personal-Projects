@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class Data {
 
-
     /**
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
