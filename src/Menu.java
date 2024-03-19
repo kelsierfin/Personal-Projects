@@ -153,15 +153,15 @@ public class Menu {
             // Prompt user to continue or exit menu
             System.out.println("Would you like to enter another goal? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
-            shouldPrint = response.equals("yes") || response.equals("Y") || response.equals("true");
+            shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
 
-            scanner.nextLine(); // Consume any leftover newline character in the buffer
+//            scanner.nextLine(); // Consume any leftover newline character in the buffer
 
         } while (shouldPrint);
 
         System.out.println("Your goals are:");
         for (Goal goal : Data.goals) {
-            System.out.println("Goal: " + goal.getGoal() + "Ideal Count: " + goal.getIdealCount());
+            System.out.println("Goal: " + goal.getGoal() + " Ideal Count: " + goal.getIdealCount());
 //            System.out.println(goal.toString());
         }
         scanner.nextLine(); // Consume the \n left in the buffer
