@@ -38,6 +38,8 @@ public class Menu {
         options.add("Load Data");
         options.add("Save Data");
         options.add("Reset Data");
+        options.add("Show Categorized Goals");
+
     }
 
     // Create message to display to user. Then use static initializer to combine message and Options into one menu.
@@ -85,6 +87,7 @@ public class Menu {
                 case 14 -> menuLoadData();
                 case 15 -> menuSaveData();
                 case 16 -> menuResetData();
+                case 17 -> menuShowCategorizedGoals();
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -117,6 +120,21 @@ public class Menu {
     }
 
     private static void menuShowEisenhowerMatrix() {
+        if (Data.matrixExists()){
+            System.out.println(Data.matrix);
+            scanner.nextLine();
+        }else{
+            System.out.println("You haven't a created a matrix buddy, please press Enter");
+            scanner.nextLine();
+        }
+    }
+    private static void menuShowCategorizedGoals(){
+        if (Data.categoryExists()){
+            System.out.println(Data.fields);
+            scanner.nextLine();
+        }else{
+        System.out.println("You haven't categorized your goals yet, please press Enter ");
+        scanner.nextLine();}
     }
 
 
@@ -379,17 +397,16 @@ public class Menu {
 
     private static void menuCategorizeGoals() {
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
-        ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
         for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
             System.out.println("The 6 Categories are \"1) Finance\", \"2) Work\", \"3) School\", \"4) Emotional\", \n" +
                     "\"5) Spiritual\", \"6) Social");
             System.out.println("What category of goals would you like to choose for goal: " + goalsArrayList2.get(i));
             int chosenSection2 = scanner.nextInt();
-            choicesArrayList2.add(chosenSection2);
+            Data.choicesArrayList2.add(chosenSection2);
 
         }
-        System.out.println(Data.storeCategorizeGoals(choicesArrayList2));
+        System.out.println(Data.storeCategorizeGoals(Data.choicesArrayList2));
         scanner.nextLine();
 
     }
