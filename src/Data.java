@@ -18,6 +18,7 @@ public class Data {
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
+    public static ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     public static final HashSet<Goal> goals = new HashSet<>();
     public static HashMap<String, ArrayList<String>> matrix = new HashMap<>();
@@ -585,12 +586,38 @@ public class Data {
     }
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
-        HashMap<String, ArrayList<String>> fields = new HashMap<>();
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
 
         // Create another for loop to iterate thru each goal object in the hashset Goals
         //  Assign category to goal / get category for a goal
+        int count = 0;
+        for(Goal goal : goals){
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Finance");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 2){
+                goal.setCategory("Work");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("School");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Emotional");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Spiritual");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Social");
+                count++;
+            }
+        }
 
         ArrayList<String> list11 = new ArrayList<>();
         ArrayList<String> list22 = new ArrayList<>();
