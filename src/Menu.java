@@ -129,9 +129,9 @@ public class Menu {
 
         // Summary:
         // Ask user to input goal
-            // Goal must be a String, and not empty
+        // Goal must be a String, and not empty
         // Ask user to add a count to their goal
-            // Between 1 - 7.
+        // Between 1 - 7.
         // Populate HashMap with Key = goal and Value = goalIdealCount if it doesn't exist already
         // Ask user to enter another goal if they wish. Otherwise, exit.
 
@@ -139,22 +139,23 @@ public class Menu {
         Integer goalIdealCount;
         Integer option;
 
+        boolean shouldPrint;
         do {
             System.out.println("What is your goal?");
             goalName = getGoalName(); // Ask user to input goal
             goalIdealCount = getIdealCount(); // Ask user to input num of days they want to work on their goal
 
             Data.createAGoal(goalName, goalIdealCount);  // Send data to Data.java to populate hashmap
-            System.out.println("Would you like to enter another goal? (Yes = any number | No = 0)");
-            option = scanner.nextInt(); // Give user the choice to add more goals and counts
 
-        } while(option != 0);
+            System.out.println("Would you like to enter another goal? (Yes / No)");
+            String response = scanner.next().trim().toLowerCase();
+            shouldPrint = response.equals("yes") || response.equals("Y") || response.equals("true");
 
-        // print all goals
-        System.out.println("Your goals are:");
-//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-//            System.out.println("Goal: " + entry.getKey());
-//        }
+            scanner.nextLine(); // Consume any leftover newline character in the buffer
+
+        } while (shouldPrint);
+
+
         for (Goal goal : Data.goals) {
             System.out.println(goal.toString());
         }

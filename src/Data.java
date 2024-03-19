@@ -1,4 +1,5 @@
 import core.objects.Goal;
+import core.objects.Habit;
 
 import java.util.*;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 
 public class Data {
 
+
     /**
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
@@ -19,6 +21,12 @@ public class Data {
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     public static final HashSet<Goal> goals = new HashSet<>();
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
+
+    public static final ArrayList<Habit> habitsList = new ArrayList<>();
+
+    public static final HashMap<Goal, ArrayList> tracker = new HashMap<>();
+        // Arraylist (habitsList). The habitslist contains the Habit objects.
+
     public static final int INDEX_GOALNAME = 0;
     public static final int INDEX_HABITSLIST = 1;
 
@@ -38,7 +46,7 @@ public class Data {
      */
     public static boolean createAGoal(String goalName, Integer goalIdealCount) {
 
-        Goal goal = new Goal(goalName, goalIdealCount, null, null);
+        Goal goal = new Goal(goalName, goalIdealCount, null);
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
@@ -49,6 +57,19 @@ public class Data {
          }
         return false;
     }
+
+//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+//
+//        if (!goalExists(goalName)) {
+//            GoalAndIdealCount.put(goalName, goalIdealCount);
+//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+//            return true;
+//        } else {
+//            System.out.println("Your goal (" + goalName + ") already exists.");
+//            return false;
+//        }
+//    }
+
 
     /**
      * This function checks if the goal entered already exists.
@@ -538,6 +559,9 @@ public class Data {
         HashMap<String, ArrayList<String>> fields = new HashMap<>();
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
+
+        // Create another for loop to iterate thru each goal object in the hashset Goals
+        //  Assign category to goal / get category for a goal
 
         ArrayList<String> list11 = new ArrayList<>();
         ArrayList<String> list22 = new ArrayList<>();

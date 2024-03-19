@@ -12,11 +12,10 @@ public class Goal {
     private Integer currentCount;
 
     // Constructor
-    public Goal (String goal, Integer idealCount, String category, Integer currentCount){
+    public Goal (String goal, Integer idealCount, String category){
         this.goal = goal;
         this.idealCount = idealCount;
         this.category = category;
-        this.currentCount = currentCount;
     }
 
     // Getters
@@ -32,10 +31,6 @@ public class Goal {
         return this.category;
     }
 
-    public Integer getCurrentCount() {
-        return this.currentCount;
-    }
-
     // Setters
     public void setGoal(String goalName){
         this.goal = goalName;
@@ -49,11 +44,6 @@ public class Goal {
         this.category = category;
     }
 
-    public void setCurrentCount(Integer currentCount) {
-        this.currentCount = currentCount;
-    }
-
-    // Equals.
 
     /**
      * Override Equals to compare goalNames when creating a goal.
@@ -81,7 +71,6 @@ public class Goal {
     public int hashCode() {
         return goal.hashCode();
     }
-
 
 
     // To String
