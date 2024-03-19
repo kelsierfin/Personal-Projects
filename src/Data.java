@@ -61,6 +61,19 @@ public class Data {
          }
     }
 
+//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+//
+//        if (!goalExists(goalName)) {
+//            GoalAndIdealCount.put(goalName, goalIdealCount);
+//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+//            return true;
+//        } else {
+//            System.out.println("Your goal (" + goalName + ") already exists.");
+//            return false;
+//        }
+//    }
+
+
     /**
      * This function checks if the goal entered already exists.
      * NOTE: THIS METHOD MAY NOT BE NEEDED ANYMORE.
