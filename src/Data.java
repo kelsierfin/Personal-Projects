@@ -24,16 +24,18 @@ public class Data {
 
     public static final ArrayList<Habit> habitsList = new ArrayList<>();
 
-    public static final HashMap<Goal, ArrayList> tracker = new HashMap<>();
+    public static HashMap<Goal, ArrayList> tracker = new HashMap<>();
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
     public static final int INDEX_GOALNAME = 0;
     public static final int INDEX_HABITSLIST = 1;
 
-    private static HashMap<String, Integer> habitAndICounts = new HashMap<>();
-    private static HashMap<String, Integer> habitAndECounts = new HashMap<>();
+    private static final HashMap<String, Integer> habitAndICounts = new HashMap<>();
+    private static final  HashMap<String, Integer> habitAndECounts = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
+
+
 
 
     /**
@@ -84,41 +86,23 @@ public class Data {
 
     public static boolean goalDelete(String goalToDelete) {
 
+        boolean goalFound = false;
+
         for (Goal goal : goals) {
             if (goal.getGoal().equals(goalToDelete)){
-                System.out.println("found goal: " + goal.getGoal());
+                System.out.println("Successfully deleted: " + goal.getGoal());
                 goals.remove(goal);
-                break;
+                goalFound = true;
+                return true;
             }
         }
 
-//        if (goals.contains(goalToDelete)) {
-//            goals.remove(goalToDelete);
-//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//            return true;
-//        }
+        if (!goalFound) {
+            System.out.println("Please enter a valid goal for deletion.");
+            return false;
+        }
 
-
-
-//        if (goalExists(goalToDelete)) {
-//            GoalAndIdealCount.remove(goalToDelete); // Remove goal from GoalAndIdealCount
-//
-//            ArrayList<Object[]> itemsToRemove = new ArrayList<>(); // Create ArrayList for items to remove. This prevents errors with goalExists.
-//
-//            for (Object[] item : GoalHabitSetup) { // If goal is in GoalHabitSetup, remove goal from here too.
-//                if (item[INDEX_GOALNAME].equals(goalToDelete)) {
-//                    itemsToRemove.add(item);
-////                    GoalHabitSetup.remove(item);
-//                }
-//            }
-//            GoalHabitSetup.removeAll(itemsToRemove);
-//            System.out.println("Your goal " + goalToDelete + " has been removed successfully.");
-//            return true;
-//        } else {
-//            System.out.println("Please enter a valid goal for deletion.");
-//            return false;
-//        }
-        return true;
+        return false;
     }
 
 

@@ -208,10 +208,10 @@ public class Menu {
      * @return None
      */
     private static void menuDeleteGoal() {
-        Integer option;
+        boolean shouldPrint;
 
         do {
-            // List all goals
+            System.out.println("Your goals are: ");
             for (Goal goal : Data.goals) {
                 System.out.println("Goal: " + goal.getGoal());
             }
@@ -220,11 +220,16 @@ public class Menu {
             String goalToDelete = scanner.nextLine();
             Data.goalDelete(goalToDelete);
 
-            System.out.println("Would you like to retry or delete another goal? (Yes = any number | No = 0)");
-            option = scanner.nextInt();
-            scanner.nextLine(); // Consume the \n left in the buffer
-            System.out.println(Data.goals);
-        } while(option != 0);
+            System.out.println("Would you like to enter another goal? (Yes / No)");
+            String response = scanner.next().trim().toLowerCase();
+            shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
+
+        } while(!shouldPrint);
+
+        System.out.println("Updated goals: ");
+        for (Goal goal : Data.goals) {
+            System.out.println("Goal: " + goal.getGoal() + " Ideal Count: " + goal.getIdealCount());
+        }
 
     }
 
