@@ -11,9 +11,6 @@ public class Habit extends Goal{
 
     private ArrayList<String> habitsList;
 
-//    private ArrayList<String> habitsList;
-
-//    private HashMap<Goal, ArrayList<>>
 
     public Habit(String goal, Integer idealCount, String category, Integer currentCount,String habit){
         super(goal, idealCount, category);
