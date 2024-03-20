@@ -5,25 +5,22 @@ import java.util.HashMap;
 
 public class Habit extends Goal{
 
-    private String habit;
-
+    private String habitName;
     private Integer currentCount;
 
-    private ArrayList<String> habitsList;
 
-
-    public Habit(String goal, Integer idealCount, String category, Integer currentCount,String habit){
+    public Habit(String goal, Integer idealCount, String category, Integer currentCount,String habitName){
         super(goal, idealCount, category);
-        this.habit = habit;
+        this.habitName = habitName;
         this.currentCount = currentCount;
     }
 
     public String getHabit() {
-        return habit;
+        return habitName;
     }
 
     public void setHabit(String habit) {
-        this.habit = habit;
+        this.habitName = habit;
     }
 
     public Integer getCurrentCount() {
@@ -37,7 +34,7 @@ public class Habit extends Goal{
     @Override
     public String toString() {
         return "HabitsList{" +
-                "habit='" + habit + '\'' +
+                "habit='" + habitName + '\'' +
                 ", currentCount=" + currentCount +
                 '}';
     }
