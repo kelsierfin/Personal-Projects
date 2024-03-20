@@ -13,13 +13,16 @@ import java.util.Map;
 
 public class Data {
 
-
     /**
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
+    public static ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     public static final HashSet<Goal> goals = new HashSet<>();
+    public static HashMap<String, ArrayList<String>> matrix = new HashMap<>();
+    public static HashMap<String, ArrayList<String>> fields = new HashMap<>();
+
     public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
 
     public static final ArrayList<Habit> habitsList = new ArrayList<>();
@@ -59,6 +62,19 @@ public class Data {
             return true;
          }
     }
+
+//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+//
+//        if (!goalExists(goalName)) {
+//            GoalAndIdealCount.put(goalName, goalIdealCount);
+//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
+//            return true;
+//        } else {
+//            System.out.println("Your goal (" + goalName + ") already exists.");
+//            return false;
+//        }
+//    }
+
 
     /**
      * This function checks if the goal entered already exists.
@@ -225,102 +241,6 @@ public class Data {
         }
         return false;
     }
-    /**
-     * This method is used to categorize the given goals into different quadrants of the Eisenhower matrix.
-     * @author Sanbeer Shafin
-     * @param goals This is the list of goals.
-     * @return HashMap This returns a map of quadrants in the Eisenhower matrix  and their corresponding goals.
-     */
-
-//    public static HashMap<String, ArrayList<String>> menuEisenhowerMatrix(ArrayList<String> goalsArrayList) {
-//        // Create a scanner object for user input
-//        Scanner scanner = new Scanner(System.in);
-//
-//        // Define the categories
-//        String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
-//                "Not Important & Not Urgent"};
-//
-//        // Create a HashMap to store the categorized goals
-//        HashMap<String, ArrayList<String>> prioritizedGoals = new HashMap<>();
-//
-//        // Initialize the HashMap with empty lists for each category
-//        for (String category : categories) {
-//            prioritizedGoals.put(category, new ArrayList<>());
-//        }
-//
-//        // Loop through each goal
-//        for (String goal : goals) {
-//            // Prompt the user to categorize the goal
-//            System.out.println("Goal: " + goal);
-//            System.out.println("Please choose a category for this goal:");
-//            for (int i = 0; i < categories.length; i++) {
-//                System.out.println((i + 1) + ". " + categories[i]);
-//            }
-//
-//            // Get the user's choice
-//            int categoryIndex = scanner.nextInt() - 1;
-//
-//            // Add the goal to the chosen category
-//            prioritizedGoals.get(categories[categoryIndex]).add(goal);
-//        }
-//        scanner.close();
-//        // Return the categorized goals
-//        for (HashMap.Entry<String, ArrayList<String>> entry : prioritizedGoals.entrySet()) {
-//            System.out.println("Quadrant: " + prioritizedGoals.getKey() + ", Value: " + entry.getValue());
-//        }
-//        return prioritizedGoals;
-//    }
-
-//    public static HashMap<String, ArrayList<String>> menuCategorizeGoals (ArrayList<String> goals) {
-//        // Define the categories inside the function
-//        String[] categories = {"Finance", "Work", "School", "Emotional", "Spiritual", "Social"};
-//
-//        // Initialize the HashMap to store the categorized goals
-//        HashMap<String, ArrayList<String>> categorizedGoals = new HashMap<>();
-//
-//        // Initialize the scanner to get user input
-//        Scanner scanner = new Scanner(System.in);
-//
-//        // Loop through all the goals
-//        for (String goal : goals) {
-//            System.out.println("Goal: " + goal);
-//            System.out.println("Please select a category for this goal:");
-//
-//            // Display the categories
-//            for (int i = 0; i < categories.length; i++) {
-//                System.out.println((i + 1) + ". " + categories[i]);
-//            }
-//
-//            // Get the user's choice
-//            int choice = scanner.nextInt();
-//
-//            // Check if the chosen category is valid
-//            while (choice < 1 || choice > categories.length) {
-//                System.out.println("Invalid category. Please choose a valid category:");
-//                choice = scanner.nextInt();
-//            }
-//
-//            // Get the chosen category
-//            String category = categories[choice - 1];
-//
-//            // If the category is not in the HashMap, add it
-//            if (!categorizedGoals.containsKey(category)) {
-//                categorizedGoals.put(category, new ArrayList<>());
-//            }
-//            scanner.close();
-//            // Add the goal to the chosen category
-//            categorizedGoals.get(category).add(goal);
-//        }
-//        for (HashMap.Entry<String, ArrayList<String>> entry : categorizedGoals.entrySet()) {
-//            System.out.println("Category: " + categorizedGoals.getKey() + ", Habit: " + entry.getValue());
-//        }
-//        // Return the categorized goals
-//        return categorizedGoals;
-//    }
-
-
-
-
     /**
      * @description: Retrieves the ideal count for each habit.
      * This method returns a {@link HashMap} that maps each habit to its ideal completion count.
@@ -510,8 +430,7 @@ public class Data {
      * @author: Sanbeer
      */
 
-    public static HashMap<String,ArrayList<String>> storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
-        HashMap<String, ArrayList<String>> matrix = new HashMap<>();
+    public static HashMap<String,ArrayList<String>>storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
 
         String[] categories = {"Urgent & Important", "Urgent & Not Important", "Important & Not Urgent",
@@ -545,14 +464,47 @@ public class Data {
 
         return matrix;
     }
+    public static boolean matrixExists() {
+        boolean matrixExist = false;
+        if (matrix.containsKey("Urgent & Important")){
+            matrixExist = true;
+        }
+        return matrixExist;
+    }
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
-        HashMap<String, ArrayList<String>> fields = new HashMap<>();
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
 
         // Create another for loop to iterate thru each goal object in the hashset Goals
         //  Assign category to goal / get category for a goal
+        int count = 0;
+        for(Goal goal : goals){
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Finance");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 2){
+                goal.setCategory("Work");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("School");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Emotional");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Spiritual");
+                count++;
+            }
+            if (choicesArrayList2.get(count) == 1){
+                goal.setCategory("Social");
+                count++;
+            }
+        }
 
         ArrayList<String> list11 = new ArrayList<>();
         ArrayList<String> list22 = new ArrayList<>();
@@ -591,7 +543,13 @@ public class Data {
 
         return fields;
     }
-
+    public static boolean categoryExists() {
+        boolean fieldExist = false;
+        if (fields.containsKey("Finance")) {
+            fieldExist = true;
+        }
+        return fieldExist;
+    }
     }
 
 
