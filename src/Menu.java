@@ -1,4 +1,5 @@
 import core.objects.Goal;
+import core.objects.Habit;
 
 import java.util.*;
 
@@ -11,6 +12,8 @@ import java.util.*;
 
 // The menu setup code was followed from Dr. Hudson's project example.
 public class Menu {
+
+    private static Data data = new Data();
 
     // Create scanner object for user input.
     // Private so it is only accessible within the Menu class.
@@ -26,18 +29,19 @@ public class Menu {
         options.add("Add Habits to A Goal");
         options.add("Delete Habits From A Goal");
         options.add("Categorize Goals");
+        options.add("Show Categorized Goals");
         options.add("Create Eisenhower Matrix");
         options.add("Show Current Eisenhower Matrix");
         options.add("Add Points to Habit");
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
-        options.add("Get Recommendation");
+        options.add("Get Goal Recommendation");
+        options.add("Get Habit Recommendation");
         options.add("View Goals and Habits");
         options.add("View Tracker");
         options.add("Load Data");
         options.add("Save Data");
         options.add("Reset Data");
-        options.add("Show Categorized Goals");
 
     }
 
@@ -75,18 +79,20 @@ public class Menu {
                 case 3 -> menuAddHabits();
                 case 4 -> menuDeleteHabits();
                 case 5 -> menuCategorizeGoals();
-                case 6 -> menuEisenhowerMatrix();
-                case 7 -> menuShowEisenhowerMatrix();
-                case 8 -> menuAddPointsToHabit();
-                case 9 -> menuWeeklyHabitCompletionRate();
-                case 10 -> menuTop3Habits();
-                case 11 -> menuGetRecommendation();
-                case 12 -> menuCheckingGoalsAndHabits();
-                case 13 -> menuViewTracker();
-                case 14 -> menuLoadData();
-                case 15 -> menuSaveData();
-                case 16 -> menuResetData();
-                case 17 -> menuShowCategorizedGoals();
+                case 6 -> menuShowCategorizedGoals();
+                case 7 -> menuEisenhowerMatrix();
+                case 8 -> menuShowEisenhowerMatrix();
+                case 9 -> menuAddPointsToHabit();
+                case 10 -> menuWeeklyHabitCompletionRate();
+                case 11 -> menuTop3Habits();
+                case 12 -> menuGoalRecommendation();
+                case 13 -> menuHabitRecommendation();
+                case 14 -> menuCheckingGoalsAndHabits();
+                case 15 -> menuViewTracker();
+                case 16 -> menuLoadData();
+                case 17 -> menuSaveData();
+                case 18 -> menuResetData();
+
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
 
@@ -103,24 +109,34 @@ public class Menu {
         scanner.close();
     }
 
+    private static void menuHabitRecommendation() {
+    }
+
+    private static void menuGoalRecommendation() {
+
+    }
+
     private static void menuSaveData() {
     }
 
     private static void menuLoadData() {
-        
+
     }
 
     private static void menuViewTracker() {
-        
+
     }
 
     private static void menuGetRecommendation() {
-        
+        // Two choices:
+            // Comparator 1: organize goals by current counts. Say you need to focus on goal X which has the least points.
+        // Comparator 2:
+
     }
 
     private static void menuShowEisenhowerMatrix() {
-        if (Data.matrixExists()){
-            System.out.println(Data.matrix);
+        if (data.matrixExists()){
+            System.out.println(data.matrix);
             scanner.nextLine();
         }else{
             System.out.println("You haven't a created a matrix buddy, please press Enter");
@@ -128,8 +144,8 @@ public class Menu {
         }
     }
     private static void menuShowCategorizedGoals(){
-        if (Data.categoryExists()){
-            System.out.println(Data.fields);
+        if (data.categoryExists()){
+            System.out.println(data.fields);
             scanner.nextLine();
         }else{
         System.out.println("You haven't categorized your goals yet, please press Enter ");
@@ -166,7 +182,7 @@ public class Menu {
             goalIdealCount = getIdealCount();
 
             // Send data to Data.java to populate hashmap
-            Data.createAGoal(goalName, goalIdealCount);
+            data.createAGoal(goalName, goalIdealCount);
 
             // Prompt user to continue or exit menu
             System.out.println("Would you like to enter another goal? (Yes / No)");
@@ -178,7 +194,7 @@ public class Menu {
         } while (shouldPrint);
 
         System.out.println("Your goals are:");
-        for (Goal goal : Data.goals) {
+        for (Goal goal : data.goals) {
             System.out.println("Goal: " + goal.getGoal() + " Ideal Count: " + goal.getIdealCount());
 //            System.out.println(goal.toString());
         }
@@ -230,13 +246,13 @@ public class Menu {
 
         do {
             System.out.println("Your goals are: ");
-            for (Goal goal : Data.goals) {
+            for (Goal goal : data.goals) {
                 System.out.println("Goal: " + goal.getGoal());
             }
 
             System.out.print("Enter the name of the goal to remove:");
             String goalToDelete = scanner.nextLine();
-            Data.goalDelete(goalToDelete);
+            data.goalDelete(goalToDelete);
 
             System.out.println("Would you like to enter another goal? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
@@ -245,7 +261,7 @@ public class Menu {
         } while(!shouldPrint);
 
         System.out.println("Updated goals: ");
-        for (Goal goal : Data.goals) {
+        for (Goal goal : data.goals) {
             System.out.println("Goal: " + goal.getGoal() + " Ideal Count: " + goal.getIdealCount());
         }
 
@@ -260,15 +276,15 @@ public class Menu {
     private static void menuAddHabits() {
 
         String goalName;
-        ArrayList<String> habitsList;
+        HashSet<String> habitHashSet;
         Integer option;
 
-        Data.initializeGoalsAndHabits();
+//        Data.initializeGoalsAndHabits();
 
         // print all goals
         System.out.println("Your goals are:");
-        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-            System.out.println("Goal: " + entry.getKey());
+        for (Goal goal : data.goals) {
+            System.out.println("Goal: " + goal.getGoal());
         }
 
         do {
@@ -276,8 +292,8 @@ public class Menu {
             goalName = getGoalName();
 
             System.out.println("Enter habits:");
-            habitsList = getHabits();
-            Data.addHabits(goalName, habitsList);
+            habitHashSet = getHabits();
+            data.addHabits(goalName, habitHashSet);
 
             System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
             option = scanner.nextInt();
@@ -287,11 +303,48 @@ public class Menu {
 
         // Finally, show all goals and their habits
         System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : Data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
+            System.out.println("Goal: " + entry.getKey().getGoal() + " Habits: " + entry.getValue());
         }
 
     }
+
+//    private static void menuAddHabits() {
+//
+//        String goalName;
+////        ArrayList<String> habitsList;
+//        HashSet<String> habitHashSet;
+//        Integer option;
+//
+//        Data.initializeGoalsAndHabits();
+//
+//        // print all goals
+//        System.out.println("Your goals are:");
+//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
+//            System.out.println("Goal: " + entry.getKey());
+//        }
+//
+//        do {
+//            System.out.println("Enter the goal to add habits for:");
+//            goalName = getGoalName();
+//
+//            System.out.println("Enter habits:");
+//            habitHashSet = getHabits();
+//            Data.addHabits(goalName, habitHashSet);
+//
+//            System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
+//            option = scanner.nextInt();
+//            scanner.nextLine(); // Consume the \n left in the buffer
+//
+//        } while (option != 0);
+//
+//        // Finally, show all goals and their habits
+//        System.out.println("Here is a list of your goals, and the habits");
+//        for (Object[] item : Data.GoalHabitSetup) {
+//            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+//        }
+//
+//    }
 
     /**
      * @description This function prompts user for habits to append to an ArrayList. This is used in AddHabits
@@ -300,21 +353,21 @@ public class Menu {
      * @return ArrayList<String> for habits
      */
 
-    private static ArrayList<String> getHabits() {
-        ArrayList<String> habitsList = new ArrayList<>();
+    private static HashSet<String> getHabits() {
+        HashSet habitsSet = new HashSet();
         String habit;
         Integer option;
 
         do {
             habit = scanner.nextLine().trim().toLowerCase();
-            habitsList.add(habit);
+            habitsSet.add(habit);
 
             System.out.println("Would you like enter another habit? (Yes = any number | No = 0)");
             option = scanner.nextInt();
             scanner.nextLine(); // Consume the \n left in the buffer
 
         } while(habit.isEmpty() || option!=0);
-        return habitsList;
+        return habitsSet;
     }
 
 
@@ -338,20 +391,20 @@ public class Menu {
         Integer option;
 
         System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : Data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        for (Object[] item : data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
         }
 
         do {
             System.out.println("Enter the goal you want to remove a habit from:");
             goalName = getGoalName();
-            if (Data.goalExists(goalName)){ // If goal exists:
+            if (data.goalExists(goalName)){ // If goal exists:
                 System.out.println("Enter the habit you want to delete");
                 do {
                     habitToDelete = scanner.nextLine();
                 }while(habitToDelete.isEmpty());
 
-                Data.deleteHabitsFromGoal(goalName, habitToDelete);
+                data.deleteHabitsFromGoal(goalName, habitToDelete);
             }
 
             System.out.println("Would you like retry or delete a habit from another goal? (Yes = any number | No = 0)");
@@ -362,8 +415,8 @@ public class Menu {
 
         // Finally, show all goals and their habits
         System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : Data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        for (Object[] item : data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
         }
 
     }
@@ -375,8 +428,8 @@ public class Menu {
      */
     private static void menuCheckingGoalsAndHabits(){
         System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : Data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
+        for (Object[] item : data.GoalHabitSetup) {
+            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
         }
     }
 
@@ -388,12 +441,12 @@ public class Menu {
      * @author: Sanbeer
      */
     private static void menuEisenhowerMatrix(){
-        ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
+        ArrayList<String> goalsArrayList = data.getGoalsArrayList();
         ArrayList<Integer> choicesArrayList = new ArrayList<>();
         String[] categories = {"1) Urgent & Important", "2) Urgent & Not Important", "3) Important & Not Urgent",
                 "4) Not Important & Not Urgent"};
 
-        for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
+        for (int i = 0; i < data.getGoalsArrayList().size(); i++) {
             System.out.println("The 4 Quadrants are \"1) Urgent & Important\", \"2) Urgent & Not Important\", \"3) Important & Not Urgent\",\n" +
                     " \"4) Not Important & Not Urgent");
             System.out.println("What quadrant in the matrix would you like to choose for goal: " + goalsArrayList.get(i));
@@ -401,23 +454,24 @@ public class Menu {
             choicesArrayList.add(chosenSection);
         }
 
-        System.out.println(Data.storeEisenhowerMatrix(choicesArrayList));
+        System.out.println(data.storeEisenhowerMatrix(choicesArrayList));
         scanner.nextLine();
 
     }
 
     private static void menuCategorizeGoals() {
-        ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
+        ArrayList<String> goalsArrayList2 = data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
-        for (int i = 0; i < Data.getGoalsArrayList().size(); i++) {
+        for (int i = 0; i < data.getGoalsArrayList().size(); i++) {
             System.out.println("The 6 Categories are \"1) Finance\", \"2) Work\", \"3) School\", \"4) Emotional\", \n" +
                     "\"5) Spiritual\", \"6) Social");
             System.out.println("What category of goals would you like to choose for goal: " + goalsArrayList2.get(i));
             int chosenSection2 = scanner.nextInt();
-            Data.choicesArrayList2.add(chosenSection2);
+            data.choicesArrayList2.add(chosenSection2);
+//            data.setChoicesArrayList2(chosenSection2);
 
         }
-        System.out.println(Data.storeCategorizeGoals(Data.choicesArrayList2));
+        System.out.println(data.storeCategorizeGoals(data.choicesArrayList2));
         scanner.nextLine();
 
     }
@@ -436,7 +490,7 @@ public class Menu {
     private static void menuAddPointsToHabit() {
         // Invoke the updateHabitCompletionCounts method to update completion counts for habits.
         // This call reflects an action where user-earned points towards habit completion are modified.
-        Data.updateHabitCompletionCounts(); // Correctly invoke the update method here
+        data.updateHabitCompletionCounts(); // Correctly invoke the update method here
     }
 
     /**@description: Prompts the user to decide if they want to see their weekly habit completion rate for each habit.
@@ -451,8 +505,8 @@ public class Menu {
      */
     private static void menuWeeklyHabitCompletionRate() {
         // Retrieve goal points and the actual earned points for each habit
-        HashMap<String, Integer> habitAndGoals = Data.habitAndIdealCount();
-        HashMap<String, Integer> habitsAndEarned = Data.habitsAndEarned();
+        HashMap<String, Integer> habitAndGoals = data.habitAndIdealCount();
+        HashMap<String, Integer> habitsAndEarned = data.habitsAndEarned();
         Scanner scanner = new Scanner(System.in);
         boolean validInput = false;
 
@@ -468,7 +522,7 @@ public class Menu {
 
             if (shouldPrint) {
                 // If the user wants to see the completion rate, calculate and display it
-                HashMap<String, Integer> rate = Data.menuWeeklyHabitCompletionRate(habitAndGoals, habitsAndEarned, shouldPrint);
+                HashMap<String, Integer> rate = data.menuWeeklyHabitCompletionRate(habitAndGoals, habitsAndEarned, shouldPrint);
                 validInput = true; // Mark the input as valid to exit the loop
             } else if (shouldNotPrint) {
                 // If the user opts not to see the completion rate, exit back to the menu
@@ -493,14 +547,14 @@ public class Menu {
     private static void menuTop3Habits() {
         // Retrieve habit goals and the actual earned points for each habit from the Data class
         // habitAndGoals maps each habit to its ideal goal points
-        HashMap<String, Integer> habitAndGoals = Data.habitAndIdealCount();
+        HashMap<String, Integer> habitAndGoals = data.habitAndIdealCount();
 
         // habitsAndEarned maps each habit to the points actually earned by the user
-        HashMap<String, Integer> habitsAndEarned = Data.habitsAndEarned();
+        HashMap<String, Integer> habitsAndEarned = data.habitsAndEarned();
 
         // Assuming the correct method to call is something like calculateTop3Habits instead of menuTop3Goals
         // This function would compare the ideal goals and actual points to determine the top 3 habits
-        String top3HabitsSummary = Data.menuTop3Habits(habitAndGoals, habitsAndEarned);
+        String top3HabitsSummary = data.menuTop3Habits(habitAndGoals, habitsAndEarned);
 
         // Print the summary of the top 3 habits to the console
         System.out.println(top3HabitsSummary);
@@ -525,7 +579,7 @@ public class Menu {
             boolean notDelete = confirmation.equals("no") || confirmation.equals("false");
 
             if (delete) {
-                String result = Data.menuResetData(); // Ensure this method name matches your Data class method name
+                String result = data.menuResetData(); // Ensure this method name matches your Data class method name
                 System.out.println(result);
                 validInput = true; // Mark input as valid to exit the loop
             } else if (notDelete) {
