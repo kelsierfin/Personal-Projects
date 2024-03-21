@@ -25,19 +25,18 @@ public class Data {
     protected static HashSet<Goal> goals;
     protected static HashMap<String, ArrayList<String>> matrix;
 
-    protected static HashMap<String, ArrayList<String>> fields = new HashMap<>();
+    protected static HashMap<String, ArrayList<String>> fields;
 
-    protected static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
+    protected static ArrayList<Object[]> GoalHabitSetup; // Contains goal, its habits and idealcount
 
-
-    protected static HashMap<Goal, HashSet<Habit>> tracker = new HashMap<>();
+    protected static HashMap<Goal, HashSet<Habit>> tracker;
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
     protected static final int INDEX_GOALNAME = 0;
     protected static final int INDEX_HABITSLIST = 1;
 
-    protected static final HashMap<String, Integer> habitAndICounts = new HashMap<>();
-    protected static final  HashMap<String, Integer> habitAndECounts = new HashMap<>();
+    protected static HashMap<String, Integer> habitAndICounts;
+    protected static  HashMap<String, Integer> habitAndECounts;
     private static Scanner scanner = new Scanner(System.in);
     protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
 
@@ -45,7 +44,12 @@ public class Data {
         this.choicesArrayList2 = new ArrayList<>();
         this.goals = new HashSet<>();
         this.matrix = new HashMap<>();
-
+        this.fields = new HashMap<>();
+        this.GoalHabitSetup = new ArrayList<>();
+        this.tracker = new HashMap<>();
+        this.habitAndICounts = new HashMap<>();
+        this.habitAndECounts = new HashMap<>();
+        this.GoalAndIdealCount = new HashMap<>();
 
     }
 
