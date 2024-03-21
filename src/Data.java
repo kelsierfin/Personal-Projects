@@ -1,5 +1,6 @@
 import core.objects.Goal;
 import core.objects.Habit;
+import core.objects.Habits;
 
 import java.util.*;
 
@@ -18,26 +19,37 @@ public class Data {
      * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
      * @author Tania
      */
-    public static ArrayList<Integer> choicesArrayList2 = new ArrayList<>();
+
+    protected static  ArrayList<Integer> choicesArrayList2;
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
-    public static final HashSet<Goal> goals = new HashSet<>();
-    public static HashMap<String, ArrayList<String>> matrix = new HashMap<>();
-    public static HashMap<String, ArrayList<String>> fields = new HashMap<>();
+    protected static HashSet<Goal> goals;
+    protected static HashMap<String, ArrayList<String>> matrix;
 
-    public static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
+    protected static HashMap<String, ArrayList<String>> fields = new HashMap<>();
 
-    public static final ArrayList<Habit> habitsList = new ArrayList<>();
+    protected static final ArrayList<Object[]> GoalHabitSetup = new ArrayList<>(); // Contains goal, its habits and idealcount
 
-    public static HashMap<Goal, ArrayList> tracker = new HashMap<>();
+
+    protected static HashMap<Goal, HashSet<Habit>> tracker = new HashMap<>();
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
-    public static final int INDEX_GOALNAME = 0;
-    public static final int INDEX_HABITSLIST = 1;
+    protected static final int INDEX_GOALNAME = 0;
+    protected static final int INDEX_HABITSLIST = 1;
 
-    private static final HashMap<String, Integer> habitAndICounts = new HashMap<>();
-    private static final  HashMap<String, Integer> habitAndECounts = new HashMap<>();
+    protected static final HashMap<String, Integer> habitAndICounts = new HashMap<>();
+    protected static final  HashMap<String, Integer> habitAndECounts = new HashMap<>();
     private static Scanner scanner = new Scanner(System.in);
     protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
+
+    public Data() {
+        this.choicesArrayList2 = new ArrayList<>();
+        this.goals = new HashSet<>();
+        this.matrix = new HashMap<>();
+
+
+    }
+
+
 
 
 
@@ -63,18 +75,6 @@ public class Data {
             return true;
          }
     }
-
-//    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
-//
-//        if (!goalExists(goalName)) {
-//            GoalAndIdealCount.put(goalName, goalIdealCount);
-//            System.out.printf("Goal added successfully!\nYour goal is: " + goalName + " and your ideal count is: " + goalIdealCount + "\n");
-//            return true;
-//        } else {
-//            System.out.println("Your goal (" + goalName + ") already exists.");
-//            return false;
-//        }
-//    }
 
 
     /**
@@ -143,40 +143,63 @@ public class Data {
     /**
      * @description This function allows a user to add habits to their goal
      * @param goalName
-     * @param habitsList
+     * @param habitsSet
      * @return boolean
      */
 
-    public static boolean addHabits(String goalName, ArrayList<String> habitsList) {
-        if (goalExists(goalName)) {
-            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
-            for (Object[] goalInfo : GoalHabitSetup) {
-                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+    public static boolean addHabits(String goalName, HashSet<String> habitsSet) {
 
-                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
-                    for (String habit : habitsList) {
-                        if (!existingHabits.contains(habit)) {
-                            existingHabits.add(habit);
-                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+        // Go through each goal until we find goalName
+        // convert each string to a habit object
+        // place the object in a hashset (prevent duplicates)
+        // Add the habit object to tracker, next to the goal
 
-                            // Map each new habit to the goal's ideal count
-                            habitAndICounts.put(habit, goalIdealCount);
-                            // Initialize each new habit's earned count to 0
-                            habitAndECounts.put(habit, 0);
-                        } else {
-                            System.out.println("Duplicate habit. Retry.");
-                            return false;
-                        }
-                        return true;
-                    }
+        HashSet<Habit> habitsHashSet = new HashSet<>();
+
+
+        for (Goal goal : goals) {
+            if (goal.equals(goalName)) {
+                for (String habit : habitsSet) {
+                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
+                    habitsHashSet.add(individualHabit);
                 }
+                tracker.put(goal,habitsHashSet);
+                return true;
             }
-        } else {
-            System.out.println("Invalid goal. Retry");
-            return false;
         }
+        System.out.println("Invalid goal. Please re-try");
         return false;
+
+
+//        if (goalExists(goalName)) {
+//            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
+//            for (Object[] goalInfo : GoalHabitSetup) {
+//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+//                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
+//
+//                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
+//                    for (String habit : habitsList) {
+//                        if (!existingHabits.contains(habit)) {
+//                            existingHabits.add(habit);
+//                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
+//
+//                            // Map each new habit to the goal's ideal count
+//                            habitAndICounts.put(habit, goalIdealCount);
+//                            // Initialize each new habit's earned count to 0
+//                            habitAndECounts.put(habit, 0);
+//                        } else {
+//                            System.out.println("Duplicate habit. Retry.");
+//                            return false;
+//                        }
+//                        return true;
+//                    }
+//                }
+//            }
+//        } else {
+//            System.out.println("Invalid goal. Retry");
+//            return false;
+//        }
+//        return false;
     }
 
 
