@@ -3,7 +3,7 @@ package core.objects;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Goal {
+public class Goal implements Comparable<Goal>{
 
     // Object fields
     private String goalName;
@@ -42,6 +42,11 @@ public class Goal {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+
+    public int compareTo(Goal goal){
+        return Integer.compare(idealCount, goal.idealCount);
     }
 
 

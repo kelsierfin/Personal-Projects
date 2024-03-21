@@ -1,5 +1,6 @@
 import core.objects.Goal;
 import core.objects.Habit;
+import core.comparators.GoalCountComparators;
 
 import java.util.*;
 
@@ -110,9 +111,19 @@ public class Menu {
     }
 
     private static void menuHabitRecommendation() {
+
     }
 
     private static void menuGoalRecommendation() {
+        ArrayList<Integer> idealCountedGoals = new ArrayList<>();
+        for(Goal goal: data.goals){
+            idealCountedGoals.add(getIdealCount());
+
+
+
+        }
+
+
 
     }
 
