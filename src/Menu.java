@@ -469,7 +469,6 @@ public class Menu {
         scanner.nextLine();
 
     }
-
     private static void menuCategorizeGoals() {
         ArrayList<String> goalsArrayList2 = data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
