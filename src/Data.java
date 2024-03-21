@@ -48,11 +48,6 @@ public class Data {
 
     }
 
-
-
-
-
-
     /**
      * @param goalName
      * @param goalIdealCount
@@ -142,32 +137,37 @@ public class Data {
     /**
      * @description This function allows a user to add habits to their goal
      * @param goalName
-     * @param habitsSet
+     * @param habitsList
      * @return boolean
      */
 
-    public static boolean addHabits(String goalName, HashSet<String> habitsSet) {
+    public static void addHabits(String goalName, ArrayList<String> habitsList) {
 
         // Go through each goal until we find goalName
         // convert each string to a habit object
         // place the object in a hashset (prevent duplicates)
         // Add the habit object to tracker, next to the goal
 
-        HashSet<Habit> habitsHashSet = new HashSet<>();
+
+        boolean goalFound = false;
 
 
         for (Goal goal : goals) {
-            if (goal.equals(goalName)) {
-                for (String habit : habitsSet) {
+            if (goal.getGoal().equals(goalName)) {
+                HashSet<Habit> habitsHashSet = new HashSet<>();
+                for (String habit : habitsList) {
                     Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
                     habitsHashSet.add(individualHabit);
                 }
+                goalFound = true;
                 tracker.put(goal,habitsHashSet);
-                return true;
+                break;
             }
         }
-        System.out.println("Invalid goal. Please re-try");
-        return false;
+        
+        if (!goalFound) {
+            System.out.println("Invalid goal. Please re-try");
+        }
 
 
 //        if (goalExists(goalName)) {
