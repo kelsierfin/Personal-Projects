@@ -196,7 +196,6 @@ public class Menu {
         System.out.println("Your goals are:");
         for (Goal goal : data.goals) {
             System.out.println("Goal: " + goal.getGoal() + " Ideal Count: " + goal.getIdealCount());
-//            System.out.println(goal.toString());
         }
         scanner.nextLine(); // Consume the \n left in the buffer
 
@@ -258,7 +257,7 @@ public class Menu {
             String response = scanner.next().trim().toLowerCase();
             shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
 
-        } while(!shouldPrint);
+        } while(shouldPrint);
 
         System.out.println("Updated goals: ");
         for (Goal goal : data.goals) {
@@ -276,8 +275,9 @@ public class Menu {
     private static void menuAddHabits() {
 
         String goalName;
-        HashSet<String> habitHashSet;
-        Integer option;
+//        HashSet<String> habitHashSet;
+        ArrayList<String> habitsList;
+        boolean shouldPrint;
 
 //        Data.initializeGoalsAndHabits();
 
@@ -291,21 +291,23 @@ public class Menu {
             System.out.println("Enter the goal to add habits for:");
             goalName = getGoalName();
 
-            System.out.println("Enter habits:");
-            habitHashSet = getHabits();
-            data.addHabits(goalName, habitHashSet);
+//            System.out.println("Enter a habit:");
+            habitsList = getHabits();
+            data.addHabits(goalName, habitsList);
 
-            System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
-            option = scanner.nextInt();
-            scanner.nextLine(); // Consume the \n left in the buffer
+            System.out.println("Would you like to enter another goal? (Yes / No)");
+            String response = scanner.next().trim().toLowerCase();
+            shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
 
-        } while (option != 0);
+        } while (shouldPrint);
 
         // Finally, show all goals and their habits
         System.out.println("Here is a list of your goals, and the habits");
         for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
             System.out.println("Goal: " + entry.getKey().getGoal() + " Habits: " + entry.getValue());
         }
+
+        scanner.nextLine(); // Consume newline character in buffer
 
     }
 
@@ -353,21 +355,33 @@ public class Menu {
      * @return ArrayList<String> for habits
      */
 
-    private static HashSet<String> getHabits() {
-        HashSet habitsSet = new HashSet();
+    private static ArrayList<String> getHabits() {
+//        HashSet habitsSet = new HashSet();
+        ArrayList<String> habitsList = new ArrayList<>();
         String habit;
-        Integer option;
+        boolean shouldPrint = false;
 
         do {
+            System.out.println("Enter a habit");
             habit = scanner.nextLine().trim().toLowerCase();
-            habitsSet.add(habit);
 
-            System.out.println("Would you like enter another habit? (Yes = any number | No = 0)");
-            option = scanner.nextInt();
-            scanner.nextLine(); // Consume the \n left in the buffer
+            if (!habit.isEmpty()) {
+                habitsList.add(habit);
+            } else {
+                System.out.println("Invalid input.");
+                continue;
+            }
 
-        } while(habit.isEmpty() || option!=0);
-        return habitsSet;
+
+            System.out.println("Would you like to enter another habit? (Yes / No)");
+            String response = scanner.next().trim().toLowerCase();
+            shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
+            scanner.nextLine();
+
+        } while(shouldPrint);
+        
+        
+        return habitsList;
     }
 
 
@@ -428,9 +442,21 @@ public class Menu {
      */
     private static void menuCheckingGoalsAndHabits(){
         System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
-        }
+//        for (Object[] item : data.GoalHabitSetup) {
+//            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
+//        }
+//        for (Map.Entry<Goal, HashSet<Habit>> entry: data.tracker.entrySet()) {
+//            String key = entry.getKey().getGoal();
+//            HashSet<Habit> values = entry.getValue();
+//
+//            System.out.println("Key: " + key);
+//            System.out.println("Values:");
+//            for (String value : values) {
+//                System.out.println(value);
+//            }
+//            System.out.println();
+//        }
+//        }
     }
 
     /**@description:Asks the user for what quadrant he wants to put each of his goals
