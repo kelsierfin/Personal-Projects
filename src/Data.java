@@ -32,14 +32,11 @@ public class Data {
     protected static HashMap<Goal, HashSet<Habit>> tracker;
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
-    protected static final int INDEX_GOALNAME = 0;
-    protected static final int INDEX_HABITSLIST = 1;
+
 
     protected static HashMap<String, Integer> habitAndICounts;
     protected static  HashMap<String, Integer> habitAndECounts;
     private static Scanner scanner = new Scanner(System.in);
-    protected static HashMap<String, Integer> GoalAndIdealCount; // placeholder
-
     public Data() {
         this.choicesArrayList2 = new ArrayList<>();
         this.goals = new HashSet<>();
@@ -49,7 +46,6 @@ public class Data {
         this.tracker = new HashMap<>();
         this.habitAndICounts = new HashMap<>();
         this.habitAndECounts = new HashMap<>();
-        this.GoalAndIdealCount = new HashMap<>();
     }
 
     /**
@@ -75,23 +71,6 @@ public class Data {
     }
 
 
-    /**
-     * This function checks if the goal entered already exists.
-     * NOTE: THIS METHOD MAY NOT BE NEEDED ANYMORE.
-     * @param goalName (String)
-     * @return boolean
-     * @author Tania
-     */
-    public static boolean goalExists(String goalName) {
-
-        String goalNameDuplicate = goalName.toLowerCase().replaceAll("\\s", "");
-        for (String existingGoal : GoalAndIdealCount.keySet()) {
-            if (goalNameDuplicate.equals(existingGoal.toLowerCase().replaceAll("\\s", ""))) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * @param goalToDelete - name for goal to remove
@@ -169,22 +148,6 @@ public class Data {
     }
 
 
-    /**
-     * This function takes all the goals from GoalHabitSetup, then takes all the habits and creates an ArrayList. This is to be used in Sanbeer's functions.
-     * @return ArrayList containing habits
-     * @author Tania
-     */
-//
-//    public static ArrayList<String> getAllHabitsArrayList() {
-//        // For each Goal, take all habits and add to our ArrayList
-//        ArrayList<String> habitsArrayList = new ArrayList<>();
-//
-//        for (Object[] item : GoalHabitSetup) {
-//            habitsArrayList.addAll((ArrayList<String>) item[INDEX_HABITSLIST]);
-//        }
-//        return habitsArrayList;
-//    }
-
 
     /**
      * @param goalName
@@ -210,17 +173,22 @@ public class Data {
         HashSet<Habit> habitsSet = tracker.get(goalOfInterest); // Get hashset for our goal
 
         // Use an iterator to modify hashset within loop
-        Iterator<Habit> iterator = habitsSet.iterator();
+        if (habitsSet!=null) {
+            Iterator<Habit> iterator = habitsSet.iterator();
 
-        while (iterator.hasNext()) {
-            Habit habit = iterator.next();
+            while (iterator.hasNext()) {
+                Habit habit = iterator.next();
 
-            if (habit.getHabit().equals(habitToDelete)) {
-                iterator.remove();
-                System.out.println("Habit removed successfully");
-                tracker.put(goalOfInterest, habitsSet);
+                if (habit.getHabit().equals(habitToDelete)) {
+                    iterator.remove();
+                    System.out.println("Habit removed successfully");
+                    tracker.put(goalOfInterest, habitsSet);
+                }
             }
+        } else {
+            System.out.println("Enter a valid Goal/Habit");
         }
+
 
     }
 
@@ -299,7 +267,6 @@ public class Data {
         tracker.clear();
         habitAndICounts.clear();
         habitAndECounts.clear();
-        GoalAndIdealCount.clear();
 
         // Reset CSV File
         resetCsvFile("path/to/your/test.csv"); //

@@ -35,8 +35,6 @@ public class Menu {
         options.add("Add Points to Habit");
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
-        options.add("Get Habit Recommendation");
-        options.add("View Goals and Habits");
         options.add("View Tracker");
         options.add("Load Data");
         options.add("Save Data");
@@ -84,12 +82,10 @@ public class Menu {
                 case 9 -> menuAddPointsToHabit();
                 case 10 -> menuWeeklyHabitCompletionRate();
                 case 11 -> menuTop3Habits();
-                case 12 -> menuHabitRecommendation();
-                case 13 -> menuCheckingGoalsAndHabits(); // REMOVE. REPLACED BY TRACKER.
-                case 14 -> menuViewTracker();
-                case 15 -> menuLoadData();
-                case 16 -> menuSaveData();
-                case 17 -> menuResetData();
+                case 12 -> menuViewTracker();
+                case 13 -> menuLoadData();
+                case 14 -> menuSaveData();
+                case 15 -> menuResetData();
 
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
@@ -371,8 +367,7 @@ public class Menu {
                     data.deleteHabitsFromGoal(goalName, habitToDelete);
                 }
             }
-
-            System.out.println("Would you like to enter another habit? (Yes / No)");
+            System.out.println("Would you like to re-try or enter another habit? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
             shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
             scanner.nextLine();
@@ -390,29 +385,6 @@ public class Menu {
         }
     }
 
-    /** @description This function allows the user to see what goals and habits they have
-     * @author Tania
-     * @params None
-     * @return None
-     */
-    private static void menuCheckingGoalsAndHabits(){
-        System.out.println("Here is a list of your goals, and the habits");
-//        for (Object[] item : data.GoalHabitSetup) {
-//            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
-//        }
-//        for (Map.Entry<Goal, HashSet<Habit>> entry: data.tracker.entrySet()) {
-//            String key = entry.getKey().getGoal();
-//            HashSet<Habit> values = entry.getValue();
-//
-//            System.out.println("Key: " + key);
-//            System.out.println("Values:");
-//            for (String value : values) {
-//                System.out.println(value);
-//            }
-//            System.out.println();
-//        }
-//        }
-    }
 
     private static void menuViewTracker() {
 
