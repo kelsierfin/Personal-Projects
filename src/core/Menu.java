@@ -122,16 +122,16 @@ public class Menu {
 
 
     private static void save() {
-      String filename;
-      File file = null;
+        String filename;
+        File file = null;
 
-      do {
-          do {
-              System.out.println("Enter a filename: ");
-              filename = scanner.nextLine().trim();
-          } while(filename.isEmpty());
-          file = new File(filename);
-      } while (file.exists() && !file.canWrite());
+        do {
+            do {
+                System.out.println("Enter a filename: ");
+                filename = scanner.nextLine().trim();
+            } while(filename.isEmpty());
+            file = new File(filename);
+        } while (file.exists() && !file.canWrite());
 
         FileSaver.save(file, data);
 
@@ -191,8 +191,8 @@ public class Menu {
             System.out.println(data.fields);
             scanner.nextLine();
         }else{
-        System.out.println("You haven't categorized your goals yet, please press Enter ");
-        scanner.nextLine();}
+            System.out.println("You haven't categorized your goals yet, please press Enter ");
+            scanner.nextLine();}
     }
 
 
@@ -502,47 +502,79 @@ public class Menu {
     }
 
 
+    /**
+     * Displays a menu option to add a completion point to a specified habit.
+     * This method prompts the user to enter the name of the habit to which they want to add a point.
+     * After receiving the input, it trims any leading or trailing whitespace and updates the habit's
+     * completion count using {@code data.updateHabitCompletion}.
+     *
+     * @author: Phone
+     */
     private static void menuAddPointsToHabit() {
+        // Prompt the user to enter the name of the habit
         System.out.println("Enter the name of the habit to add a point to:");
-        String habitName = scanner.nextLine().trim();
-        data.updateHabitCompletion(habitName);
+        String habitName = scanner.nextLine().trim();// Remove leading/trailing spaces
+        data.updateHabitCompletion(habitName);// Update the completion count for the habit
     }
+
+    /**
+     * Displays a menu option to view the weekly completion rate for each habit.
+     * This method asks the user if they want to see their weekly completion percentage for each habit.
+     * If the user responds positively, it calculates and displays the completion rates for all habits.
+     * The user must type 'yes' to view the rates or 'no' to skip. It repeats the prompt on invalid input.
+     *
+     * @author: Phone
+     */
     private static void menuWeeklyHabitCompletionRate() {
         boolean isValidInput = false;
         do {
             System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
             String response = scanner.nextLine().trim().toLowerCase();
 
+            // Determine if the response indicates to print or not to print the completion rates
             boolean shouldPrint = response.equals("yes") || response.equals("true");
             boolean shouldNotPrint = response.equals("no") || response.equals("false");
 
             if (shouldPrint) {
-                Map<String, Double> completionRates = data.calculateWeeklyCompletionRates();
+                // Calculate and display completion rates for all habits
+                Map<String, Double> completionRates = Data.calculateWeeklyCompletionRates();
                 completionRates.forEach((habit, rate) ->
                         System.out.println("Habit: " + habit + ", Completion Rate: " + String.format("%.0f%%", rate)));
                 isValidInput = true;
             } else if (shouldNotPrint) {
+                // Do not display rates; valid response received
                 isValidInput = true;
             } else {
+                // Handle invalid response
                 System.out.println("Invalid input. Please type 'yes' or 'no'.");
             }
-        } while (!isValidInput);
+        } while (!isValidInput);// Repeat until valid input is received
     }
 
+    /**
+     * Displays the top 3 habits based on their weekly completion rates.
+     * This method retrieves the top 3 habits with the highest completion rates and formats a message
+     * to display them. If fewer than three habits are available, it adjusts the message accordingly.
+     * The habits are presented in descending order of their completion rates.
+     *
+     * @author: Phone
+     */
     private static void menuTop3Habits() {
-        List<Habit> topHabits = data.getTop3HabitsByCompletionRate();
+        List<Habit> topHabits = Data.getTop3HabitsByCompletionRate();
         if (topHabits.isEmpty()) {
             System.out.println("No habit in the database.");
-            return;
+            return; // Exit if no habits are found
         }
 
         StringBuilder message = new StringBuilder();
+        // Determine the message based on the number of habits retrieved
         if (topHabits.size() >= 3) {
             message.append("Top 3 habits for this week are: ");
         } else {
             message.append("Mostly done habits are: ");
         }
 
+        // Construct a message listing the habits and their completion rates
         for (int i = 0; i < topHabits.size(); i++) {
             Habit habit = topHabits.get(i);
             if (i > 0) message.append(", ");
@@ -555,19 +587,22 @@ public class Menu {
             message.append(".");
         }
 
-        System.out.println(message);
+        System.out.println(message);// Display the formatted message
     }
 
+    /**
+     * Displays a menu option to reset all application and file data.
+     * This method clears all data tracked by the application and resets the specified CSV file
+     * to its default state. It is intended for use in resetting the application's state, e.g., for testing
+     * or starting fresh. The path to the CSV file must be adjusted as necessary.
+     *
+     * @author: Phone
+     */
     private static void menuResetData() {
-        data.resetAllData();
-        data.resetCsvFile("path/to/your/test.csv"); // Replace with the actual text file
+        Data.resetAllData();
+        //Data.resetCsvFile("path/to/your/test.csv"); // Replace with the actual text file
         System.out.println("Application and file data have been reset.");
     }
-
-
-
-
-
 
 }
 
