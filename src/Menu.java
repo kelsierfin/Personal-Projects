@@ -513,120 +513,70 @@ public class Menu {
     }
 
 
-
-    /**@description:Updates the completion counts for habits.
-     *
-     *calls the {@code updateHabitCompletionCounts} method from the {@code Data} class,which handles the specifics of updating these counts.
-     * This abstraction allows for a separation of concerns,where this method deals with the user interface aspect, and the {@code Data} class handles data manipulation.
-     *
-     * @param:
-     * @return:
-     * @author: Phone
-     */
     private static void menuAddPointsToHabit() {
-        // Invoke the updateHabitCompletionCounts method to update completion counts for habits.
-        // This call reflects an action where user-earned points towards habit completion are modified.
-        data.updateHabitCompletionCounts(); // Correctly invoke the update method here
+        System.out.println("Enter the name of the habit to add a point to:");
+        String habitName = scanner.nextLine().trim();
+        data.updateHabitCompletion(habitName);
     }
-
-    /**@description: Prompts the user to decide if they want to see their weekly habit completion rate for each habit.
-     *
-     *This method first retrieves two pieces of information: the ideal goal points for each habit and the actual points earned.
-     *Based on the user's response, the method either calculates and displays the completion rates or exits back to the main menu.
-     *completion rates are calculated by comparing the actual points earned against the ideal goal points for each habit.
-     *
-     * @param: None
-     * @return: None
-     * @author: Phone
-     */
     private static void menuWeeklyHabitCompletionRate() {
-        // Retrieve goal points and the actual earned points for each habit
-        HashMap<String, Integer> habitAndGoals = data.habitAndIdealCount();
-        HashMap<String, Integer> habitsAndEarned = data.habitsAndEarned();
-        Scanner scanner = new Scanner(System.in);
-        boolean validInput = false;
-
+        boolean isValidInput = false;
         do {
-            // Prompt the user for their preference on viewing the weekly completion percentage
             System.out.println("Do you want to see your weekly completion percentage for each habit (type yes or no)?");
-            String response = scanner.next().trim().toLowerCase();
+            String response = scanner.nextLine().trim().toLowerCase();
 
-            // Determine the user's response
             boolean shouldPrint = response.equals("yes") || response.equals("true");
             boolean shouldNotPrint = response.equals("no") || response.equals("false");
-            scanner.nextLine(); // Consume any leftover newline character in the buffer
 
             if (shouldPrint) {
-                // If the user wants to see the completion rate, calculate and display it
-                HashMap<String, Integer> rate = data.menuWeeklyHabitCompletionRate(habitAndGoals, habitsAndEarned, shouldPrint);
-                validInput = true; // Mark the input as valid to exit the loop
+                Map<String, Double> completionRates = data.calculateWeeklyCompletionRates();
+                completionRates.forEach((habit, rate) ->
+                        System.out.println("Habit: " + habit + ", Completion Rate: " + String.format("%.0f%%", rate)));
+                isValidInput = true;
             } else if (shouldNotPrint) {
-                // If the user opts not to see the completion rate, exit back to the menu
-                System.out.println("Heading Back to menu");
-                validInput = true; // Mark the input as valid to exit the loop
+                isValidInput = true;
             } else {
-                // Handle invalid input by asking again
                 System.out.println("Invalid input. Please type 'yes' or 'no'.");
             }
-        } while (!validInput); // Repeat until a valid input is received
+        } while (!isValidInput);
     }
 
-    /**@description: Displays the top 3 habits based on comparisons between goals and actual earned points.
-     *
-     *  retrieves two sets of data from the Data class: one representing the ideal goal points for each habit, and another showing the actual points earned from those habits.
-     *  calculates the top 3 habits by comparing these sets of data. The results are summarized and printed to the console.
-     *
-     * @param: None
-     * @return: None
-     * @author: Phone
-     */
     private static void menuTop3Habits() {
-        // Retrieve habit goals and the actual earned points for each habit from the Data class
-        // habitAndGoals maps each habit to its ideal goal points
-        HashMap<String, Integer> habitAndGoals = data.habitAndIdealCount();
+        List<Habit> topHabits = data.getTop3HabitsByCompletionRate();
+        if (topHabits.isEmpty()) {
+            System.out.println("No habit in the database.");
+            return;
+        }
 
-        // habitsAndEarned maps each habit to the points actually earned by the user
-        HashMap<String, Integer> habitsAndEarned = data.habitsAndEarned();
+        StringBuilder message = new StringBuilder();
+        if (topHabits.size() >= 3) {
+            message.append("Top 3 habits for this week are: ");
+        } else {
+            message.append("Mostly done habits are: ");
+        }
 
-        // Assuming the correct method to call is something like calculateTop3Habits instead of menuTop3Goals
-        // This function would compare the ideal goals and actual points to determine the top 3 habits
-        String top3HabitsSummary = data.menuTop3Habits(habitAndGoals, habitsAndEarned);
+        for (int i = 0; i < topHabits.size(); i++) {
+            Habit habit = topHabits.get(i);
+            if (i > 0) message.append(", ");
+            message.append(String.format("%s (%.2f%% complete)", habit.getHabit(), habit.getWeeklyCompletionRate()));
+        }
 
-        // Print the summary of the top 3 habits to the console
-        System.out.println(top3HabitsSummary);
+        if (topHabits.size() <= 3) {
+            message.append(" in descending order.");
+        } else {
+            message.append(".");
+        }
+
+        System.out.println(message);
     }
 
-    /**@description: Resets the application data based on user confirmation
-     *
-     * @param: None
-     * @return None
-     * @author: Phone
-     */
     private static void menuResetData() {
-        Scanner scanner = new Scanner(System.in);
-        boolean validInput = false; // Flag to track if the user input is valid
-
-        do {
-            System.out.println("After you reset the data, you will not be able to retrieve any history.");
-            System.out.println("Do you still want to reset? (Type yes or no):");
-            String confirmation = scanner.next().trim().toLowerCase();
-
-            boolean delete = confirmation.equals("yes") || confirmation.equals("true");
-            boolean notDelete = confirmation.equals("no") || confirmation.equals("false");
-
-            if (delete) {
-                String result = data.menuResetData(); // Ensure this method name matches your Data class method name
-                System.out.println(result);
-                validInput = true; // Mark input as valid to exit the loop
-            } else if (notDelete) {
-                System.out.println("Heading Back to Menu");
-                validInput = true; // Mark input as valid to exit the loop
-            } else {
-                System.out.println("Invalid input. Please type 'yes' or 'no'.");
-                // Loop will continue due to invalid input
-            }
-        } while (!validInput); // Loop until a valid input is received
+        data.resetAllData();
+        data.resetCsvFile("path/to/your/test.csv"); // Replace with the actual text file
+        System.out.println("Application and file data have been reset.");
     }
+
+
+
 
 
 
