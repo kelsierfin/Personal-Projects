@@ -6,7 +6,6 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-//        core.Data.initializeGoalsAndHabits();
         if(args.length>2){
             System.err.println("Expected one command line argument for filename to load from.");
         }
