@@ -1,6 +1,5 @@
 import core.objects.Goal;
 import core.objects.Habit;
-import core.objects.Habits;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -24,7 +23,6 @@ public class Data {
     protected static  ArrayList<Integer> choicesArrayList2;
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     protected static HashSet<Goal> goals;
-    protected static HashSet<Habit> habits; // Hashset for habits for one goal
     protected static HashMap<String, ArrayList<String>> matrix;
 
     protected static HashMap<String, ArrayList<String>> fields;
@@ -45,7 +43,6 @@ public class Data {
     public Data() {
         this.choicesArrayList2 = new ArrayList<>();
         this.goals = new HashSet<>();
-        this.habits = new HashSet<>();
         this.matrix = new HashMap<>();
         this.fields = new HashMap<>();
         this.GoalHabitSetup = new ArrayList<>();
@@ -53,7 +50,6 @@ public class Data {
         this.habitAndICounts = new HashMap<>();
         this.habitAndECounts = new HashMap<>();
         this.GoalAndIdealCount = new HashMap<>();
-
     }
 
     /**
@@ -144,8 +140,8 @@ public class Data {
 
         for (Goal goal : goals) {
             if (goal.getGoal().equals(goalName)) {
-                for (String habit : habitsList) {
-                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), 0, habit);
+                for (String habitName : habitsList) {
+                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), 0, habitName);
                     allHabits.add(individualHabit);
                 }
                 // Add hashset to tracker
@@ -199,7 +195,6 @@ public class Data {
 
     public static void deleteHabitsFromGoal(String goalName, String habitToDelete) {
 
-        // Iterate through each goal in tracker until our goal is found
         // Iterate through the habits hashset of the goal until our habit is found
         // Remove the habit
 
@@ -215,53 +210,22 @@ public class Data {
 
         HashSet<Habit> habitsSet = tracker.get(goalOfInterest); // Get hashset for our goal
 
-//        for
+        // Use an iterator to modify hashset within loop
+        Iterator<Habit> iterator = habitsSet.iterator();
 
-//        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
-//            if (entry.getKey().getGoal().equals(goalName)) {
-//                System.out.println("Goal found in tracker: " + goalName);
-//                HashSet<Habit> setOfHabits = tracker.get(entry.getKey());
-//
-//                for (Habit habit : entry.getValue()) {
-//                    if (habit.getHabit().equals(habitToDelete)) {
-//                        System.out.println("Habit detected in hashset: " + habitToDelete + "tracker: " + habit.getHabit());
-//
-//                        setOfHabits.remove(habit);
-//                        tracker.put(entry.getKey(), setOfHabits);
-//                    }
-//                }
-//            }
-//        }
+        while (iterator.hasNext()) {
+            Habit habit = iterator.next();
 
-        System.out.println("Here is a list of your goals, and the habits");
-        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
-            System.out.println("Goal: " + entry.getKey().getGoal());
-            for (Habit habit : entry.getValue()) {
-                System.out.println("Habit: " + habit.getHabit() + " Ideal Count: " + habit.getIdealCount());
+            if (habit.getHabit().equals(habitToDelete)) {
+                iterator.remove();
+                System.out.println("Habit removed successfully");
+                tracker.put(goalOfInterest, habitsSet);
             }
         }
 
-
-
-//        if (goalExists(goalName)) {
-//            for (Object[] goalInfo : GoalHabitSetup) {
-//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-//                    ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST]; // Add string casting
-//                    if (habitsList.contains(habitToDelete)) {
-//                        habitsList.remove(habitToDelete);
-//                        System.out.println("Habit deleted!");
-//                        return true;
-//                    } else {
-//                        System.out.println("Habit is not valid. Retry.");
-//                        return false;
-//                    }
-//                }
-//            }
-//        } else {
-//            return false;
-//        }
-//        return false;
     }
+
+
     public Habit findHabitByName(String habitName) {
         for (HashSet<Habit> habits : tracker.values()) {
             for (Habit habit : habits) {
