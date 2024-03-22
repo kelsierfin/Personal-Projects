@@ -1,3 +1,5 @@
+package core;
+
 import core.objects.Goal;
 import core.objects.Habit;
 
@@ -31,6 +33,8 @@ public class Data {
 
     protected static ArrayList<Object[]> GoalHabitSetup; // Contains goal, its habits and idealcount
 
+
+
     protected static HashMap<Goal, HashSet<Habit>> tracker;
         // Arraylist (habitsList). The habitslist contains the Habit objects.
 
@@ -50,6 +54,10 @@ public class Data {
         this.habitAndECounts = new HashMap<>();
     }
 
+    public static HashMap<Goal, HashSet<Habit>> getTracker() {
+        return tracker;
+    }
+
     /**
      * @param goalName
      * @param goalIdealCount
@@ -58,9 +66,9 @@ public class Data {
      * The goal is the key, and ideal count is the value.
      * @author Tania
      */
-    public static boolean createAGoal(String goalName, Integer goalIdealCount) {
+    public static boolean createAGoal(String goalName, Integer goalIdealCount, String category) {
 
-        Goal goal = new Goal(goalName, goalIdealCount, null);
+        Goal goal = new Goal(goalName, goalIdealCount, category);
 
         if(goals.contains(goal)){
             System.out.println("Your goal (" + goalName + ") already exists.");
@@ -129,7 +137,6 @@ public class Data {
                 tracker.put(goal, allHabits);
             }
         }
-
     }
 
 

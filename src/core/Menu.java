@@ -1,3 +1,5 @@
+package core;
+
 import core.objects.Goal;
 import core.objects.Habit;
 import core.util.FileLoader;
@@ -19,11 +21,11 @@ public class Menu {
     private static Data data = new Data();
 
     // Create scanner object for user input.
-    // Private so it is only accessible within the Menu class.
+    // Private so it is only accessible within the core.Menu class.
     private static final Scanner scanner = new Scanner(System.in);
 
     // Create menu for user interaction.
-    // Use a static initializer. This initializes the ArrayList when we load the Menu class.
+    // Use a static initializer. This initializes the ArrayList when we load the core.Menu class.
     private static final ArrayList<String> options = new ArrayList<>();
     static {
         options.add("Exit"); // At index 0
@@ -39,9 +41,9 @@ public class Menu {
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
         options.add("View Tracker");
-        options.add("Load Data");
-        options.add("Save Data");
-        options.add("Reset Data");
+        options.add("Load core.Data");
+        options.add("Save core.Data");
+        options.add("Reset core.Data");
 
     }
 
@@ -59,7 +61,7 @@ public class Menu {
         optMessage = sb.toString(); // Update the optMessage object with the final menu
     }
 
-    // Run the menuLoop everytime Main is called
+    // Run the menuLoop everytime core.Main is called
     public static void menuLoop() {
         System.out.println(optMessage);
         String choice = scanner.nextLine();
@@ -195,9 +197,10 @@ public class Menu {
 
             // Ask user to input num of days they want to work on their goal
             goalIdealCount = getIdealCount();
+            String category = null;
 
-            // Send data to Data.java to populate hashmap
-            data.createAGoal(goalName, goalIdealCount);
+            // Send data to core.Data.java to populate hashmap
+            data.createAGoal(goalName, goalIdealCount, category);
 
             // Prompt user to continue or exit menu
             System.out.println("Would you like to enter another goal? (Yes / No)");

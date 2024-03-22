@@ -1,6 +1,7 @@
 package core.util;
 
 
+import core.Data;
 import core.objects.Goal;
 import core.objects.Habit;
 
@@ -14,10 +15,15 @@ public class FileSaver {
     public static boolean save(File file, Data data) {
         try(FileWriter fw = new FileWriter(file)){
             // Write CSV header
-            fw.write("Goals and Habits\n");
 
-            for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
+            fw.write("Goals\n");
+            for (Map.Entry<Goal, HashSet<Habit>> entry : data.getTracker().entrySet()) {
                 fw.write(String.format("%s, %d, %s", entry.getKey().getGoal(), entry.getKey().getIdealCount(), entry.getKey().getCategory()));
+            }
+            fw.flush();
+
+            fw.write("Habits\n");
+            for (Map.Entry<Goal, HashSet<Habit>> entry : data.getTracker().entrySet()) {
                 for (Habit habit : entry.getValue()) {
                     fw.write(String.format("%s, %d, %s, %d, %s", habit.getGoal(), habit.getIdealCount(), habit.getCategory(), habit.getCurrentCount(), habit.getHabit()));
                 }
