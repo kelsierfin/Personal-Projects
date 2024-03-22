@@ -108,8 +108,6 @@ public class Menu {
 
         }
         System.out.printf("Thank you for using the habit and goal tracker!%nSee you tomorrow (hopefully)!");
-
-
         scanner.close();
     }
 
@@ -162,17 +160,8 @@ public class Menu {
      */
     private static void menuCreateGoal() {
 
-        // Summary:
-        // Ask user to input goal
-        // Goal must be a String, and not empty
-        // Ask user to add a count to their goal
-        // Between 1 - 7.
-        // Populate HashMap with Key = goal and Value = goalIdealCount if it doesn't exist already
-        // Ask user to enter another goal if they wish. Otherwise, exit.
-
         String goalName;
         Integer goalIdealCount;
-        Integer option;
 
         boolean shouldPrint;
         do {

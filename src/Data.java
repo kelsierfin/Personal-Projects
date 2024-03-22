@@ -165,7 +165,6 @@ public class Data {
         for (Goal goal : goals) {
             goalsArrayList.add(goal.getGoal());
         }
-        System.out.println(goalsArrayList);
         return goalsArrayList;
     }
 
