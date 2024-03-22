@@ -2,9 +2,11 @@ package core.util;
 
 import core.Data;
 import core.objects.Goal;
+import core.objects.Habit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class FileLoader {
@@ -57,7 +59,10 @@ public class FileLoader {
                     int habitCurrentCount = Integer.parseInt(parts[3]);
                     String habitName = parts[4];
 
-//                    data.getTracker.put()
+                    Habit habit = new Habit(goalName, goalIdealCount, goalCategory, habitCurrentCount, habitName);
+
+                    data.setHabits(habit);
+
                 } else {
                     return null;
                 }

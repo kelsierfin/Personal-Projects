@@ -41,9 +41,10 @@ public class Menu {
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
         options.add("View Tracker");
-        options.add("Load core.Data");
-        options.add("Save core.Data");
-        options.add("Reset core.Data");
+        options.add("Load Data");
+        options.add("Save Data");
+        options.add("Reset Data");
+
 
     }
 
@@ -62,7 +63,7 @@ public class Menu {
     }
 
     // Run the menuLoop everytime core.Main is called
-    public static void menuLoop() {
+    public static void menuLoop(File file) {
         System.out.println(optMessage);
         String choice = scanner.nextLine();
         int option = Integer.parseInt(choice);
@@ -122,7 +123,7 @@ public class Menu {
           do {
               System.out.println("Enter a filename: ");
               filename = scanner.nextLine().trim();
-          } while(!filename.isEmpty());
+          } while(filename.isEmpty());
           file = new File(filename);
       } while (file.exists() && !file.canWrite());
 
@@ -138,7 +139,7 @@ public class Menu {
             do{
                 System.out.println("Enter a filename: ");
                 filename = scanner.nextLine().trim();
-            }while(!filename.isEmpty());
+            }while(filename.isEmpty());
             file = new File(filename);
         } while(!file.exists() || !file.canRead());
         data = FileLoader.load(file);

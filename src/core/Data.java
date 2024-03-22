@@ -30,25 +30,18 @@ public class Data {
 
     protected static HashMap<String, ArrayList<String>> fields; // intializes the categorization matrix so that it can be changed anywhere in packag
 
-
-    protected static ArrayList<Object[]> GoalHabitSetup; // Contains goal, its habits and idealcount
-
-
-
+    protected static HashSet<Habit> habits;
     protected static HashMap<Goal, HashSet<Habit>> tracker;
         // Arraylist (habitsList). The habitslist contains the Habit objects.
-
-
-
     protected static HashMap<String, Integer> habitAndICounts;
     protected static  HashMap<String, Integer> habitAndECounts;
     private static Scanner scanner = new Scanner(System.in);
     public Data() {
         this.choicesArrayList2 = new ArrayList<>();
         this.goals = new HashSet<>();
+        this.habits = new HashSet<>();
         this.matrix = new HashMap<>();
         this.fields = new HashMap<>();
-        this.GoalHabitSetup = new ArrayList<>();
         this.tracker = new HashMap<>();
         this.habitAndICounts = new HashMap<>();
         this.habitAndECounts = new HashMap<>();
@@ -56,6 +49,28 @@ public class Data {
 
     public static HashMap<Goal, HashSet<Habit>> getTracker() {
         return tracker;
+    }
+
+    public static HashSet<Habit> setHabits(Habit habitToAdd) {
+        habits.add(habitToAdd);
+        return habits;
+    }
+
+    public static void loadVarsToTracker(Goal goal, HashSet<Habit> habits) {
+
+        HashSet<Habit> habitsToAdd = new HashSet<>();
+
+        boolean goalFound = false;
+
+        for (Habit habit : habits) {
+            if (goal.getGoal().equals(habit.getGoal())){
+                goalFound = true;
+                habitsToAdd.add(habit);
+            }
+        }
+        if (goalFound == true) {
+            tracker.put(goal, habitsToAdd);
+        }
     }
 
     /**
@@ -272,7 +287,6 @@ public class Data {
         goals.clear();
         matrix.clear();
         fields.clear();
-        GoalHabitSetup.clear();
         tracker.clear();
         habitAndICounts.clear();
         habitAndECounts.clear();

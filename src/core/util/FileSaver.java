@@ -16,16 +16,17 @@ public class FileSaver {
         try(FileWriter fw = new FileWriter(file)){
             // Write CSV header
 
-            fw.write("Goals\n");
+            fw.write("Goals" + "\n");
+
             for (Map.Entry<Goal, HashSet<Habit>> entry : data.getTracker().entrySet()) {
-                fw.write(String.format("%s, %d, %s", entry.getKey().getGoal(), entry.getKey().getIdealCount(), entry.getKey().getCategory()));
+                fw.write(String.format("%s, %d, %s%n", entry.getKey().getGoal(), entry.getKey().getIdealCount(), entry.getKey().getCategory()));
             }
             fw.flush();
 
-            fw.write("Habits\n");
+            fw.write("Habits" + "\n");
             for (Map.Entry<Goal, HashSet<Habit>> entry : data.getTracker().entrySet()) {
                 for (Habit habit : entry.getValue()) {
-                    fw.write(String.format("%s, %d, %s, %d, %s", habit.getGoal(), habit.getIdealCount(), habit.getCategory(), habit.getCurrentCount(), habit.getHabit()));
+                    fw.write(String.format("%s, %d, %s, %d, %s%n", habit.getGoal(), habit.getIdealCount(), habit.getCategory(), habit.getCurrentCount(), habit.getHabit()));
                 }
             }
             fw.flush();
