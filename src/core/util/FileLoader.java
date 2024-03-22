@@ -6,12 +6,14 @@ import core.objects.Habit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class FileLoader {
     public static Data load(File file) {
         Data data = new Data();
+        ArrayList<String> habitsList = new ArrayList<>();
 
         try (Scanner scanner = new Scanner(file)) {
             String line = scanner.nextLine();
@@ -47,6 +49,8 @@ public class FileLoader {
                 return null;
             }
 
+
+
             while(scanner.hasNextLine()) {
                 line = scanner.nextLine();
 
@@ -61,9 +65,11 @@ public class FileLoader {
 
                     Habit habit = new Habit(goalName, goalIdealCount, goalCategory, habitCurrentCount, habitName);
 
-                    data.setHabits(habit);
+                    habitsList.add(habit.getHabit());
+                    data.addHabits(goalName, habitsList, habitCurrentCount);
 
                 } else {
+                    System.out.println("Not enough data!" + parts.length);
                     return null;
                 }
             }

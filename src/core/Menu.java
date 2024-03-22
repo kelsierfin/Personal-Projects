@@ -325,7 +325,7 @@ public class Menu {
 
             habitsList = getHabits();
 
-            data.addHabits(goalName, habitsList);
+            data.addHabits(goalName, habitsList, 0);
 
             System.out.println("Would you like to enter another goal? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();

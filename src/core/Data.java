@@ -30,6 +30,8 @@ public class Data {
 
     protected static HashMap<String, ArrayList<String>> fields; // intializes the categorization matrix so that it can be changed anywhere in packag
 
+
+
     protected static HashSet<Habit> habits;
     protected static HashMap<Goal, HashSet<Habit>> tracker;
         // Arraylist (habitsList). The habitslist contains the Habit objects.
@@ -56,13 +58,24 @@ public class Data {
         return habits;
     }
 
+    public static HashSet<Habit> getHabits() {
+        return habits;
+    }
+
     public static void loadVarsToTracker(String goal, HashSet<Habit> habits) {
 
-//        for (Habit habit : habits) {
-//            if (tracker.containsKey())
-//            if (habit.getGoal())
-//        }
+        HashSet<Habit> habitsToAdd = new HashSet<>();
+        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
+            if (entry.getKey().getGoal().equals(goal)) {
 
+                for (Habit habit : habits) {
+                    if (entry.getValue().contains(habit)) {
+                        habitsToAdd.add(habit);
+                        tracker.put(entry.getKey(), habitsToAdd);
+                    }
+                }
+            }
+        }
 
 
 //        HashSet<Habit> habitsToAdd = new HashSet<>();
@@ -140,7 +153,7 @@ public class Data {
      * @return boolean
      */
 
-    public static void addHabits(String goalName, ArrayList<String> habitsList) {
+    public static void addHabits(String goalName, ArrayList<String> habitsList, Integer currentCount) {
 
         // Go through each goal until we find goalName
         // convert each string to a habit object
@@ -152,7 +165,7 @@ public class Data {
         for (Goal goal : goals) {
             if (goal.getGoal().equals(goalName)) {
                 for (String habitName : habitsList) {
-                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), 0, habitName);
+                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), currentCount, habitName);
                     allHabits.add(individualHabit);
                 }
                 // Add hashset to tracker
