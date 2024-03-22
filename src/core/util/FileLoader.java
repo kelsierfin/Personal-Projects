@@ -32,7 +32,7 @@ public class FileLoader {
 
                 String[] parts = line.split(",");
 
-                if (parts.length == 3) {
+                if (parts.length != 3) {
                     return null;
                 }
 

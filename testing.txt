@@ -1,0 +1,7 @@
+Goals
+bar, 6, null
+foo, 4, null
+Habits
+bar, 6, null, 0, lol
+bar, 6, null, 0, ok
+foo, 4, null, 0, hello

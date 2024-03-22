@@ -8,6 +8,8 @@ import core.util.FileSaver;
 import java.io.File;
 import java.util.*;
 
+import static core.util.FileLoader.load;
+
 
 /** This class interacts with the user to get inputs. It displays the menu of the habit tracker.
  * @author : Tania Rizwan, Sanbeer Shafin, Phone Myat
@@ -64,6 +66,10 @@ public class Menu {
 
     // Run the menuLoop everytime core.Main is called
     public static void menuLoop(File file) {
+
+        if (file != null) {
+            load(file);
+        }
         System.out.println(optMessage);
         String choice = scanner.nextLine();
         int option = Integer.parseInt(choice);
@@ -89,8 +95,8 @@ public class Menu {
                 case 10 -> menuWeeklyHabitCompletionRate();
                 case 11 -> menuTop3Habits();
                 case 12 -> menuViewTracker();
-                case 13 -> menuLoadData();
-                case 14 -> menuSaveData();
+                case 13 -> load();
+                case 14 -> save();
                 case 15 -> menuResetData();
 
                 default -> System.out.printf("Option %d is not recognizable %n", option);
@@ -115,7 +121,7 @@ public class Menu {
 
 
 
-    private static void menuSaveData() {
+    private static void save() {
       String filename;
       File file = null;
 
@@ -131,7 +137,7 @@ public class Menu {
 
     }
 
-    private static void menuLoadData() {
+    private static void load() {
         String filename;
         File file;
 
@@ -142,8 +148,18 @@ public class Menu {
             }while(filename.isEmpty());
             file = new File(filename);
         } while(!file.exists() || !file.canRead());
-        data = FileLoader.load(file);
+        load(file);
+    }
 
+    private static void load(File file) {
+        Data data = FileLoader.load(file);
+
+        if (data == null) {
+            System.err.printf("Failed to load data from file %s%n", file);
+        } else {
+            System.out.printf("Loaded data from file %s%n", file);
+            Menu.data = data;
+        }
     }
 
 

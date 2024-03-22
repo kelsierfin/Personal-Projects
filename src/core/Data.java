@@ -56,21 +56,28 @@ public class Data {
         return habits;
     }
 
-    public static void loadVarsToTracker(Goal goal, HashSet<Habit> habits) {
+    public static void loadVarsToTracker(String goal, HashSet<Habit> habits) {
 
-        HashSet<Habit> habitsToAdd = new HashSet<>();
+//        for (Habit habit : habits) {
+//            if (tracker.containsKey())
+//            if (habit.getGoal())
+//        }
 
-        boolean goalFound = false;
 
-        for (Habit habit : habits) {
-            if (goal.getGoal().equals(habit.getGoal())){
-                goalFound = true;
-                habitsToAdd.add(habit);
-            }
-        }
-        if (goalFound == true) {
-            tracker.put(goal, habitsToAdd);
-        }
+
+//        HashSet<Habit> habitsToAdd = new HashSet<>();
+//
+//        boolean goalFound = false;
+//
+//        for (Habit habit : habits) {
+//            if (goal.getGoal().equals(habit.getGoal())){
+//                goalFound = true;
+//                habitsToAdd.add(habit);
+//            }
+//        }
+//        if (goalFound == true) {
+//            tracker.put(goal, habitsToAdd);
+//        }
     }
 
     /**

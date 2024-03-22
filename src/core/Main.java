@@ -19,9 +19,9 @@ public class Main {
                 System.exit(1);
             }
             Menu.menuLoop(file);
+        } else {
+            Menu.menuLoop(null);
         }
-        Menu.menuLoop(null);
     }
-
-    }
+}
 
