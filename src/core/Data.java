@@ -1,8 +1,10 @@
 package core;
 
+import core.comparators.WeeklyCompletionRateComparator;
 import core.objects.Goal;
 import core.objects.Habit;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -34,7 +36,7 @@ public class Data {
 
     protected static HashSet<Habit> habits;
     protected static HashMap<Goal, HashSet<Habit>> tracker;
-        // Arraylist (habitsList). The habitslist contains the Habit objects.
+    // Arraylist (habitsList). The habitslist contains the Habit objects.
     protected static HashMap<String, Integer> habitAndICounts;
     protected static  HashMap<String, Integer> habitAndECounts;
     private static Scanner scanner = new Scanner(System.in);
@@ -112,7 +114,7 @@ public class Data {
             goals.add(goal);
             System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
             return true;
-         }
+        }
     }
 
 
@@ -237,6 +239,20 @@ public class Data {
     }
 
 
+
+    /**
+     * Searches for and returns a habit based on its name.
+     * This method iterates through all habit collections stored in {@code tracker}, searching for a habit
+     * whose name matches the specified {@code habitName}, disregarding case differences. The first habit found
+     * with a matching name is returned.
+     *
+     * The search is exhaustive across all collections of habits in the tracker. If no habit with the given name
+     * is found, the method returns {@code null}.
+     *
+     * @author: Phone
+     * @param habitName The name of the habit to search for. The search is case-insensitive.
+     * @return The {@link Habit} object with the specified name if found; {@code null} otherwise.
+     */
     public Habit findHabitByName(String habitName) {
         for (HashSet<Habit> habits : tracker.values()) {
             for (Habit habit : habits) {
@@ -248,6 +264,19 @@ public class Data {
         return null;
     }
 
+
+    /**
+     * Increments the completion count of a specified habit by one.
+     * This method searches for a habit by its name using {@code findHabitByName} method. If the habit is found,
+     * its current count is incremented by one to reflect an additional completion. A message is printed to the console
+     * to confirm the update, showing the habit's name and its new completion count.
+     *
+     * If the specified habit name does not correspond to an existing habit, a message is printed to the console
+     * indicating that the habit name is invalid.
+     *
+     * @author: Phone
+     * @param habitName The name of the habit to be updated. It is assumed to be a unique identifier for the habit.
+     */
     public void updateHabitCompletion(String habitName) {
         Habit habit = findHabitByName(habitName);
         if (habit != null) {
@@ -258,64 +287,150 @@ public class Data {
         }
     }
 
+
+    /**
+     * Calculates and returns the weekly completion rates for all habits tracked.
+     * The completion rate for each habit is calculated as the ratio of the current count to the ideal count,
+     * multiplied by 100 to convert it into a percentage. This method iterates over all habits stored in a
+     * tracker (assumed to be a static field containing habits grouped by some criteria) and computes their
+     * completion rates.
+     *
+     * If a habit's ideal count is zero, indicating that no completions were expected for the week,
+     * the method assigns a completion rate of 0.0 to avoid division by zero errors.
+     *
+     * @author: Phone
+     * @return A map where each key is a habit's unique identifier (assumed to be a string) and each value is
+     *         the calculated weekly completion rate for that habit. The completion rate is a double value
+     *         ranging from 0.0 to 100.0.
+     */
     public static Map<String, Double> calculateWeeklyCompletionRates() {
+        // Initialize a map to store the completion rates for each habit.
         Map<String, Double> rates = new HashMap<>();
+
+        // Iterate over all sets of habits grouped by some criteria (not shown here).
         for (HashSet<Habit> habits : tracker.values()) {
+            // Process each habit in the current set.
             for (Habit habit : habits) {
+                // Calculate the completion rate. If the ideal count is 0, set rate to 0.0 to avoid division by zero.
+                // Otherwise, calculate the rate as (currentCount/idealCount) * 100.
                 double rate = (habit.getIdealCount() == 0) ? 0.0 :
                         ((double) habit.getCurrentCount() / habit.getIdealCount()) * 100;
+
+                // Store the calculated rate in the map with the habit's name as the key.
                 rates.put(habit.getHabit(), rate);
             }
         }
+
+        // Return the map containing all habits and their respective completion rates.
         return rates;
     }
 
+
+    /**
+     * Retrieves the top 3 habits with the highest weekly completion rates.
+     * This method first collects all existing habits and sorts them in descending order by their completion rates,
+     * using the {@link WeeklyCompletionRateComparator}. It then selects the top 3 habits based on this sorted order.
+     *
+     * This approach assumes that all habits are available through the {@code getAllHabits()} method and that
+     * the {@link WeeklyCompletionRateComparator} is implemented to sort habits by their completion rates in descending order.
+     * If fewer than three habits exist, it returns all available habits, sorted by their completion rates.
+     *
+     * @author: Phone
+     * @return A list of the top 3 {@link Habit} objects with the highest weekly completion rates. The list is sorted
+     *         in descending order by completion rate. If there are fewer than three habits, returns all habits, maintaining
+     *         the descending order by completion rate.
+     */
     public static List<Habit> getTop3HabitsByCompletionRate() {
+        // First, get all habits and put them into a new list.
         List<Habit> sortedHabits = new ArrayList<>(getAllHabits());
-        sortedHabits.sort(new core.comparators.WeeklyCompletionRateComparator());
+
+        // Sort the list of habits using the WeeklyCompletionRateComparator.
+        // This comparator is designed to sort habits in descending order by their completion rates.
+        sortedHabits.sort(new WeeklyCompletionRateComparator());
+
+        // Use a stream to select the top 3 habits from the sorted list.
+        // The stream is limited to the first 3 elements, effectively selecting the habits
+        // with the highest completion rates thanks to the prior sorting.
         return sortedHabits.stream().limit(3).collect(Collectors.toList());
     }
 
+
+    /**
+     * Retrieves all habits from a tracker.
+     * This method compiles a list of all habits stored across various collections in the tracker.
+     * Each collection in the tracker is assumed to group habits based on certain criteria (not specified here).
+     *
+     * @author: Phone
+     * @return A {@link List} of {@link Habit} objects representing all the habits currently tracked.
+     */
     public static List<Habit> getAllHabits() {
         List<Habit> allHabits = new ArrayList<>();
+        // Iterate over each set of habits in the tracker and add all to the list
         for (HashSet<Habit> habitSet : tracker.values()) {
             allHabits.addAll(habitSet);
         }
         return allHabits;
     }
 
-    public static HashSet<Goal> getAllGoals() {
-        return new HashSet<>(goals); // Return a copy to avoid external modifications
-    }
 
+    /**
+     * Resets the contents of a specified CSV file.
+     * This method attempts to clear the contents of the CSV file located at the given filePath.
+     * It provides two options for resetting: clearing the file's contents or deleting the file.
+     * The default behavior is to clear the file's contents. Uncomment the deletion line if deletion
+     * is preferred. Any errors encountered during the reset process are caught and logged to the console.
+     *
+     * @author: Phone
+     * @param filePath The path to the CSV file to be reset.
+     */
     public static void resetCsvFile(String filePath) {
         try {
-            // Option 1: Clear the file's contents
-            new PrintWriter(filePath).close();
+            File file = new File(filePath);
 
-            // Option 2: Delete the file (uncomment if preferred)
-            // new File(filePath).delete();
+            // Delete the existing file
+            boolean isDeleted = file.delete();
 
-            System.out.println("CSV file has been reset.");
+            // Check if deletion was successful or if the file didn't exist
+            if (isDeleted || !file.exists()) {
+                // Attempt to create a new, empty file
+                boolean isCreated = file.createNewFile();
+                if (isCreated) {
+                    System.out.println("CSV file has been reset.");
+                } else {
+                    System.out.println("Failed to create the CSV file.");
+                }
+            } else {
+                System.out.println("Failed to delete the existing CSV file.");
+            }
         } catch (Exception e) {
             System.out.println("Error resetting CSV file: " + e.getMessage());
         }
     }
 
+
+    /**
+     * Resets all tracked data and the associated CSV file to their default states.
+     * This method clears all data collections and resets the CSV file specified by its path.
+     * It is useful for reinitializing the application's data state to a clean slate, whether for testing
+     * purposes or to restart data tracking from the beginning.
+     *
+     * @author: Phone
+     */
     public static void resetAllData() {
         // Clear all collections
         goals.clear();
         matrix.clear();
         fields.clear();
         tracker.clear();
-        habitAndICounts.clear();
-        habitAndECounts.clear();
 
         // Reset CSV File
-        resetCsvFile("path/to/your/test.csv"); //
+        //resetCsvFile("C:\\Users\\phone\\Desktop\\gg\\userData.vcs"); //
 
-        System.out.println("All data and CSV file have been reset to their default state.");
+        System.out.println("All data have been reset to their default state.");
     }
+
+
+
 
 
     /**
@@ -465,7 +580,7 @@ public class Data {
         }
         return fieldExist;
     }
-    }
+}
 
 
 
