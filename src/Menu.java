@@ -99,7 +99,13 @@ public class Menu {
             scanner.nextLine();
             System.out.println(optMessage);
             choice = scanner.nextLine();
-            option = Integer.parseInt(choice);
+            try {
+                option = Integer.parseInt(choice);
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a valid option");
+                scanner.nextLine();
+            }
+
         }
         System.out.printf("Thank you for using the habit and goal tracker!%nSee you tomorrow (hopefully)!");
 
@@ -421,11 +427,19 @@ public class Menu {
 
     private static void menuViewTracker() {
 
-        System.out.println("List of your goals, and associated habits");
-        for (Object[] item : data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
-        }
+        Integer count = 0;
 
+        for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
+            count++;
+            System.out.println("Goal No. " + count);
+            System.out.println("Name: " + entry.getKey().getGoal() +
+                    " Ideal Count: " + entry.getKey().getIdealCount() +
+                    " Category: " + entry.getKey().getCategory());
+
+            for (Habit habit : entry.getValue()) {
+                System.out.println("Habit: " + habit.getHabit() + " Current Count: " + habit.getCurrentCount());
+            }
+        }
 
     }
 
