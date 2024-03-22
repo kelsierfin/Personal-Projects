@@ -119,22 +119,6 @@ public class Data {
     }
 
 
-    /** @description This function initializes the GoalHabitSetup structure by assigning goals and an empty arraylist for habits
-     * @author Tania
-     * @params None
-     * @return None
-     */
-
-    public static void initializeGoalsAndHabits() {
-        for (String key : GoalAndIdealCount.keySet()) {
-//            if (key.isEmpty()) {
-            Object[] GoalHabitStorage = new Object[2];
-            GoalHabitStorage[INDEX_GOALNAME] = key; // Store the goal into our GoalHabitStorage object
-            GoalHabitStorage[INDEX_HABITSLIST] = new ArrayList<String>(); // Assign empty arraylist
-            GoalHabitSetup.add(GoalHabitStorage); // Add this object to the GoalHabitStorage arraylist
-//            }
-        }
-    }
 
     /**
      * @description This function allows a user to add habits to their goal
@@ -163,64 +147,6 @@ public class Data {
             }
         }
 
-
-
-
-
-//        boolean goalFound = false;
-
-
-//        for (Goal goal : goals) {
-//            if (goal.getGoal().equals(goalName)) {
-//                HashSet<Habit> habitsHashSet = new HashSet<>();
-//                for (String habit : habitsList) {
-//                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
-//                    habitsHashSet.add(individualHabit);
-//                    System.out.println("HI i am : " + habitsHashSet);
-//                }
-//                goalFound = true;
-//                tracker.put(goal,habitsHashSet);
-//                break;
-//
-//            }
-//        }
-
-
-        
-//        if (!goalFound) {
-//            System.out.println("Invalid goal. Please re-try");
-//        }
-
-
-//        if (goalExists(goalName)) {
-//            Integer goalIdealCount = GoalAndIdealCount.get(goalName);
-//            for (Object[] goalInfo : GoalHabitSetup) {
-//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-//                    ArrayList<String> existingHabits = (ArrayList<String>) goalInfo[INDEX_HABITSLIST];
-//
-//                    // Check for duplicate habits before adding them. If ANY habit is duplicated, return false.
-//                    for (String habit : habitsList) {
-//                        if (!existingHabits.contains(habit)) {
-//                            existingHabits.add(habit);
-//                            System.out.println("The goal: " + goalName + " has been assigned habits: " + existingHabits);
-//
-//                            // Map each new habit to the goal's ideal count
-//                            habitAndICounts.put(habit, goalIdealCount);
-//                            // Initialize each new habit's earned count to 0
-//                            habitAndECounts.put(habit, 0);
-//                        } else {
-//                            System.out.println("Duplicate habit. Retry.");
-//                            return false;
-//                        }
-//                        return true;
-//                    }
-//                }
-//            }
-//        } else {
-//            System.out.println("Invalid goal. Retry");
-//            return false;
-//        }
-//        return false;
     }
 
 
@@ -265,26 +191,70 @@ public class Data {
      * @description This function removes habits from a given goal
      */
 
-    public static boolean deleteHabitsFromGoal(String goalName, String habitToDelete) {
+    public static void deleteHabitsFromGoal(String goalName, String habitToDelete) {
 
-        if (goalExists(goalName)) {
-            for (Object[] goalInfo : GoalHabitSetup) {
-                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
-                    ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST]; // Add string casting
-                    if (habitsList.contains(habitToDelete)) {
-                        habitsList.remove(habitToDelete);
-                        System.out.println("Habit deleted!");
-                        return true;
-                    } else {
-                        System.out.println("Habit is not valid. Retry.");
-                        return false;
-                    }
-                }
+        // Iterate through each goal in tracker until our goal is found
+        // Iterate through the habits hashset of the goal until our habit is found
+        // Remove the habit
+
+        Goal goalOfInterest = null;
+
+        // Locate the goal
+        for (Goal goal : goals) {
+            if (goal.getGoal().equals(goalName)) {
+                goalOfInterest = goal;
+                break;
             }
-        } else {
-            return false;
         }
-        return false;
+
+        HashSet<Habit> habitsSet = tracker.get(goalOfInterest); // Get hashset for our goal
+
+//        for
+
+//        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
+//            if (entry.getKey().getGoal().equals(goalName)) {
+//                System.out.println("Goal found in tracker: " + goalName);
+//                HashSet<Habit> setOfHabits = tracker.get(entry.getKey());
+//
+//                for (Habit habit : entry.getValue()) {
+//                    if (habit.getHabit().equals(habitToDelete)) {
+//                        System.out.println("Habit detected in hashset: " + habitToDelete + "tracker: " + habit.getHabit());
+//
+//                        setOfHabits.remove(habit);
+//                        tracker.put(entry.getKey(), setOfHabits);
+//                    }
+//                }
+//            }
+//        }
+
+        System.out.println("Here is a list of your goals, and the habits");
+        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
+            System.out.println("Goal: " + entry.getKey().getGoal());
+            for (Habit habit : entry.getValue()) {
+                System.out.println("Habit: " + habit.getHabit() + " Ideal Count: " + habit.getIdealCount());
+            }
+        }
+
+
+
+//        if (goalExists(goalName)) {
+//            for (Object[] goalInfo : GoalHabitSetup) {
+//                if (goalInfo[INDEX_GOALNAME].equals(goalName)) {
+//                    ArrayList<String> habitsList = (ArrayList<String>) goalInfo[INDEX_HABITSLIST]; // Add string casting
+//                    if (habitsList.contains(habitToDelete)) {
+//                        habitsList.remove(habitToDelete);
+//                        System.out.println("Habit deleted!");
+//                        return true;
+//                    } else {
+//                        System.out.println("Habit is not valid. Retry.");
+//                        return false;
+//                    }
+//                }
+//            }
+//        } else {
+//            return false;
+//        }
+//        return false;
     }
     /**
      * @description: Retrieves the ideal count for each habit.
