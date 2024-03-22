@@ -13,32 +13,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- *
+/** The data class stores all methods providing functionality to the tracker.
+ * @author Tania, Phone, Sanbeer
+ * @tutorial T10, T14, T09
+ * Emails: tania.rizwan@ucalgary.ca, sanbeer.shafin@ucalgary.ca, phonemyat.paing@ucalgary.ca
  */
 public class Data {
 
-    /**
-     * @description This hashmap stores the goals and ideal counts defined in MenuCreateGoal.
-     * @author Tania
-     */
-
     protected static  ArrayList<Integer> choicesArrayList2; // choices for the goals for categorization in order of input.
 
-    //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
-    protected static HashSet<Goal> goals;
+    protected static HashSet<Goal> goals; // Hashset to contain all goal objects
+    protected static HashSet<Habit> habits; // Hashset to contain habits (only used in FileLoader)
     protected static HashMap<String, ArrayList<String>> matrix; // intializes the eisenhower matrix so that it can be changed anywhere in package
-
 
     protected static HashMap<String, ArrayList<String>> fields; // intializes the categorization matrix so that it can be changed anywhere in packag
 
-
-
-    protected static HashSet<Habit> habits;
-    protected static HashMap<Goal, HashSet<Habit>> tracker;
-    // Arraylist (habitsList). The habitslist contains the Habit objects.
-    protected static HashMap<String, Integer> habitAndICounts;
-    protected static  HashMap<String, Integer> habitAndECounts;
+    protected static HashMap<Goal, HashSet<Habit>> tracker; // Maps each goal object to hashset<Habit> habits associated with it
+    protected static HashMap<String, Integer> habitAndICounts; // Stores each habit and its ideal count
+    protected static  HashMap<String, Integer> habitAndECounts; // Stores each habit and its points earned
     private static Scanner scanner = new Scanner(System.in);
     public Data() {
         this.choicesArrayList2 = new ArrayList<>();
@@ -51,56 +43,23 @@ public class Data {
         this.habitAndECounts = new HashMap<>();
     }
 
+    // Getters and Setters
+
+    /** @description: Getter for tracker
+     *
+     * @return Hashmap<Goal, HashSet<Habit>> tracker that stores all goals and habits
+     */
     public static HashMap<Goal, HashSet<Habit>> getTracker() {
         return tracker;
     }
 
-    public static HashSet<Habit> setHabits(Habit habitToAdd) {
-        habits.add(habitToAdd);
-        return habits;
-    }
-
-    public static HashSet<Habit> getHabits() {
-        return habits;
-    }
-
-    public static void loadVarsToTracker(String goal, HashSet<Habit> habits) {
-
-        HashSet<Habit> habitsToAdd = new HashSet<>();
-        for (Map.Entry<Goal, HashSet<Habit>> entry : tracker.entrySet()) {
-            if (entry.getKey().getGoal().equals(goal)) {
-
-                for (Habit habit : habits) {
-                    if (entry.getValue().contains(habit)) {
-                        habitsToAdd.add(habit);
-                        tracker.put(entry.getKey(), habitsToAdd);
-                    }
-                }
-            }
-        }
-
-
-//        HashSet<Habit> habitsToAdd = new HashSet<>();
-//
-//        boolean goalFound = false;
-//
-//        for (Habit habit : habits) {
-//            if (goal.getGoal().equals(habit.getGoal())){
-//                goalFound = true;
-//                habitsToAdd.add(habit);
-//            }
-//        }
-//        if (goalFound == true) {
-//            tracker.put(goal, habitsToAdd);
-//        }
-    }
 
     /**
-     * @param goalName
-     * @param goalIdealCount
-     * @return
-     * @description This function adds a goal and idealcount from the user into the GoalAndIdealCount hashmap.
-     * The goal is the key, and ideal count is the value.
+     * @description: This method set-ups the goal objects and adds to the goals hashset
+     * @param goalName The String name of the goal
+     * @param goalIdealCount The Integer desired count for goal progress/week
+     * @param category The category for a goal. Initially set to null.
+     * @return boolean
      * @author Tania
      */
     public static boolean createAGoal(String goalName, Integer goalIdealCount, String category) {
@@ -117,12 +76,10 @@ public class Data {
         }
     }
 
-
-
     /**
-     * @param goalToDelete - name for goal to remove
+     * @description: This function removes a goal from the Goals hashset
+     * @param goalToDelete The name for goal to remove
      * @return true if a goal has been deleted
-     * @description This function removes an input goal from the GoalAndIdealCount hashmap.
      */
 
     public static boolean goalDelete(String goalToDelete) {
@@ -149,10 +106,12 @@ public class Data {
 
 
     /**
-     * @description This function allows a user to add habits to their goal
-     * @param goalName
-     * @param habitsList
-     * @return boolean
+     * @description This function allows a user to add habits to their goal. It places them in the tracker
+     * @param goalName The name of the goal object to add habits to
+     * @param habitsList The list of habits to add for the goal
+     * @param currentCount The number of points for completing a habit. Currently set to null
+     * @return None
+     * @author: Tania
      */
 
     public static void addHabits(String goalName, ArrayList<String> habitsList, Integer currentCount) {
@@ -196,15 +155,13 @@ public class Data {
 
 
     /**
-     * @param goalName
-     * @param habitToDelete
-     * @description This function removes habits from a given goal
+     * @description: This function deletes a specific habit from a goal
+     * @param goalName The name of the goal to delete a habit from
+     * @param habitToDelete The name of the habit to remove
      */
 
     public static void deleteHabitsFromGoal(String goalName, String habitToDelete) {
 
-        // Iterate through the habits hashset of the goal until our habit is found
-        // Remove the habit
 
         Goal goalOfInterest = null;
 

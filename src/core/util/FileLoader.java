@@ -49,8 +49,6 @@ public class FileLoader {
                 return null;
             }
 
-
-
             while(scanner.hasNextLine()) {
                 line = scanner.nextLine();
 

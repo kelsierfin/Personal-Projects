@@ -16,6 +16,8 @@ public class Habit extends Goal{
         this.currentCount = currentCount;
     }
 
+    // Getters and Setters
+
     public String getHabit() {
         return habitName;
     }
@@ -56,6 +58,11 @@ public class Habit extends Goal{
     }
 
 
+    /**
+     * Override Equals to compare goalNames when creating a goal.
+     * @param obj Object to compare
+     * @return boolean True if goal exists, False otherwise
+     */
     @Override
     public boolean equals(Object obj){
         if (this == obj) {
@@ -68,11 +75,21 @@ public class Habit extends Goal{
         return Objects.equals(this.habitName, other.habitName);
     }
 
+    /**
+     * Return the hashcode for a goal. To be used with hash structures.
+     * @return hashcode integer
+     * @author: Tania
+     */
     @Override
     public int hashCode() {
         return habitName.hashCode();
     }
 
+
+    /**
+     * Customize the toString method to print information unique to each habit
+     * @return String describing child-vars
+     */
     @Override
     public String toString() {
         return "{" +

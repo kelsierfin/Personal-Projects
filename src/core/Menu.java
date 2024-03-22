@@ -64,7 +64,7 @@ public class Menu {
         optMessage = sb.toString(); // Update the optMessage object with the final menu
     }
 
-    // Run the menuLoop everytime core.Main is called
+    // Run the menuLoop everytime Main is called
     public static void menuLoop(File file) {
 
         if (file != null) {
@@ -109,7 +109,7 @@ public class Menu {
             choice = scanner.nextLine();
             try {
                 option = Integer.parseInt(choice);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // Catch exception if a user enters an empty string
                 System.out.println("Enter a valid option");
                 scanner.nextLine();
             }
@@ -120,6 +120,10 @@ public class Menu {
     }
 
 
+    /** @description: This method is used to save data from the tracker (goals, habits) into a .csv file
+     * @author: Tania, Johnathan Hudson
+     * NOTE: Setup code was obtained from Dr. Hudson's project video.
+     */
 
     private static void save() {
       String filename;
@@ -137,6 +141,10 @@ public class Menu {
 
     }
 
+    /** @description: This method is used to load data from a .csv file
+     * @author: Tania, Johnathan Hudson
+     * NOTE: Setup code was obtained from Dr. Hudson's project video.
+     */
     private static void load() {
         String filename;
         File file;
@@ -151,6 +159,11 @@ public class Menu {
         load(file);
     }
 
+    /** @description: This method is used to load the .csv file data into our program.
+     * @author: Tania, Johnathan Hudson
+     * NOTE: Setup code was obtained from Dr. Hudson's project video.
+     */
+
     private static void load(File file) {
         Data data = FileLoader.load(file);
 
@@ -160,39 +173,6 @@ public class Menu {
             System.out.printf("Loaded data from file %s%n", file);
             Menu.data = data;
         }
-    }
-
-
-
-    /**@description: This functions allow the user to display their already exisitng quadrants or prompts them to create one)
-     * Essentially a display function(uses OOP)
-     * @param:none
-     * @return:none
-     * @author: Sanbeer
-     */
-
-    private static void menuShowEisenhowerMatrix() {
-        if (data.matrixExists()){
-            System.out.println(data.matrix);
-            scanner.nextLine();
-        }else{
-            System.out.println("You haven't a created a matrix buddy, please press Enter");
-            scanner.nextLine();
-        }
-    }
-    /**@description: This functions allow the user to display their already exisitng categorized goals or prompts them to create one)
-     * Essentially a display function(uses OOP)
-     * @param:none
-     * @return:none
-     * @author: Sanbeer
-     */
-    private static void menuShowCategorizedGoals(){
-        if (data.categoryExists()){
-            System.out.println(data.fields);
-            scanner.nextLine();
-        }else{
-        System.out.println("You haven't categorized your goals yet, please press Enter ");
-        scanner.nextLine();}
     }
 
 
@@ -301,7 +281,7 @@ public class Menu {
 
     }
 
-    /** @description This function allows a user to add habits for their goal
+    /** @description This function allows a user to add habits for their goal. It is used to create habit objects.
      * @author Tania
      * @params None
      * @return None
@@ -319,6 +299,7 @@ public class Menu {
             System.out.println("Goal: " + goal.getGoal());
         }
 
+        // Get the habits and send them to data.java
         do {
             System.out.println("Enter the goal to add habits for:");
             goalName = getGoalName();
@@ -358,6 +339,7 @@ public class Menu {
         ArrayList<String> habitsList = new ArrayList<>();
         String habit;
         boolean shouldPrint = false;
+       // Continuously get habits
 
         do {
             System.out.println("Enter a habit");
@@ -400,6 +382,7 @@ public class Menu {
             }
         }
 
+        // Prompt user for the habits they want to remove
         do {
 
             System.out.println("Enter the goal you want to remove a habit from:");
@@ -415,6 +398,7 @@ public class Menu {
                     data.deleteHabitsFromGoal(goalName, habitToDelete);
                 }
             }
+
             System.out.println("Would you like to re-try or enter another habit? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
             shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
@@ -433,7 +417,40 @@ public class Menu {
         }
     }
 
+    /**@description: This functions allow the user to display their already exisitng quadrants or prompts them to create one)
+     * Essentially a display function(uses OOP)
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
 
+    private static void menuShowEisenhowerMatrix() {
+        if (data.matrixExists()){
+            System.out.println(data.matrix);
+            scanner.nextLine();
+        }else{
+            System.out.println("You haven't a created a matrix buddy, please press Enter");
+            scanner.nextLine();
+        }
+    }
+    /**@description: This functions allow the user to display their already exisitng categorized goals or prompts them to create one)
+     * Essentially a display function(uses OOP)
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
+    private static void menuShowCategorizedGoals(){
+        if (data.categoryExists()){
+            System.out.println(data.fields);
+            scanner.nextLine();
+        }else{
+            System.out.println("You haven't categorized your goals yet, please press Enter ");
+            scanner.nextLine();}
+    }
+
+    /** @description: This method allows users to see all goals, habits, and their properties
+     * @author: Tania
+     */
     private static void menuViewTracker() {
 
         Integer count = 0;

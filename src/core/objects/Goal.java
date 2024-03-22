@@ -63,8 +63,9 @@ public class Goal {
     }
 
     /**
-     * Return the hashcode for a goal. To be used in Equals
+     * Return the hashcode for a goal. To be used with hash structures.
      * @return hashcode integer
+     * @author: Tania
      */
 
     @Override
@@ -73,7 +74,11 @@ public class Goal {
     }
 
 
-    // To String
+    /**
+     * Customize the toString method to print information unique to each habit
+     * @return String describing child-vars
+     * @author: Tania
+     */
     @Override
     public String toString() {
         return "Goal: " + goal + " " +
