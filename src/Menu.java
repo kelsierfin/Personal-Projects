@@ -35,7 +35,6 @@ public class Menu {
         options.add("Add Points to Habit");
         options.add("Weekly Habit Completion Rate");
         options.add("List Top 3 Habits of the Week");
-        options.add("Get Goal Recommendation");
         options.add("Get Habit Recommendation");
         options.add("View Goals and Habits");
         options.add("View Tracker");
@@ -85,13 +84,12 @@ public class Menu {
                 case 9 -> menuAddPointsToHabit();
                 case 10 -> menuWeeklyHabitCompletionRate();
                 case 11 -> menuTop3Habits();
-                case 12 -> menuGoalRecommendation();
-                case 13 -> menuHabitRecommendation();
-                case 14 -> menuCheckingGoalsAndHabits(); // REMOVE. REPLACED BY TRACKER.
-                case 15 -> menuViewTracker();
-                case 16 -> menuLoadData();
-                case 17 -> menuSaveData();
-                case 18 -> menuResetData();
+                case 12 -> menuHabitRecommendation();
+                case 13 -> menuCheckingGoalsAndHabits(); // REMOVE. REPLACED BY TRACKER.
+                case 14 -> menuViewTracker();
+                case 15 -> menuLoadData();
+                case 16 -> menuSaveData();
+                case 17 -> menuResetData();
 
                 default -> System.out.printf("Option %d is not recognizable %n", option);
             }
@@ -305,6 +303,7 @@ public class Menu {
             }
         }
 
+
         scanner.nextLine(); // Consume newline character in buffer
 
     }
@@ -348,17 +347,10 @@ public class Menu {
      * @return None
      */
     private static void menuDeleteHabits() {
-        // Prompt user for goal they want to remove habit from
-            // Goal must be valid, otherwise retry
-        // Prompt user for habit they want to remove
-            // Habit must be valid, otherwise retry
-        // Remove habit
-        // Ask user if they want to remove more habits
-        // Ask user if they want to remove habit from any other goals
 
         String goalName;
         String habitToDelete;
-        Integer option;
+        boolean shouldPrint;
 
         // Get list of all goals and habits
         System.out.println("Here is a list of your goals, and the habits");
@@ -370,7 +362,6 @@ public class Menu {
         }
 
         do {
-
 
             System.out.println("Enter the goal you want to remove a habit from:");
             goalName = getGoalName();
@@ -386,51 +377,22 @@ public class Menu {
                 }
             }
 
-            System.out.println("Would you like retry or delete a habit from another goal? (Yes = any number | No = 0)");
-            option = scanner.nextInt();
-            scanner.nextLine(); // Consume the \n left in the buffer
+            System.out.println("Would you like to enter another habit? (Yes / No)");
+            String response = scanner.next().trim().toLowerCase();
+            shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
+            scanner.nextLine();
 
-        } while(option != 0);
+
+        } while(shouldPrint);
 
         // Finally, show all goals and their habits
-        System.out.println("Here is a list of your goals, and the habits");
-        for (Object[] item : data.GoalHabitSetup) {
-            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
+        System.out.println("Here is an updated list of your goals, and the habits");
+        for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
+            System.out.println("Goal: " + entry.getKey().getGoal());
+            for (Habit habit : entry.getValue()) {
+                System.out.println("Habit: " + habit.getHabit() + " Ideal Count: " + habit.getIdealCount());
+            }
         }
-//
-//        String goalName;
-//        String habitToDelete;
-//        Integer option;
-//
-//        System.out.println("Here is a list of your goals, and the habits");
-//        for (Object[] item : data.GoalHabitSetup) {
-//            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
-//        }
-//
-//        do {
-//            System.out.println("Enter the goal you want to remove a habit from:");
-//            goalName = getGoalName();
-//            if (data.goalExists(goalName)){ // If goal exists:
-//                System.out.println("Enter the habit you want to delete");
-//                do {
-//                    habitToDelete = scanner.nextLine();
-//                }while(habitToDelete.isEmpty());
-//
-//                data.deleteHabitsFromGoal(goalName, habitToDelete);
-//            }
-//
-//            System.out.println("Would you like retry or delete a habit from another goal? (Yes = any number | No = 0)");
-//            option = scanner.nextInt();
-//            scanner.nextLine(); // Consume the \n left in the buffer
-//
-//        } while(option != 0);
-//
-//        // Finally, show all goals and their habits
-//        System.out.println("Here is a list of your goals, and the habits");
-//        for (Object[] item : data.GoalHabitSetup) {
-//            System.out.println("Goal: " + item[data.INDEX_GOALNAME] + " Habits: " + item[data.INDEX_HABITSLIST]);
-//        }
-
     }
 
     /** @description This function allows the user to see what goals and habits they have
