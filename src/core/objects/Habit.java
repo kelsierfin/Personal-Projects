@@ -2,6 +2,7 @@ package core.objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Habit extends Goal{
 
@@ -32,8 +33,25 @@ public class Habit extends Goal{
     }
 
     @Override
+    public boolean equals(Object obj){
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Habit other = (Habit) obj;
+        return Objects.equals(this.habitName, other.habitName);
+    }
+
+    @Override
+    public int hashCode() {
+        return habitName.hashCode();
+    }
+
+    @Override
     public String toString() {
-        return "HabitsList{" +
+        return "{" +
                 "habit='" + habitName + '\'' +
                 ", currentCount=" + currentCount +
                 '}';

@@ -22,6 +22,7 @@ public class Data {
     protected static  ArrayList<Integer> choicesArrayList2;
 //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
     protected static HashSet<Goal> goals;
+    protected static HashSet<Habit> habits; // Hashset for habits for one goal
     protected static HashMap<String, ArrayList<String>> matrix;
 
     protected static HashMap<String, ArrayList<String>> fields;
@@ -42,6 +43,7 @@ public class Data {
     public Data() {
         this.choicesArrayList2 = new ArrayList<>();
         this.goals = new HashSet<>();
+        this.habits = new HashSet<>();
         this.matrix = new HashMap<>();
         this.fields = new HashMap<>();
         this.GoalHabitSetup = new ArrayList<>();
@@ -152,26 +154,50 @@ public class Data {
         // place the object in a hashset (prevent duplicates)
         // Add the habit object to tracker, next to the goal
 
-
-        boolean goalFound = false;
-
+        HashSet<Habit> allHabits = new HashSet<>();
+        System.out.println(habitsList);
 
         for (Goal goal : goals) {
             if (goal.getGoal().equals(goalName)) {
-                HashSet<Habit> habitsHashSet = new HashSet<>();
+                System.out.println("In Data.java! Your goal is: " + goalName + " The object: " + goal.getGoal());
                 for (String habit : habitsList) {
+                    System.out.println(habit);
                     Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
-                    habitsHashSet.add(individualHabit);
+                    allHabits.add(individualHabit);
+                    System.out.println("In loop: " + individualHabit);
                 }
-                goalFound = true;
-                tracker.put(goal,habitsHashSet);
-                break;
             }
         }
-        
-        if (!goalFound) {
-            System.out.println("Invalid goal. Please re-try");
+
+        System.out.println("All Habits in Hashset");
+        for (Habit habit : allHabits) {
+            System.out.println(habit.getHabit());
         }
+
+
+//        boolean goalFound = false;
+
+
+//        for (Goal goal : goals) {
+//            if (goal.getGoal().equals(goalName)) {
+//                HashSet<Habit> habitsHashSet = new HashSet<>();
+//                for (String habit : habitsList) {
+//                    Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
+//                    habitsHashSet.add(individualHabit);
+//                    System.out.println("HI i am : " + habitsHashSet);
+//                }
+//                goalFound = true;
+//                tracker.put(goal,habitsHashSet);
+//                break;
+//
+//            }
+//        }
+
+
+        
+//        if (!goalFound) {
+//            System.out.println("Invalid goal. Please re-try");
+//        }
 
 
 //        if (goalExists(goalName)) {
