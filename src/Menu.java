@@ -107,12 +107,6 @@ public class Menu {
         scanner.close();
     }
 
-    private static void menuHabitRecommendation() {
-    }
-
-    private static void menuGoalRecommendation() {
-
-    }
 
     private static void menuSaveData() {
     }
@@ -121,14 +115,6 @@ public class Menu {
 
     }
 
-
-
-    private static void menuGetRecommendation() {
-        // Two choices:
-            // Comparator 1: organize goals by current counts. Say you need to focus on goal X which has the least points.
-        // Comparator 2:
-
-    }
 
     private static void menuShowEisenhowerMatrix() {
         if (data.matrixExists()){
