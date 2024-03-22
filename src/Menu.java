@@ -305,49 +305,15 @@ public class Menu {
         // Finally, show all goals and their habits
         System.out.println("Here is a list of your goals, and the habits");
         for (Map.Entry<Goal, HashSet<Habit>> entry : data.tracker.entrySet()) {
-            System.out.println("Goal: " + entry.getKey().getGoal() + " Habits: " + entry.getValue());
+            System.out.println("Goal: " + entry.getKey().getGoal());
+            for (Habit habit : entry.getValue()) {
+                System.out.println("Habit: " + habit.getHabit() + " Ideal Count: " + habit.getIdealCount());
+            }
         }
 
         scanner.nextLine(); // Consume newline character in buffer
 
     }
-
-//    private static void menuAddHabits() {
-//
-//        String goalName;
-////        ArrayList<String> habitsList;
-//        HashSet<String> habitHashSet;
-//        Integer option;
-//
-//        Data.initializeGoalsAndHabits();
-//
-//        // print all goals
-//        System.out.println("Your goals are:");
-//        for (Map.Entry<String, Integer> entry: Data.GoalAndIdealCount.entrySet()) {
-//            System.out.println("Goal: " + entry.getKey());
-//        }
-//
-//        do {
-//            System.out.println("Enter the goal to add habits for:");
-//            goalName = getGoalName();
-//
-//            System.out.println("Enter habits:");
-//            habitHashSet = getHabits();
-//            Data.addHabits(goalName, habitHashSet);
-//
-//            System.out.println("Would you like enter habits for another goal? (Yes = any number | No = 0)");
-//            option = scanner.nextInt();
-//            scanner.nextLine(); // Consume the \n left in the buffer
-//
-//        } while (option != 0);
-//
-//        // Finally, show all goals and their habits
-//        System.out.println("Here is a list of your goals, and the habits");
-//        for (Object[] item : Data.GoalHabitSetup) {
-//            System.out.println("Goal: " + item[Data.INDEX_GOALNAME] + " Habits: " + item[Data.INDEX_HABITSLIST]);
-//        }
-//
-//    }
 
     /**
      * @description This function prompts user for habits to append to an ArrayList. This is used in AddHabits
@@ -357,7 +323,6 @@ public class Menu {
      */
 
     private static ArrayList<String> getHabits() {
-//        HashSet habitsSet = new HashSet();
         ArrayList<String> habitsList = new ArrayList<>();
         String habit;
         boolean shouldPrint = false;
@@ -378,8 +343,7 @@ public class Menu {
             scanner.nextLine();
 
         } while(shouldPrint);
-        
-        System.out.println("HabitsList: " + habitsList);
+
         return habitsList;
     }
 

@@ -151,24 +151,20 @@ public class Data {
         // Add the habit object to tracker, next to the goal
 
         HashSet<Habit> allHabits = new HashSet<>();
-        System.out.println(habitsList);
 
         for (Goal goal : goals) {
             if (goal.getGoal().equals(goalName)) {
-                System.out.println("In Data.java! Your goal is: " + goalName + " The object: " + goal.getGoal());
                 for (String habit : habitsList) {
-                    System.out.println(habit);
                     Habit individualHabit = new Habit(goal.getGoal(), goal.getIdealCount(), goal.getCategory(), null, habit);
                     allHabits.add(individualHabit);
-                    System.out.println("In loop: " + individualHabit);
                 }
+                // Add hashset to tracker
+                tracker.put(goal, allHabits);
             }
         }
 
-        System.out.println("All Habits in Hashset");
-        for (Habit habit : allHabits) {
-            System.out.println(habit.getHabit());
-        }
+
+
 
 
 //        boolean goalFound = false;
