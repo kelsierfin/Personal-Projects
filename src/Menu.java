@@ -1,6 +1,9 @@
 import core.objects.Goal;
 import core.objects.Habit;
+import core.util.FileLoader;
+import core.util.FileSaver;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -107,27 +110,36 @@ public class Menu {
         scanner.close();
     }
 
-    private static void menuHabitRecommendation() {
 
-    }
-
-    private static void menuGoalRecommendation() {
-        ArrayList<Integer> idealCountedGoals = new ArrayList<>();
-        for(Goal goal: data.goals){
-            idealCountedGoals.add(getIdealCount());
-
-
-
-        }
-
-
-
-    }
 
     private static void menuSaveData() {
+      String filename;
+      File file = null;
+
+      do {
+          do {
+              System.out.println("Enter a filename: ");
+              filename = scanner.nextLine().trim();
+          } while(!filename.isEmpty());
+          file = new File(filename);
+      } while (file.exists() && !file.canWrite());
+
+        FileSaver.save(file, data);
+
     }
 
     private static void menuLoadData() {
+        String filename;
+        File file;
+
+        do {
+            do{
+                System.out.println("Enter a filename: ");
+                filename = scanner.nextLine().trim();
+            }while(!filename.isEmpty());
+            file = new File(filename);
+        } while(!file.exists() || !file.canRead());
+        data = FileLoader.load(file);
 
     }
 
