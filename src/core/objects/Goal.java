@@ -6,21 +6,21 @@ import java.util.Objects;
 public class Goal {
 
     // Object fields
-    private String goalName;
+    private String goal;
     private Integer idealCount;
     private String category;
     private Integer currentCount;
 
     // Constructor
     public Goal (String goal, Integer idealCount, String category){
-        this.goalName = goal;
+        this.goal = goal;
         this.idealCount = idealCount;
         this.category = category;
     }
 
     // Getters
     public String getGoal(){
-        return this.goalName;
+        return this.goal;
     }
 
     public Integer getIdealCount(){
@@ -33,7 +33,7 @@ public class Goal {
 
     // Setters
     public void setGoal(String goalName){
-        this.goalName = goalName;
+        this.goal = goalName;
     }
 
     public void setIdealCount(Integer idealCount) {
@@ -59,7 +59,7 @@ public class Goal {
             return false;
         }
         Goal other = (Goal) obj;
-        return Objects.equals(this.goalName, other.goalName);
+        return Objects.equals(this.goal, other.goal);
     }
 
     /**
@@ -69,14 +69,14 @@ public class Goal {
 
     @Override
     public int hashCode() {
-        return goalName.hashCode();
+        return goal.hashCode();
     }
 
 
     // To String
     @Override
     public String toString() {
-        return "Goal: " + goalName + " " +
+        return "Goal: " + goal + " " +
                 "IdealCount: " + idealCount + " " +
                 "Category: " + category;
     }

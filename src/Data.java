@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 /**
  *
  */
-
 public class Data {
 
     /**
@@ -20,12 +19,15 @@ public class Data {
      * @author Tania
      */
 
-    protected static  ArrayList<Integer> choicesArrayList2;
-//    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
-    protected static HashSet<Goal> goals;
-    protected static HashMap<String, ArrayList<String>> matrix;
+    protected static  ArrayList<Integer> choicesArrayList2; // choices for the goals for categorization in order of input.
 
-    protected static HashMap<String, ArrayList<String>> fields;
+    //    public static final HashMap<String, Integer> GoalAndIdealCount = new HashMap<>();
+    protected static HashSet<Goal> goals;
+    protected static HashMap<String, ArrayList<String>> matrix; // intializes the eisenhower matrix so that it can be changed anywhere in package
+
+
+    protected static HashMap<String, ArrayList<String>> fields; // intializes the categorization matrix so that it can be changed anywhere in packag
+
 
     protected static ArrayList<Object[]> GoalHabitSetup; // Contains goal, its habits and idealcount
 
@@ -275,14 +277,13 @@ public class Data {
     }
 
 
-    /**@description: The organizes the data from menu & goalsArrayList into a HashMap
-     *
-     *
-     *
-     * @param: choicesArrayList - this is found from menu
-     * @return: A HashMap with organized data
+    /**
+     * @param choicesArrayList(the quadrant choices for the goals in order)
+     * @description This function creates/organizes the choices and goals into a proper hashmap for eisenhower matrix
+     * @return It returns the updated version of the matrix to menu to print out.
      * @author: Sanbeer
      */
+
 
     public static HashMap<String,ArrayList<String>>storeEisenhowerMatrix(ArrayList<Integer> choicesArrayList) {
         ArrayList<String> goalsArrayList = Data.getGoalsArrayList();
@@ -318,6 +319,12 @@ public class Data {
 
         return matrix;
     }
+    /**
+     * @param: none
+     * @description This functions simply checks if the matrix had been intialized before since whenever it is intialized in menu, all quadrants get added
+     * @return: It returns the boolean which is uses in the display function for the matrix.
+     */
+
     public static boolean matrixExists() {
         boolean matrixExist = false;
         if (matrix.containsKey("Urgent & Important")){
@@ -325,6 +332,13 @@ public class Data {
         }
         return matrixExist;
     }
+    /**
+     * @param choicesArrayList2(the category choices for the goals in order)
+     * @description This function creates/organizes the choices and goals into a proper hashmap for categorized goals
+     * @return It returns the updated version of the fields to menu to print out.
+     * @author: Sanbeer
+     * It also changes the category property of the object Goal itself using the choices
+     */
 
     public static HashMap<String,ArrayList<String>> storeCategorizeGoals(ArrayList<Integer> choicesArrayList2) {
         ArrayList<String> goalsArrayList2 = Data.getGoalsArrayList();
@@ -397,6 +411,12 @@ public class Data {
 
         return fields;
     }
+    /**
+     * @param: none
+     * @description This functions simply checks if the fields had been intialized before since whenever it is intialized in menu, all categories get added.
+     * @return: It returns the boolean which is uses in the display function for the field.
+     */
+
     public static boolean categoryExists() {
         boolean fieldExist = false;
         if (fields.containsKey("Finance")) {

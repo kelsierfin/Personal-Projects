@@ -107,6 +107,22 @@ public class Menu {
         scanner.close();
     }
 
+    private static void menuHabitRecommendation() {
+
+    }
+
+    private static void menuGoalRecommendation() {
+        ArrayList<Integer> idealCountedGoals = new ArrayList<>();
+        for(Goal goal: data.goals){
+            idealCountedGoals.add(getIdealCount());
+
+
+
+        }
+
+
+
+    }
 
     private static void menuSaveData() {
     }
@@ -115,6 +131,14 @@ public class Menu {
 
     }
 
+
+
+    /**@description: This functions allow the user to display their already exisitng quadrants or prompts them to create one)
+     * Essentially a display function(uses OOP)
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
 
     private static void menuShowEisenhowerMatrix() {
         if (data.matrixExists()){
@@ -125,6 +149,12 @@ public class Menu {
             scanner.nextLine();
         }
     }
+    /**@description: This functions allow the user to display their already exisitng categorized goals or prompts them to create one)
+     * Essentially a display function(uses OOP)
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
     private static void menuShowCategorizedGoals(){
         if (data.categoryExists()){
             System.out.println(data.fields);
@@ -393,8 +423,7 @@ public class Menu {
 
 
     /**@description:Asks the user for what quadrant he wants to put each of his goals
-     *
-     * call the storage function in data and prints it out
+     * (uses OOP to get all goals and loops through them for quadrant choices)
      * @param:none
      * @return:none
      * @author: Sanbeer
@@ -417,7 +446,12 @@ public class Menu {
         scanner.nextLine();
 
     }
-
+    /**@description: Asks the user for choices of categories to put his gaols into and shows it to the user
+     * (uses OOP to get all goals and loops through them)
+     * @param:none
+     * @return:none
+     * @author: Sanbeer
+     */
     private static void menuCategorizeGoals() {
         ArrayList<String> goalsArrayList2 = data.getGoalsArrayList();
         String[] categories2 = {"1) Finance", "2) Work", "3) School", "4) Emotional", "5) Spiritual", "6) Social"};
