@@ -293,6 +293,7 @@ public class Menu {
 
 //            System.out.println("Enter a habit:");
             habitsList = getHabits();
+
             data.addHabits(goalName, habitsList);
 
             System.out.println("Would you like to enter another goal? (Yes / No)");
@@ -371,8 +372,6 @@ public class Menu {
                 System.out.println("Invalid input.");
                 continue;
             }
-
-
             System.out.println("Would you like to enter another habit? (Yes / No)");
             String response = scanner.next().trim().toLowerCase();
             shouldPrint = response.equals("yes") || response.equals("y") || response.equals("true");
@@ -380,7 +379,7 @@ public class Menu {
 
         } while(shouldPrint);
         
-        
+        System.out.println("HabitsList: " + habitsList);
         return habitsList;
     }
 
