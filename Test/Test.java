@@ -481,7 +481,7 @@ class DataTest {
         HashMap<String, ArrayList<String> datamatrix = Data.matrix();
 
         // Invoke the method and check the result
-        assertTrue(data.matrixExists(),"This Should return true when matrix has been inititated");
+        assertTrue(Data.matrixExists(),"This Should return true when matrix has been inititated");
     }
     @Test
     public void testMatrixExists_KeyDoesNotExist() {
@@ -491,7 +491,7 @@ class DataTest {
         HashMap<String, ArrayList<String> datamatrix = Data.matrix();
 
         // Invoke the method and check the result
-        assertFalse(data.matrixExists(), "This should return false when matrix has not been initiated");
+        assertFalse(Data.matrixExists(), "This should return false when matrix has not been initiated");
     }
     @Test
     public void testCategoryExists_KeyExists() {
@@ -501,7 +501,7 @@ class DataTest {
         fields.put("Finance", habits);
 
         // Invoke the method and check the result
-        assertTrue(data.matrixExists(), "This should return true when categorization has been initiated");
+        assertTrue(Data.matrixExists(), "This should return true when categorization has been initiated");
 
     }
     @Test
@@ -511,7 +511,7 @@ class DataTest {
         ArrayList<String> habits = new ArrayList<>();
 
         // Invoke the method and check the result
-        assertFalse(data.matrixExists(), "This should return false when categorization has been initiated");
+        assertFalse(Data.matrixExists(), "This should return false when categorization has been initiated");
     }
 
 }
