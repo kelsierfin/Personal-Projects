@@ -470,6 +470,49 @@ class DataTest {
 
         assertTrue(rates.isEmpty(), "The method should return an empty map when both input maps are empty");
     }
+    @Test
+    public void testMatrixExists_KeyExists() {
+        HashMap<String, ArrayList<String> matrix = new HashMap<>();
+        ArrayList<String> habits = new ArrayList<>();
+
+        // Setup the scenario where the key exists
+        matrix.put("Urgent & Important", habits);
+
+        HashMap<String, ArrayList<String> datamatrix = Data.matrix();
+
+        // Invoke the method and check the result
+        assertTrue(data.matrixExists(),"This Should return true when matrix has been inititated");
+    }
+    @Test
+    public void testMatrixExists_KeyDoesNotExist() {
+        HashMap<String, ArrayList<String> matrix = new HashMap<>();
+        ArrayList<String> habits = new ArrayList<>();
+        // Ensure the key does not exist
+        HashMap<String, ArrayList<String> datamatrix = Data.matrix();
+
+        // Invoke the method and check the result
+        assertFalse(data.matrixExists(), "This should return false when matrix has not been initiated");
+    }
+    @Test
+    public void testCategoryExists_KeyExists() {
+        HashMap<String, ArrayList<String> fields = new HashMap<>();
+        ArrayList<String> habits = new ArrayList<>();
+        // Setup the scenario where the key "Finance" exists
+        fields.put("Finance", habits);
+
+        // Invoke the method and check the result
+        assertTrue(data.matrixExists(), "This should return true when categorization has been initiated");
+
+    }
+    @Test
+    public void testCategoryExists_KeyDoesNotExist() {
+        // Ensure the key does not exist
+        HashMap<String, ArrayList<String> fields = new HashMap<>();
+        ArrayList<String> habits = new ArrayList<>();
+
+        // Invoke the method and check the result
+        assertFalse(data.matrixExists(), "This should return false when categorization has been initiated");
+    }
 
 }
 
