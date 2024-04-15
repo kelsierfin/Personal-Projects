@@ -1,4 +1,4 @@
-package core.Test;
+package core.comparators;
 
 import core.objects.Habit;
 import core.comparators.WeeklyCompletionRateComparator;

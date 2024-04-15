@@ -71,6 +71,7 @@ public class Data {
             return false;
         } else{
             goals.add(goal);
+            tracker.put(goal, null);
             System.out.printf("Goal added successfully!\nYour goal is: " + goal.getGoal() + " and your ideal count is: " + goal.getIdealCount() + "\n");
             return true;
         }
@@ -86,10 +87,19 @@ public class Data {
 
         boolean goalFound = false;
 
-        for (Goal goal : goals) {
-            if (goal.getGoal().equals(goalToDelete)){
-                System.out.println("Successfully deleted: " + goal.getGoal());
-                goals.remove(goal);
+//        for (Goal goal : goals) {
+//            if (goal.getGoal().equals(goalToDelete)){
+//                System.out.println("Successfully deleted: " + goal.getGoal());
+//                goals.remove(goal);
+//                goalFound = true;
+//                return true;
+//            }
+//        }
+
+        for (Map.Entry<Goal, HashSet<Habit>> e: tracker.entrySet()) {
+            if (e.getKey().getGoal().equals(goalToDelete)) {
+                tracker.remove(e.getKey());
+                System.out.println("Successfully deleted: " + e.getKey().getGoal());
                 goalFound = true;
                 return true;
             }
@@ -210,7 +220,7 @@ public class Data {
      * @param habitName The name of the habit to search for. The search is case-insensitive.
      * @return The {@link Habit} object with the specified name if found; {@code null} otherwise.
      */
-    public Habit findHabitByName(String habitName) {
+    public static Habit findHabitByName(String habitName) {
         for (HashSet<Habit> habits : tracker.values()) {
             for (Habit habit : habits) {
                 if (habit.getHabit().equalsIgnoreCase(habitName)) {
@@ -234,7 +244,7 @@ public class Data {
      * @author: Phone
      * @param habitName The name of the habit to be updated. It is assumed to be a unique identifier for the habit.
      */
-    public void updateHabitCompletion(String habitName) {
+    public static void updateHabitCompletion(String habitName) {
         Habit habit = findHabitByName(habitName);
         if (habit != null) {
             habit.incrementCurrentCount();

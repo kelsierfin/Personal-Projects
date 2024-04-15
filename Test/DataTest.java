@@ -25,19 +25,41 @@ class DataTest {
         Data.tracker.clear();
     }
 
-
     // Region: Goal Management Tests
+
+    /**Test 1: Valid goal is created, and both Goals hashset and Tracker HashMap are updated
+     * @author: Phone Myat Paing, Tania Rizwan
+     */
+
     @Test
     void createGoal_ValidInput_Success() {
-        assertTrue(Data.createAGoal("Exercise", 7, "Health"), "Goal should be added successfully.");
-        assertTrue(Data.goals.contains(new Goal("Exercise", 7, "Health")), "The goals collection should contain the added goal.");
+
+        String goalName = "Exercise";
+        Integer idealCount = 7;
+        String category = "Health";
+
+
+        assertTrue(Data.createAGoal(goalName, idealCount, category), "Goal should be added successfully.");
+        assertTrue(Data.goals.contains(new Goal(goalName, idealCount, category)), "The goals collection should contain the added goal.");
+
+        boolean containsGoalKey = false;
+        for (Goal goal : Data.tracker.keySet()) {
+            if (goal.getGoal().equals(goalName)) {
+                containsGoalKey = true;
+                break;
+            }
+        }
+        assertTrue(containsGoalKey, "Tracker should contain the goal as it's key");
     }
+
     @Test
     void createGoal_DuplicateGoal_Failure() {
-        Data.createAGoal("Read", 30, "Education");
-        assertFalse(Data.createAGoal("Read", 30, "Education"), "Duplicate goal should not be added.");
+        Data.createAGoal("Read", 4, "Education");
+        assertFalse(Data.createAGoal("Read", 4, "Education"), "Duplicate goal should not be added.");
         assertEquals(1, Data.goals.size(), "There should only be one instance of the goal in the collection.");
     }
+
+
     @Test
     void deleteGoal_ExistingGoal_Success() {
         Data.createAGoal("Meditate", 10, "Well-being");
@@ -53,12 +75,74 @@ class DataTest {
     // Region: Habit Management Tests
     @Test
     void addHabit_ToExistingGoal_Success() {
-        Data.createAGoal("Learn Guitar", 30, "Hobby");
+        Data.createAGoal("Learn Guitar", 5, "Hobby");
         ArrayList<String> habitsList = new ArrayList<>();
         habitsList.add("Practice chords for 1 hour");
         Data.addHabits("Learn Guitar", habitsList, 0);
         assertEquals(1, Data.tracker.get(new Goal("Learn Guitar", 30, "Hobby")).size(), "The goal should have exactly one habit associated with it.");
     }
+
+    /**
+     * Test: Verify that habit properly inherits goal properties
+     * @author: Tania Rizwan
+     */
+    @Test
+    void habitCompleteSetupCheck() {
+        String goalName = "Fitness";
+        Integer idealCount = 5;
+        String category = "Health";
+        ArrayList<String> habitsList = new ArrayList<>();
+        habitsList.add( "Go to the gym");
+        habitsList.add("Protein shakes");
+        habitsList.add("Weight lifting");
+
+        // Assign a category to goal, then create habits that inherit the category and ideal Count
+        Data.createAGoal(goalName, idealCount, category);
+        Data.addHabits(goalName,habitsList, 5 );
+
+        for (Map.Entry<Goal, HashSet<Habit>> e : Data.tracker.entrySet()) {
+            if (e.getKey().getGoal().equals(goalName)) {
+                HashSet<Habit> habitsSet = e.getValue();
+                for (Habit habit : habitsSet) {
+                    assertEquals(habit.getCategory(), "Health", "Initial category not correct.");
+                    assertEquals(habit.getIdealCount(), idealCount, "Ideal Count not correct");
+                }
+            }
+        }
+    }
+
+    /**
+     * Test: This verifies that when a goal is deleted, it's habits are also deleted.
+     * @author: Tania Rizwan
+     */
+
+    @Test
+    void deletingGoalDeletesHabits(){
+        String goalName = "Fitness";
+        Integer idealCount = 5;
+        String category = "Health";
+        ArrayList<String> habitsList = new ArrayList<>();
+        habitsList.add( "Go to the gym");
+        habitsList.add("Protein shakes");
+        habitsList.add("Weight lifting");
+
+        Data.createAGoal(goalName, idealCount, category);
+        Data.addHabits(goalName,habitsList, 5 );
+
+        // Delete goal
+        Data.goalDelete(goalName);
+
+        // Verify habits also removed
+        boolean goalNotDeleted = false;
+        for (Map.Entry<Goal, HashSet<Habit>> e : Data.tracker.entrySet()) {
+            if (e.getKey().getGoal().equals(goalName) || !e.getValue().isEmpty()) {
+                fail("Goal / Habits not deleted");
+            }
+
+        }
+    }
+
+
     @Test
     void addHabit_ToNonExistingGoal_Failure() {
         ArrayList<String> habitsList = new ArrayList<>();
